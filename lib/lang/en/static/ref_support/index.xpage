@@ -1,0 +1,88 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE page SYSTEM "entities.dtd" >
+<xpage:page xmlns="http://www.w3.org/1999/xhtml" xmlns:xpage="http://eprints.org/ep3/xpage" xmlns:epc="http://eprints.org/ep3/control">
+<xpage:title>REF Support</xpage:title>
+<xpage:body>
+<style>
+h2{
+        font-size: 120%;
+}
+
+h3{
+        font-size: 110%;
+}
+
+table.roles, table.roles th, table.roles td{
+        border: 1px solid black;
+        border-collapse: collapse;
+        padding: 5px;
+}
+</style>
+
+<h2>Summary of core features</h2>
+<h3>Benchmarks</h3>
+<p>Benchmarks allow you to conduct one or more trial runs as well as the final run of your REF submission exercise. New benchmarks can be started from scratch or created containing submissions made in a previous benchmark. As new benchmarks are added, previous benchmarks are saved and provide a frozen view of your submission exercise that you can refer back to a compare results.</p>
+
+<h3>Assign Unit of Assessment Champions</h3>
+<p>The Repository Administrator can assign individual staff as a Unit of Assessment Chamption of one or more unit of assessment panels defined by HEFCE. This allows the Champion to oversee their allocated units, enabling them to check and verify the outputs selected by staff, or submit outputs on their behalf if they so wish.</p>
+
+<p>Champions may run REF1 or REF2 reports at any time for their Unit/s of Assessment for the current or previous benchmark.</p>
+
+<div class="ep_msg_other"><div class="ep_msg_other_content"><table style="padding:5px"><tr><td>
+<img alt="Warning" src="/style/images/warning.png" /></td><td>
+<p>To select Unit of Assessment Champions a user must first be assigned the <strong>ref/select_champions</strong> role.</p>
+</td></tr></table></div></div>
+
+<h3>REF1 Profile Information</h3>
+<p>Staff identified as taking part in your REF submission will have an enhanced profile, where REF1 data can be provided. This information will be used to generate the REF1 report.</p>
+
+<p>Staff may be allocated to one Unit of Assessment, enabling them to make submissions to that panel specifically.</p>
+
+<p>To edit a user's REF1 Profile Information, go to their user profile and click "<epc:phrase ref="Plugin/Screen/REF_Support/User/Edit:title"/>"</p>
+
+<h3>Identify REF2 Outputs</h3>
+<p>Staff identified as taking part in your REF submission will be able to select their research outputs to be submitted to their assigned assessment panel. Additional REF2 data can be provided against each selection, including a self-rating and additional information for the panel to consider.</p>
+
+<div class="ep_msg_other"><div class="ep_msg_other_content"><table style="padding:5px"><tr><td>
+<img alt="Warning" src="/style/images/warning.png" /></td><td>
+<p>In order to make a selection, a user must first be assigned the <strong>ref/select</strong> role.</p>
+</td></tr></table></div></div>
+
+<h2>Getting Started</h2>
+<p>Once the REF Support plugin is installed on your EPrints Repository, you must complete the following set-up tasks in order to utilise the REF Support features.</p>
+
+<h3>Additional Roles</h3>
+<p>Relevant repository user accounts will need additional roles assigned to be able to access the screens within the REF Support plugin. Assign the two roles below as described:</p>
+
+<table class="roles">
+        <tr>
+                <th>ref/select_champions</th>
+                <td>Required to be able to identify members of staff as Unit of Assessment Champions</td>
+        </tr>
+        <tr>
+                <th>ref/select</th>
+                <td>Required against those accounts (including Unit of Assessment Champions) needing to be able to access REF screens and to make REF submissions</td>
+
+        </tr>
+</table>
+
+<p>These additional roles can be added by Repository Administrators to appropriate user accounts, using the ‘Administer Account’ feature</p>
+
+<h3>Identify Unit of Assessment Champions</h3>
+<p>You must identify your Unit of Assessment (UoA) Champions who will then be able to oversee and verify submissions to their assigned assessment panels.</p>
+
+<p>To assign someone as a UoA Champion, go to their user profile and click "<epc:phrase ref="Plugin/Screen/REF_Support/User/EditUoA:title"/>" (this will only appear if you have the 'ref/select_champions' role yourself).</p>
+
+<h3>Assign staff to their unit of assessment and populate REF1 profile information</h3>
+<p>You must identify the staff involved in REF2014 who will be submitting research outputs by assigning them to a single unit of assessment panel. Should you choose to use your EPrints repository to produce your REF1 report you will also need to update staff profiles with the relevant REF1 information.</p>
+
+<h3>Create the first current benchmark</h3>
+<p>You must have one current benchmark set up for staff and Unit of Assessment Champions to be able to make submissions against and run associated reports.</p>
+
+<p>To create a benchmark, click the '<epc:phrase ref="Plugin/Screen/DataSets:title"/> link in the main menu, then select '<epc:phrase ref="datasetname_ref_support_benchmark"/>'.</p>
+
+<h3>User Guide</h3>
+<p>Please see <a href="http://www.eprints.org/uk/wp-content/uploads/EPrints-Services-REF-Support-User-Guide.pdf">here</a> for the REF Support User Guide.</p>
+
+</xpage:body>
+</xpage:page>

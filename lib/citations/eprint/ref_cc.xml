@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+
+<!-- 
+	Full citation for an eprint. 
+-->
+<cite:citation xmlns="http://www.w3.org/1999/xhtml" xmlns:cite="http://eprints.org/ep3/citation" xmlns:epc="http://eprints.org/ep3/control">
+<choose>
+	<when test="$compliance = '1'">
+		<epc:phrase ref="compliant_icon"/>
+	</when>
+	<when test="$compliance = '0'">
+		<epc:phrase ref="not_compliant_icon"/>
+	</when>
+	<when test="$compliance = '2'">
+		<epc:phrase ref="future_compliance_icon"/>
+	</when>
+	<when test="$compliance = '3'">
+		<epc:phrase ref="pre_compliance_icon"/>
+	</when>
+</choose>
+<div class="ref_support_citation">
+<epc:print expr="$item.citation('default')" />
+</div>
+</cite:citation>
+
