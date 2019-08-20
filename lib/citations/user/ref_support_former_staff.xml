@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+
+<cite:citation xmlns="http://www.w3.org/1999/xhtml" xmlns:cite="http://eprints.org/ep3/citation" xmlns:epc="http://eprints.org/ep3/control">
+<table cellpadding="3" style="margin:1em 0em">
+<tr><th align="right"><epc:phrase ref="user_fieldname_ref_category"/>:</th><td><print expr="ref_category"/></td><td id="user_{userid}_ref_category"/></tr>
+<tr><th align="right"><epc:phrase ref="user_fieldname_staff_id"/>:</th><td><print expr="staff_id"/></td><td id="user_{userid}_staff_id"/></tr>
+<tr><th align="right"><epc:phrase ref="user_fieldname_dob"/>:</th><td><print expr="dob"/></td><td id="user_{userid}_dob"/></tr>
+<tr><th align="right"><epc:phrase ref="user_fieldname_orcid"/>:</th><td><print expr="orcid"/></td><td id="user_{userid}_orcid"/></tr>
+<tr><th align="right"><epc:phrase ref="user_fieldname_exclude_from_submission"/>:</th><td><print expr="exclude_from_submission"/></td><td id="user_{userid}_exclude_from_submission"/></tr>
+</table>
+</cite:citation>

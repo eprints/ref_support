@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+
+<cite:citation xmlns="http://www.w3.org/1999/xhtml" xmlns:cite="http://eprints.org/ep3/citation" xmlns:epc="http://eprints.org/ep3/control">
+
+<tr><th align="right"><epc:phrase ref="user_fieldname_ref_category"/>:</th><td><print expr="ref_category"/></td><td id="user_{userid}_ref_category"/></tr>
+<tr><th align="right"><epc:phrase ref="user_fieldname_hesa"/>:</th><td><print expr="hesa"/></td><td id="user_{userid}_hesa"/></tr>
+<tr><th align="right"><epc:phrase ref="user_fieldname_staff_id"/>:</th><td><print expr="staff_id"/></td><td id="user_{userid}_staff_id"/></tr>
+<tr><th align="right"><epc:phrase ref="user_fieldname_ref_fte"/>:</th><td><print expr="ref_fte"/></td><td id="user_{userid}_ref_fte"/></tr>
+<tr><th align="right"><epc:phrase ref="user_fieldname_research_connection"/>:</th><td><print expr="research_connection"/></td><td id="user_{userid}_research_connection"/></tr>
+<tr><th align="right"><epc:phrase ref="user_fieldname_reason_no_connections"/>:</th><td><print expr="reason_no_connections"/></td><td id="user_{userid}_reason_no_connections"/></tr>
+<tr><th align="right"><epc:phrase ref="user_fieldname_research_groups"/>:</th><td><print expr="research_groups"/></td><td id="user_{userid}_research_groups"/></tr>
+
+</cite:citation>

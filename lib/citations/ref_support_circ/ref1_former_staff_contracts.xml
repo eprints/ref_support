@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+
+<!-- 
+	REF 1a - should be used for inclusion in user.render_citation( 'ref1a' ); 
+-->
+
+<cite:citation xmlns="http://www.w3.org/1999/xhtml" xmlns:cite="http://eprints.org/ep3/citation" xmlns:epc="http://eprints.org/ep3/control">
+
+<table cellpadding="3" style="margin:1em 0em">
+<epc:pin name="user_fields"/>
+<tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_is_secondment"/>:</th><td><print expr="is_secondment"/></td><td id="user_{userid.as_string()}_is_secondment"/></tr>
+<if test="is_secondment = 'TRUE'">
+<tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_secondment_start"/>:</th><td><print expr="secondment_start"/></td><td id="user_{userid.as_string()}_secondment_start"/></tr>
+<tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_secondment_end"/>:</th><td><print expr="secondment_end"/></td><td id="user_{userid.as_string()}_secondment_end"/></tr>
+</if>
+<tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_is_unpaid_leave"/>:</th><td><print expr="is_unpaid_leave"/></td><td id="user_{userid.as_string()}_is_unpaid_leave"/></tr>
+<if test="is_unpaid_leave = 'TRUE'">
+<tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_unpaid_leave_start"/>:</th><td><print expr="unpaid_leave_start"/></td><td id="user_{userid.as_string()}_unpaid_leave_start"/></tr>
+<tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_unpaid_leave_end"/>:</th><td><print expr="unpaid_leave_end"/></td><td id="user_{userid.as_string()}_unpaid_leave_end"/></tr>
+</if>
+<!-- sf2: + research groups [1..4] -->
+</table>
+
+</cite:citation>
