@@ -9,7 +9,7 @@
 
 # Used by REF::Report::Listing to pre-populate the list of available reports (and their order):
 $c->{'ref_support'}->{'reports'} = [] if !defined $c->{'ref_support'}->{'reports'};
-unshift @{$c->{'ref_support'}->{'reports'}}, ( 'REF1a', 'REF1b', 'REF1c', 'REF2' );
+unshift @{$c->{'ref_support'}->{'reports'}}, ( 'Research_Groups', 'Current_Staff', 'Former_Staff', 'Former_Staff_Contracts', 'Research_Outputs', 'Staff_Outputs', 'REF1a', 'REF1b', 'REF1c', 'REF2' );
 
 
 ##################
@@ -79,6 +79,7 @@ $c->{'ref'}->{eprint_optional_map} = {map { $_ => 1 } qw(
 	S_url
 	G_url
 	T_url
+	V_url
 )};
 
 $c->{'ref'}->{ref2_validate_fields} = sub {
@@ -201,7 +202,7 @@ $c->{'ref'}->{ref2_validate_fields} = sub {
 	}
 
 	# DOI
-	if( $type =~ /[ABCRDENST]/ )
+	if( $type =~ /[ABCRDENSTV]/ )
 	{
 		$ref{doi} = $eprint->value( "id_number" );
 		undef $ref{doi}
@@ -226,7 +227,7 @@ $c->{'ref'}->{ref2_validate_fields} = sub {
 	}
 
 	# Media of Output
-	if( $type =~ /[LPMIKJQSHGT]/ )
+	if( $type =~ /[LPMIKJQSHGTV]/ )
 	{
 		$ref{media_of_output} = $eprint->value( "output_media" );
 	}
@@ -545,7 +546,7 @@ $c->{'ref'}->{'ref1a'}->{'mappings'} = {
 	hesaStaffIdentifier => "user.hesa",
 	staffIdentifier => "user.staff_id",
 	surname => \&ref1a_support_surname,
-	initials => \&ref1a__support_initials,
+	initials => \&ref1a_support_initials,
 	category => "user.ref_category",
 	birthDate => "user.dob",
 	contractedFte => "user.ref_fte",

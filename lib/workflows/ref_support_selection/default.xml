@@ -24,12 +24,29 @@
       <field ref="abstract"/>	<!-- English Abstract -->
       <field ref="research_group"/>
       <field ref="article_id"/>
+      <field ref="wos_id"/>
+      <field ref="is_physical_output"/>
+      <field ref="supplementary_information_doi"/>
+      <field ref="is_forensic"/>
+      <field ref="is_criminology"/>
+      <field ref="open_access_status"/>
+      <field ref="output_allocation"/>
+      <field ref="output_sub_profile_cat"/>
+      <field ref="author_statement"/>
+      <field ref="author_statement_text"/>
+      <field ref="exclude_from_submission"/>
+      <!--<field ref="pdf_required"/>-->
+    </component>
+
+    <component type="Field::Multi">
+      <title>Pending Publication</title>
+      <field ref="pending_publication"/>
     </component>
 
     <component type="Field::Multi">
       <title>Weighting</title>
       <field ref="weight"/>
-      <field ref="reserve"/>
+      <field ref="double_reserve"/>
       <field ref="weight_text"/>
     </component>
 

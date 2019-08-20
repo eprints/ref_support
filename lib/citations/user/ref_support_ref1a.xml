@@ -9,8 +9,12 @@
 <tr><th align="right"><epc:phrase ref="user_fieldname_hesa"/>:</th><td><print expr="hesa"/></td><td id="user_{userid}_hesa"/></tr>
 <tr><th align="right"><epc:phrase ref="user_fieldname_staff_id"/>:</th><td><print expr="staff_id"/></td><td id="user_{userid}_staff_id"/></tr>
 <tr><th align="right"><epc:phrase ref="user_fieldname_dob"/>:</th><td><print expr="dob"/></td><td id="user_{userid}_dob"/></tr>
+<tr><th align="right"><epc:phrase ref="user_fieldname_orcid"/>:</th><td><print expr="orcid"/></td><td id="user_{userid}_orcid"/></tr>
+<tr><th align="right"><epc:phrase ref="user_fieldname_research_connection"/>:</th><td><print expr="research_connection"/></td><td id="user_{userid}_research_connection"/></tr>
+<tr><th align="right"><epc:phrase ref="user_fieldname_reason_no_connections"/>:</th><td><print expr="reason_no_connections"/></td><td id="user_{userid}_reason_no_connections"/></tr>
 <tr><th align="right"><epc:phrase ref="user_fieldname_ref_fte"/>:</th><td><print expr="ref_fte"/></td><td id="user_{userid}_ref_fte"/></tr>
 <tr><th align="right"><epc:phrase ref="user_fieldname_ref_start_date"/>:</th><td><print expr="ref_start_date"/></td><td id="user_{userid}_ref_start_date"/></tr>
 <tr><th align="right"><epc:phrase ref="user_fieldname_ref_is_sensitive"/>:</th><td><print expr="ref_is_sensitive"/></td><td id="user_{userid}_ref_is_sensitive"/></tr>
+<tr><th align="right"><epc:phrase ref="user_fieldname_research_groups"/>:</th><td><print expr="research_groups"/></td><td id="user_{userid}_research_groups"/></tr>
 <!-- sf2 - moved to REF_Support_Circ <tr><th align="right"><epc:phrase ref="user_fieldname_ref_is_ecr" />:</th><td><print expr="ref_is_ecr"/></td></tr> -->
 </cite:citation>

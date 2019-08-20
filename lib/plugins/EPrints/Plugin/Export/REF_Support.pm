@@ -17,7 +17,7 @@ sub new
 	my $self = $class->SUPER::new( %params );
 
 	$self->{name} = "REF Support - Abstract Exporter class";
-	$self->{accept} = [ 'report/ref1a', 'report/ref1b', 'report/ref1c', 'report/ref2' ];
+	$self->{accept} = [ 'report/ref1a', 'report/ref1b', 'report/ref1c', 'report/ref2', 'report/research_groups', 'report/ref1_current_staff', 'report/ref1_former_staff', 'report/ref1_former_staff_contracts', 'report/ref2_research_outputs', 'report/ref2_staff_outputs' ];
 	$self->{advertise} = 0;
 	$self->{enable} = 1;
 	$self->{visible} = 'staff';
@@ -80,12 +80,10 @@ sub parse_uoa
 sub get_current_uoa
 {
 	my( $plugin, $object ) = @_;
-
 	my $report = $plugin->get_report() or return undef;
 	return undef unless( EPrints::Utils::is_set( $report ) );
-
 	## technically, if we're viewing an old benchmark, a user UoA might not be set anymore :-( So we must get the info from somewhere else (and that is from one former ref_support_selection object)
-	if( $report =~ /^ref1[abc]$/ )	# ref1a, ref1b, ref1c
+	if( $report =~ /^ref1/ )	# ref1a, ref1b, ref1c, ref1_current, etc.
 	{
 		# $object is EPrints::DataObj::User
 		my $uoa = $object->value( 'ref_support_uoa' );
@@ -104,7 +102,7 @@ sub get_current_uoa
 			}
 		}
 	}
-	elsif( $report eq 'ref2' || $report eq 'ref4' )
+	elsif( $report =~ /^ref2/ || $report eq 'ref4' )
 	{
 		# $object is EPrints::DataObj::REF_Support_Selection
 		return $object->current_uoa();
@@ -126,8 +124,7 @@ sub get_related_objects
 
 	my $objects = {};
 	my $session = $plugin->{session};
-
-	if( $report =~ /^ref1[abc]$/ )	# ref1a, ref1b, ref1c
+	if( $report =~ /^ref1/ )	# ref1a, ref1b, ref1c, ref1_current_staff, etc.
 	{
 		# we receive a user object and need to give back a "ref circumstance" object
 	        $objects = {
@@ -135,7 +132,7 @@ sub get_related_objects
                 	ref_support_circ => EPrints::DataObj::REF_Support_Circ->new_from_user( $session, $dataobj->get_id ),
 	        };
 	}
-	elsif( $report eq 'ref2' )
+	elsif( $report =~ /^ref2/ )
 	{
 		# we receive a ref_support_selection object, and need to give back a user & eprint object
                 $objects = {
@@ -144,6 +141,12 @@ sub get_related_objects
                 };
                 my $eprint = $session->dataset( 'eprint' )->dataobj( $dataobj->value( 'eprint_id' ) );
                 $objects->{eprint} = $eprint if( defined $eprint );
+	}
+	elsif( $report eq 'research_groups' )
+	{
+		$objects = {
+			subject => $dataobj,
+		};
 	}
 
 	return $objects;

@@ -46,6 +46,24 @@
 <epp:phrase id="user_fieldname_ref_is_sensitive">Sensitive</epp:phrase>
 <epp:phrase id="user_fieldhelp_ref_is_sensitive">Indicate that the staff record contains sensitive information and should be excluded from publication.</epp:phrase>
 
+<epp:phrase id="user_fieldname_research_connection">Research Connection</epp:phrase>
+<epp:phrase id="user_fieldhelp_research_connection">A short statement (up to 200 words) evidencing the clear connection of the staff member with the submitting unit.</epp:phrase>
+
+<epp:phrase id="user_fieldname_reason_no_connections">Reason for no substantive connection</epp:phrase>
+<epp:phrase id="user_fieldhelp_reason_no_connections">Select one or more instances for why a statement evidencing a substantive connection will not be required.</epp:phrase>
+<epp:phrase id="user_fieldopt_reason_no_connections_CaringResponsibilities">Caring Responsibilities</epp:phrase>
+<epp:phrase id="user_fieldopt_reason_no_connections_PersonalCircumstances">Personal Circumstances</epp:phrase>
+<epp:phrase id="user_fieldopt_reason_no_connections_ReducedHours">Reduced Hours</epp:phrase>
+<epp:phrase id="user_fieldopt_reason_no_connections_NormalDisciplinePractice">Normal Discipline Practice</epp:phrase>
+
+<epp:phrase id="user_fieldname_research_groups">Research Group</epp:phrase>
+<epp:phrase id="user_fieldhelp_research_groups">Please select up to 4 research groups.</epp:phrase>
+
+<epp:phrase id="user_fieldname_exclude_from_submission">Exclude from Submission</epp:phrase>
+<epp:phrase id="user_fieldhelp_exclude_from_submission">Indicates the staff member should not be included in the submission.</epp:phrase>
+
+
+
 <!-- REF Selection Dataset -->
 
 <epp:phrase id="ref_support_selection_fieldname_datestamp">Date of creation</epp:phrase>
@@ -161,6 +179,47 @@ Please choose one of the following options:<br/>
 <epp:phrase id="ref_support_selection_fieldname_article_id">Article number</epp:phrase>
 <epp:phrase id="ref_support_selection_fieldhelp_article_id"></epp:phrase>
 
+<epp:phrase id="ref_support_selection_fieldname_wos_id">Web of Science Identifier</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldhelp_wos_id"></epp:phrase>
+
+<epp:phrase id="ref_support_selection_fieldname_is_physical_output">Physical Output</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldhelp_is_physical_output">Indicate whether a physical copy of the output should be provided for this output.</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldname_supplementary_information_doi">Supplementary Information DOI</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldhelp_supplementary_information_doi">The DOI (or other URL, if no DOI is available) for any supplementary information published alongside an output.</epp:phrase>
+
+<epp:phrase id="ref_support_selection_fieldname_is_forensic">Forensic Science Output</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldhelp_is_forensic">Indicate to the sub-panel if the output embodies research in forensic science.</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldname_is_criminology">Criminology Output</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldhelp_is_criminology">Indicate to the sub-panel if the output embodies research in criminology.</epp:phrase>
+
+<epp:phrase id="ref_support_selection_fieldname_open_access_status">Open Access Status</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldhelp_open_access_status">Indicate whether the output is compliant with open access requirements, has an applicable exception, or is not compliant.</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldopt_open_access_status_Compliant">Compliant</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldopt_open_access_status_NotCompliant">Not Compliant</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldopt_open_access_status_DepositException">Deposit Exception</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldopt_open_access_status_AccessException">Access Exception</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldopt_open_access_status_TechnicalException">Technical Exception</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldopt_open_access_status_OtherFurtherException">Other Further Exception</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldopt_open_access_status_OutOfScope">Out of Scope</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldopt_open_access_status_ExceptionWith3MonthsOfPublication">Exception With 3 Months Of Publication</epp:phrase>
+
+<epp:phrase id="ref_support_selection_fieldname_output_allocation">Output Allocation</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldhelp_output_allocation">Required when requested in the panel criteria and working methods.</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldname_output_sub_profile_cat">Output Sub Profile Category</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldhelp_output_sub_profile_cat">Specify the output subprofile category for UoAs 3 and 12.</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldname_author_statement">Requires Author Contribution Statement</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldhelp_author_statement">Indicate whether the submission system needs to  track the author contribution statements to aid institutions in developing their submissions.</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldname_author_statement_text">Author Contribution Statement</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldhelp_author_statement_text">Author contribution statement to aid institutions in developing their submissions.</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldname_exclude_from_submission">Exclude from Submission</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldhelp_exclude_from_submission">Indicate that the output record should be excluded from submission. No records with this flag set should remain in the submission when submitting it to the REF 2021.</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldname_pdf_required">Output PDF Required</epp:phrase>
+
+<epp:phrase id="ref_support_selection_fieldname_pending_publication">Pending Publication Reserve</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldhelp_pending_publication">Select a different REF Selection as a reserve for the pending publication.</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldname_double_reserve">Double Weighting Reserve</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldhelp_double_reserve">Select a different REF Selection as a reserve for a double weighted selection.</epp:phrase>
+
 <epp:phrase id="datasetname_ref_support_selection">REF Selections</epp:phrase>
 <epp:phrase id="datasethelp_ref_support_selection">Manages selections for REF.</epp:phrase>
 
@@ -272,10 +331,17 @@ Please choose one of the following options:<br/>
 <epp:phrase id="Plugin/Screen/REF_Support/Report/Listing:title">REF Reports</epp:phrase>
 <epp:phrase id="Plugin/Screen/REF_Support/Report/Listing:no_reports"><span style="color: #FF0000;font-weight:bold;">Error: no reports available.</span></epp:phrase>
 
-<epp:phrase id="Plugin/Screen/REF_Support/Report/REF1a:title">REF 1a Report</epp:phrase>
-<epp:phrase id="Plugin/Screen/REF_Support/Report/REF1b:title">REF 1b Report</epp:phrase>
-<epp:phrase id="Plugin/Screen/REF_Support/Report/REF1c:title">REF 1c Report</epp:phrase>
-<epp:phrase id="Plugin/Screen/REF_Support/Report/REF2:title">REF 2 Report</epp:phrase>
+<epp:phrase id="Plugin/Screen/REF_Support/Report/REF1a:title">REF 1a Report (2014)</epp:phrase>
+<epp:phrase id="Plugin/Screen/REF_Support/Report/REF1b:title">REF 1b Report (2014)</epp:phrase>
+<epp:phrase id="Plugin/Screen/REF_Support/Report/REF1c:title">REF 1c Report (2014)</epp:phrase>
+<epp:phrase id="Plugin/Screen/REF_Support/Report/REF2:title">REF 2 Report (2014)</epp:phrase>
+
+<epp:phrase id="Plugin/Screen/REF_Support/Report/Current_Staff:title">Current Staff</epp:phrase>
+<epp:phrase id="Plugin/Screen/REF_Support/Report/Former_Staff:title">Former Staff</epp:phrase>
+<epp:phrase id="Plugin/Screen/REF_Support/Report/Former_Staff_Contracts:title">Former Staff Contracts</epp:phrase>
+<epp:phrase id="Plugin/Screen/REF_Support/Report/Research_Groups:title">Research Groups</epp:phrase>
+<epp:phrase id="Plugin/Screen/REF_Support/Report/Research_Outputs:title">Research Outputs</epp:phrase>
+<epp:phrase id="Plugin/Screen/REF_Support/Report/Staff_Outputs:title">Link between staff and outputs</epp:phrase>
 
 <epp:phrase id="Plugin/Screen/REF_Support/Report:header">
 <div class="ep_ref_report_top_box" style="height:25px;line-height:25px;">
@@ -590,6 +656,7 @@ No items selected.
 <epp:phrase id="ref_support_selection_fieldopt_type_S">S - Research Data Sets and Databases</epp:phrase>
 <epp:phrase id="ref_support_selection_fieldopt_type_T">T - Other</epp:phrase>
 <epp:phrase id="ref_support_selection_fieldopt_type_U">U - Working Paper</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldopt_type_V">V - Translation</epp:phrase>
 
 <epp:phrase id="ref:validate:bad_eprint"><b>EPrint does not exist</b></epp:phrase>
 <epp:phrase id="ref:validate:bad_type"><b><epc:pin name="eprint_type" /></b> is not a valid REF output type</epp:phrase>
@@ -688,7 +755,7 @@ No users found in your UoA.</epp:phrase>
  <epp:phrase id="Plugin/Screen/REF_Support/REF4/Listing:actions">Actions</epp:phrase>
 
  <epp:phrase id="Plugin/Screen/REF_Support/Environment/LinkListing:action:link:title">Return to REF 4 Report</epp:phrase>
- <epp:phrase id="Plugin/Screen/REF_Support/Report/REF4:title">REF 4 Report</epp:phrase>
+ <epp:phrase id="Plugin/Screen/REF_Support/Report/REF4:title">REF 4 Report (2014)</epp:phrase>
  <epp:phrase id="Plugin/Screen/REF_Support/Report/REF4:view">View</epp:phrase>
  <epp:phrase id="Plugin/Screen/REF_Support/Report/REF4:edit">Edit</epp:phrase>
  <epp:phrase id="Plugin/Screen/REF_Support/Report/REF4:error:no_data">No Data found</epp:phrase>
@@ -731,7 +798,8 @@ No users found in your UoA.</epp:phrase>
 
  <epp:phrase id='ref:researcher_no_select:help'><p>You have not been assigned a REF Select role and are therefore unable to select research ouputs for your Unit of Assessment.</p></epp:phrase>
 
-
+ <epp:phrase id="Plugin/Screen/REF_Support/Report/Research_Groups:research_group:id">Research Group ID</epp:phrase>
+ <epp:phrase id="Plugin/Screen/REF_Support/Report/Research_Groups:research_group:invalid_length">Research Group ID must be a single alpha or numeric character</epp:phrase>
 
 
 </epp:phrases>

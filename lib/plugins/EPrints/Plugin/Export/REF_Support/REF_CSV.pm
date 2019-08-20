@@ -34,14 +34,27 @@ sub output_list
 	my $action = $session->config( 'ref', 'action' ) || 'Update';
 
 	# CSV header / field list
-	print "institution,unitOfAssessment,multipleSubmission,action,".join( ",", @{$plugin->ref_fields_order()} )."\n";
+	my $report = $plugin->get_report();
+	my $commons = {};
+	if( grep { $report eq $_ } @{$plugin->{session}->config( 'ref_2021_reports' )} )
+	{
+		print "ukprn,unitOfAssessment,multipleSubmission,".join( ",", @{$plugin->ref_fields_order()} )."\n";
 
-	# common fields/values
-	my $commons = {
-		institution => $institution,
-		action => $action,
-	};
+		# common fields/values
+		$commons = {
+			ukprn => $institution,
+		};
+	}	
+	else
+	{
+		print "institution,unitOfAssessment,multipleSubmission,action,".join( ",", @{$plugin->ref_fields_order()} )."\n";
 
+		# common fields/values
+		$commons = {
+			institution => $institution,
+			action => $action,
+		};
+	}
 	$opts{list}->map( sub {
 		my( undef, undef, $user ) = @_;
 		my $output = $plugin->output_dataobj( $user, %$commons );
@@ -54,29 +67,47 @@ sub output_list
 sub output_dataobj
 {
 	my( $plugin, $dataobj, %commons ) = @_;
-
-	my $session = $plugin->{session};
+	my $session = $plugin->{session};	
 	return "" unless( $session->config( 'ref_enabled' ) );
-
+	
 	my $ref_fields = $plugin->ref_fields();
 
 	my $objects = $plugin->get_related_objects( $dataobj );
 
-	my @values;
-	my $uoa_id = $plugin->get_current_uoa( $dataobj );
-	return "" unless( defined $uoa_id );	# abort!
-	
-	my ( $hefce_uoa_id, $is_multiple ) = $plugin->parse_uoa( $uoa_id );
-	return "" unless( defined $hefce_uoa_id );
+	my $report = $plugin->get_report();
 
+	my @values;
+	my $uoa_id;
+	my $hefce_uoa_id;
+	my $is_multiple;
+
+	if( $report ne "research_groups" )
+	{
+		$uoa_id = $plugin->get_current_uoa( $dataobj );
+		return "" unless( defined $uoa_id );	# abort!
+	
+		( $hefce_uoa_id, $is_multiple ) = $plugin->parse_uoa( $uoa_id );
+		return "" unless( defined $hefce_uoa_id );
+	}
+	
 	my $valid_ds = {};
 	foreach my $dsid ( keys %$objects )
 	{
 		$valid_ds->{$dsid} = $session->dataset( $dsid );
 	}
 
+	my @common_fields;
+	if( grep { $report eq $_ } @{$plugin->{session}->config( 'ref_2021_reports' )} )
+        {
+		@common_fields = ( "ukprn", "unitOfAssessment", "multipleSubmission" );
+	}
+	else
+	{
+		@common_fields = ( "institution", "unitOfAssessment", "multipleSubmission", "action" );
+	}
+	
 	# first we need to output the first 4 fields (the 'common' fields)
-	foreach( "institution", "unitOfAssessment", "multipleSubmission", "action" )
+	foreach( @common_fields )
 	{
 		my $value;
 		if( $_ eq 'unitOfAssessment' )	# get it from the ref_support_selection object
@@ -107,9 +138,8 @@ sub output_dataobj
 	foreach my $hefce_field ( @{$plugin->ref_fields_order()} )
 	{
 		my $ep_field = $ref_fields->{$hefce_field};
-
 		if( ref( $ep_field ) eq 'CODE' )
-		{
+		{	
 			# a sub{} we need to run
 			eval {
 				my $value = &$ep_field( $plugin, $objects );
@@ -140,19 +170,17 @@ sub output_dataobj
 		# a straight mapping with an EPrints field
 		my( $ds_id, $ep_fieldname ) = ( $1, $2 );
 		my $ds = $valid_ds->{$ds_id};
-
 		unless( defined $ds && $ds->has_field( $ep_fieldname ) )
 		{
 			# dataset or field doesn't exist
 			push @values, "";
 			next;
 		}
-
+		
 		my $value = $objects->{$ds_id}->value( $ep_fieldname );
 		$done_any++ if( EPrints::Utils::is_set( $value ) );
 		push @values, $plugin->escape_value( $value );
 	}
-
 	return undef unless( $done_any );
 
 	return join( ",", @values );

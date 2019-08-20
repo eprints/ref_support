@@ -70,6 +70,10 @@ div.ep_ref_report_box div.ep_ref_user_citation
 	border-bottom: 1px #97899F solid;
 }
 
+div.ep_ref_report_box table tr td, div.ep_ref_report_box table tr th{
+	border: none;
+}
+
 div.ep_ref_report_box
 {
 	margin-bottom: 10px;

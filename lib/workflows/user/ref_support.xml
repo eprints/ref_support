@@ -14,10 +14,16 @@
       <field ref="staff_id"/>
       <field ref="ref_category"/>
       <field ref="ref_start_date"/>
-<!-- sf2 - removed in v1.2
       <field ref="ref_end_date"/>
--->
+
       <field ref="ref_fte"/>
+
+      <field ref="research_connection"/>
+      <field ref="reason_no_connections"/>
+      <field ref="research_groups"/>
+
+      <field ref="exclude_from_submission"/>
+
       <!--<field ref="ref_uoa"/>-->
       <field ref="ref_support_uoa"/>
    </component>

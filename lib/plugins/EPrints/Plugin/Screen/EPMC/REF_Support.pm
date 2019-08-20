@@ -35,6 +35,9 @@ sub action_enable
 	# Add the REF Support UoAs:
 	$self->add_ref_uoas();
 
+	# Add the REF Support Research Groups
+	$self->add_ref_research_groups();
+
 	# re-commit ref_support_selection dataset (pre-populate ref_support_selection.output_type)
 	$self->recommit_ref_support_selections();
 
@@ -54,6 +57,28 @@ sub add_ref_uoas
 	if( !defined $test_subject_id )
 	{
 		my $filename = $repo->config( 'archiveroot' ).'/cfg/ref_support_uoa';
+		if( -e $filename )
+		{
+			my $plugin = $repo->plugin( 'Import::FlatSubjects' );
+			my $list = $plugin->input_file( dataset => $repo->dataset( 'subject' ), filename=>$filename );
+			$repo->dataset( 'subject' )->reindex( $repo );
+		}
+	}
+}
+
+sub add_ref_research_groups
+{
+	my( $self ) = @_;
+	
+	my $repo = $self->{repository};
+	
+	# First check that this subject tree doesn't already exist...
+	my $ds = $repo->dataset( 'subject' );
+	my $test_subject_id = $ds->dataobj( 'ref_2021_research_groups' );
+
+	if( !defined $test_subject_id )
+	{
+		my $filename = $repo->config( 'archiveroot' ).'/cfg/ref_support_research_groups';
 		if( -e $filename )
 		{
 			my $plugin = $repo->plugin( 'Import::FlatSubjects' );

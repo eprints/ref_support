@@ -1,7 +1,7 @@
 #
 # EPrints Services - REF Package
 #
-# Version: 1.3
+# Version: 2.0
 #
 
 # Bazaar Configuration
@@ -487,7 +487,7 @@ $c->add_dataset_field( 'ref_support_selection', {
 			],
 		}, reuse => 1 );
 # outputType
-$c->add_dataset_field( 'ref_support_selection',	{ name => "type", type=>"set", options=>[qw( A B C D E F G H I J K L M N O P Q R S T U )], }, reuse => 1 );
+$c->add_dataset_field( 'ref_support_selection',	{ name => "type", type=>"set", options=>[qw( A B C D E F G H I J K L M N O P Q R S T U V )], }, reuse => 1 );
 # outputNumber: not actually used - the number's set automatically
 $c->add_dataset_field( 'ref_support_selection', { name => "position", type => "int", }, reuse => 1 );
 # isInterdisciplinary
@@ -526,6 +526,61 @@ $c->add_dataset_field( 'ref_support_selection', { name => 'sensitive', type => '
 $c->add_dataset_field( 'ref_support_selection', { name => 'research_group', type => 'text', maxlength => 1 }, reuse => 1 );
 # Article number
 $c->add_dataset_field( 'ref_support_selection', { name => 'article_id', type => 'text' }, reuse => 1 );
+
+# webOfScienceIdentifier
+$c->add_dataset_field( 'ref_support_selection', { name => 'wos_id', type => 'text' }, reuse => 1 );
+
+# isPhysicalOutput
+$c->add_dataset_field( 'ref_support_selection', { name => 'is_physical_output', type => 'boolean' }, reuse => 1 );
+
+# supplementaryInformationDOI
+$c->add_dataset_field( 'ref_support_selection', { name => 'supplementary_information_doi', type => 'text' }, reuse => 1 );
+
+# pendingPublicationReserve
+$c->add_dataset_field( 'ref_support_selection', { name => 'pending_publication', type => 'itemref', datasetid => 'ref_support_selection' } );
+
+# isForensicScienceOutput
+$c->add_dataset_field( 'ref_support_selection', { name => 'is_forensic', type => 'boolean' }, reuse => 1 );
+
+# isCriminologyOutput
+$c->add_dataset_field( 'ref_support_selection', { name => 'is_criminology', type => 'boolean' }, reuse => 1 );
+
+# doubleWeightingReserve
+$c->add_dataset_field( 'ref_support_selection', { name => 'double_reserve', type => 'itemref', datasetid => 'ref_support_selection' }, reuse => 1 );
+
+# openAccessStatus
+$c->add_dataset_field( 'ref_support_selection', { 
+			name => 'open_access_status',
+			type => 'set',
+			options => [
+				'Compliant',
+				'NotCompliant',
+				'DepositException',
+				'AccessException',
+				'TechnicalException',
+				'OtherFurtherException',
+				'OutOfScope',
+				'ExceptionWith3MonthsOfPublication',
+			],
+		}, reuse => 1 );
+
+# outputAllocation
+$c->add_dataset_field( 'ref_support_selection', { name => 'output_allocation', type => 'text' }, reuse => 1 );
+
+# outputSubProfileCategory
+$c->add_dataset_field( 'ref_support_selection', { name => 'output_sub_profile_cat', type => 'text' }, reuse => 1 );
+
+# requiresAuthorContributionStatement
+$c->add_dataset_field( 'ref_support_selection', { name => 'author_statement', type => 'boolean' }, reuse => 1 );
+
+# authorContributionStatement
+$c->add_dataset_field( 'ref_support_selection', { name => 'author_statement_text', type => 'text' }, reuse => 1 );
+
+# excludeFromSubmission
+$c->add_dataset_field( 'ref_support_selection', { name => 'exclude_from_submission', type => 'boolean' }, reuse=> 1 );
+
+# outputPdfRequired (#export only field.... one that Research England provide???)
+# $c->add_dataset_field( 'ref_support_selection', { name => 'pdf_required', type => 'boolean' }, reuse=> 1 );	
 
 # REF Search Configuration (as used by REF::Listing)
 
@@ -622,5 +677,33 @@ $c->add_dataset_field( 'user', { name => 'ref_is_sensitive', type => 'boolean' }
 #$c->add_dataset_field( 'user', { name => 'ref_circ_start_date', type => 'date' }, reuse => 1 );
 #$c->add_dataset_field( 'user', { name => 'ref_circ_end_date', type => 'date' }, reuse => 1 );
 
+# Fields added for REF2021 Submissions
+# researchConnection
+$c->add_dataset_field( 'user', { name => 'research_connection', type => 'text' }, reuse => 1 );
+
+# reasonForNoConnectionStatement
+$c->add_dataset_field( 'user', { 
+	name => 'reason_no_connections',
+	type => 'set',
+	multiple => 1,
+	options => [ 'CaringResponsibilities', 'PersonalCircumstances', 'ReducedHours', 'NormalDisciplinePractice' ],
+}, reuse => 1 );
+
+# researchGroup
+$c->add_dataset_field( 'user', {
+	name => 'research_groups',
+	type => 'subject',
+	top => 'ref_2021_research_groups',
+	multiple => 1,
+}, reuse => 1 );
+
+# excludeFromSubmission
+$c->add_dataset_field( 'user', {
+	name => 'exclude_from_submission',
+	type => 'boolean',
+}, reuse=> 1 );
+
+# REF End date
+$c->add_dataset_field( 'user', { name => 'ref_end_date', type => 'date' }, reuse => 1 );
 
 1;
