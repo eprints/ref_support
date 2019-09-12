@@ -149,7 +149,7 @@ sub render
 	$form->appendChild( $self->render_hidden_bits );
 
 	$form->appendChild( $session->make_element( 'input', type => 'submit', class => 'ep_form_action_button', value => 'View Report',
-			onclick => 'return EPJS_REF_SerialiseUoAs();' ) );
+			onclick => 'return EPJS_REF_Support_SerialiseUoAs();' ) );
 
 	return $chunk;
 }
