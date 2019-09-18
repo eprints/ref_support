@@ -37,12 +37,21 @@ sub output_list
 
 	# the tags for opening/closing eg <outputs><output/></outputs> (ref2) or <staff><staffMember/></staff> (ref1abc)
 
-	my( $main_tag, $secondary_tag ) = $plugin->tags;
+	my( $main_tag, $secondary_tag, $tertiary_tag ) = $plugin->tags;
 
 	unless( defined $main_tag && defined $secondary_tag )
 	{
 		$session->log( "REF_XML error - missing tags for report ".$plugin->get_report );
 		return;		
+	}
+
+	# cater for a three tag structure, e.b. <staff><current><staffMember>
+	my $item_tag = $secondary_tag;
+	my $sub_tag;
+	if( defined $tertiary_tag )
+	{
+		$item_tag = $tertiary_tag;
+		$sub_tag = $secondary_tag;
 	}
 
 print <<HEADER;
@@ -84,16 +93,28 @@ CLOSING
 			<$main_tag>
 
 OPENING
+			if( defined $sub_tag )
+			{
+				print <<OPENING;
+					<$sub_tag>
+OPENING
+			}
 			$current_uoa = $uoa;
 		}
 		my $output = $plugin->output_dataobj( $dataobj );
 		return unless( EPrints::Utils::is_set( $output ) );
-		print "<$secondary_tag>\n$output\n</$secondary_tag>\n";
+		print "<$item_tag>\n$output\n</$item_tag>\n";
 	} );
 
 
 	if( defined $current_uoa ) # i.e. have we output any records?
 	{
+		if( defined $sub_tag )
+		{
+			print <<CLOSING;
+				</$sub_tag>
+CLOSING
+		}
 		print <<CLOSING;
 			</$main_tag>
 		</submission>
@@ -116,19 +137,43 @@ sub tags
 
 	my $main;
 	my $secondary;
-	if( $report =~ /^ref1[abc]$/ )
+	my $tertiary;
+	if( $report =~ /^ref1[abc]$/ ) # 2014
 	{
 		$main = 'staff';
 		$secondary = 'staffMember';
 	}
-	elsif( $report eq 'ref2' )
+	elsif( $report eq 'research_groups' )
+	{
+		$main = 'researchGroups';
+                $secondary = 'group';
+	}
+	elsif( $report eq 'ref1_current_staff' )
+	{
+		$main = 'staff';
+		$secondary = 'current';
+		$tertiary = 'staffMember';
+	}
+	elsif( $report eq 'ref1_former_staff' ) # include former staff contracts
+	{
+		$main = 'staff';
+		$secondary = 'former';
+		$tertiary = 'staffMember';
+	}
+	elsif( $report eq 'ref2_staff_outputs' )
+	{
+		$main = 'staffOutputLinks';
+                $secondary = 'staffOutputLink';
+	}
+	elsif( $report eq 'ref2' || $report eq 'ref2_research_outputs' )
 	{
 		$main = 'outputs';
 		$secondary = 'output';
 	}
+
 	return () unless( defined $main && defined $secondary );
 	
-	return( $main, $secondary );
+	return( $main, $secondary, $tertiary );
 }
 
 
