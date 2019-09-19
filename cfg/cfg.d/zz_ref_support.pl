@@ -523,7 +523,7 @@ $c->add_dataset_field( 'ref_support_selection', { name => 'conflicted_members', 
 # isSensitive
 $c->add_dataset_field( 'ref_support_selection', { name => 'sensitive', type => 'boolean' }, reuse => 1 );
 # researchGroup (just a free form text, no validation done on it)
-$c->add_dataset_field( 'ref_support_selection', { name => 'research_group', type => 'text', maxlength => 1 }, reuse => 1 );
+$c->add_dataset_field( 'ref_support_selection', { name => 'research_group', type => 'itemref', datasetid => 'ref_support_rg' }, reuse => 1 );
 # Article number
 $c->add_dataset_field( 'ref_support_selection', { name => 'article_id', type => 'text' }, reuse => 1 );
 
@@ -632,15 +632,21 @@ $c->{ref_support_roles_for_user} = sub
 	{
 		my $roles = $user->value( 'ref_support_uoa_role' );
 
+		$list = $list->union( $session->dataset( "user" )->search(
+	        	filters => [
+				{ meta_fields => [qw( ref_support_uoa )], value => join( " ", @{$roles} ), match => "IN" },
+			],
+		));
+
 		# sf2 - patch to make the Search works over Subject fields inside Compounds fields (fixed in 3.2.8)
-		foreach( @$roles )
-		{
-			$list = $list->union( $session->dataset( "user" )->search(
-	                        filters => [
-        	                        { meta_fields => [qw( ref_support_uoa )], value => "$_", match => "EQ", merge => "ANY" },
-                	        ],
-	                ));
-		}
+		#foreach( @$roles )
+		#{
+		#	$list = $list->union( $session->dataset( "user" )->search(
+	        #                filters => [
+        	#                        { meta_fields => [qw( ref_support_uoa )], value => "$_", match => "EQ", merge => "ANY" },
+                #	        ],
+	        #        ));
+		#}
 
 	}
 		

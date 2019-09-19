@@ -163,7 +163,8 @@ sub user_roles
 				$self->{session},
 				$user
 			);
-		$list = $list->reorder( "name" );
+		# reorder later when we have a simpler list of names not objects
+		# $list = $list->reorder( "name" );
 		$self->{processor}->{roles} = $list;
 	}
 
@@ -423,18 +424,26 @@ sub ajax_roles
 
 	my @roles;
 	my %labels;
+	my %names;
 
 	$self->user_roles( $user )->map(sub {
 		(undef, undef, my $_user) = @_;
 
-		push @roles, $_user->id;
-		$labels{$_user->id} = $_user->render_citation( 'brief' );
+		# create hash of ids to names (not citations which are slow...)
+		my $name = $_user->value( "name" );
+		$labels{$_user->id} = EPrints::Utils::make_name_string( $name, 1) ;
+
+		# create hash of ids to sortable names
+		$names{$_user->id} = $name->{family} . '_' x (100 - length( $name->{family} ) ) . $name->{given};
 	});
 	
+	# sort the names hash by value to get a sorted list of keys
+	@roles = sort { $names{$a} cmp $names{$b} } keys %names;
+
 	if( !exists $labels{$role->id} )
 	{
 		unshift @roles, $role->id;
-		$labels{$role->id} = $role->render_citation( 'brief' );
+		$labels{$role->id} = EPrints::Utils::make_name_string( $role->value( "name" ), 1 );
 	}
 
 # don't show the current user if he/she isn't part of that uoa
@@ -445,7 +454,7 @@ sub ajax_roles
 #		$labels{$user->id} = $user->render_citation( 'brief' );
 #	}
 
-	$_ = $session->xhtml->to_text_dump( $_ ) for values %labels;
+#	$_ = $session->xhtml->to_text_dump( $_ ) for values %labels;
 
 	my $select = $frag->appendChild( $session->render_option_list(
 		name => 'role',
