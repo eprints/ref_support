@@ -523,7 +523,7 @@ $c->add_dataset_field( 'ref_support_selection', { name => 'conflicted_members', 
 # isSensitive
 $c->add_dataset_field( 'ref_support_selection', { name => 'sensitive', type => 'boolean' }, reuse => 1 );
 # researchGroup (just a free form text, no validation done on it)
-$c->add_dataset_field( 'ref_support_selection', { name => 'research_group', type => 'itemref', datasetid => 'ref_support_rg' }, reuse => 1 );
+$c->add_dataset_field( 'ref_support_selection', { name => 'research_group', type => 'text', maxlength => 1 }, reuse => 1 );
 # Article number
 $c->add_dataset_field( 'ref_support_selection', { name => 'article_id', type => 'text' }, reuse => 1 );
 

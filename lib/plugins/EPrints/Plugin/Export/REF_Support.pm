@@ -107,6 +107,10 @@ sub get_current_uoa
 		# $object is EPrints::DataObj::REF_Support_Selection
 		return $object->current_uoa();
 	}
+	elsif( $report eq 'research_groups' )
+	{
+		return $object->get_value( "uoa" );
+	}
 
 	return undef;
 }
@@ -145,7 +149,7 @@ sub get_related_objects
 	elsif( $report eq 'research_groups' )
 	{
 		$objects = {
-			subject => $dataobj,
+			ref_support_rg => $dataobj,
 		};
 	}
 

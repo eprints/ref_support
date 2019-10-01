@@ -170,6 +170,11 @@ sub tags
 		$main = 'outputs';
 		$secondary = 'output';
 	}
+	elsif( $report eq 'research_groups' )
+	{
+		$main = 'researchGroups';
+		$secondary = 'group';
+	}
 
 	return () unless( defined $main && defined $secondary );
 	

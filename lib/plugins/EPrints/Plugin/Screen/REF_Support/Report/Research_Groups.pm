@@ -28,16 +28,15 @@ sub research_groups
 	my( $self ) = @_;
 
 	my $session = $self->{session};
-	my $subject_ds = $session->dataset( 'subject' );
-	my $subject = $subject_ds->dataobj( 'ref_2021_research_groups' ); # should use configurable value here!
-	my @research_groups = $subject->get_children;
-	my $rg_ids = ();
-	foreach my $rg ( @research_groups )
-	{
-		push @$rg_ids, $rg->id;
-	}
-	
-	return EPrints::List->new( repository => $session, dataset => $subject_ds, ids => $rg_ids ); 
+	my $rg_ds = $session->dataset( 'ref_support_rg' );
+	my @uoas = @{ $self->{processor}->{uoas} || [] };
+
+        my @uoa_ids = map { $_->id } @uoas;
+        my $rgs = $rg_ds->search( filters => [
+                { meta_fields => [ "uoa" ], value => join( " ", @uoa_ids ),},
+        ]);
+
+	return $rgs;
 }
 
 sub export
@@ -110,7 +109,7 @@ sub render_rg
         my $chunk = $session->make_doc_fragment;
 
 	my $div = $chunk->appendChild( $session->make_element( "div", class => "ep_ref_user_citation" ) );
-	$div->appendChild( $rg->render_description );
+	$div->appendChild( $rg->render_citation );
 
 	$div = $chunk->appendChild( $session->make_element( "div" ) );
 	my $table = $div->appendChild( $session->make_element( "table" ) );	
@@ -119,7 +118,7 @@ sub render_rg
 	push @table_cells, $session->make_text( $rg->id );
 
 	# is there a problem with this rg's id?
-	if( $rg->id !~ m/^[a-zA-Z0-9]$/ )
+	if( $rg->get_value( "code" ) !~ m/^[a-zA-Z0-9]$/ )
 	{
 		my $warning_div = $session->make_element( "div", class => "ep_ref_report_user_problems" );
 		$warning_div->appendChild( $self->html_phrase( "research_group:invalid_length" ) );

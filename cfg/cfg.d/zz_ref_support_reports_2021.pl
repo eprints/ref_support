@@ -129,17 +129,9 @@ $c->{'ref'}->{'ref1_former_staff_contracts'}->{'mappings'} = {
 $c->{'ref'}->{'research_groups'}->{'fields'} = [qw{ code name }];
 
 $c->{'ref'}->{'research_groups'}->{'mappings'} = {
-        code => "subject.subjectid",
-	name => \&ref2021_rg_name,
+        code => "ref_support_rg.code",
+	name => "ref_support_rg.name",
 };
-
-sub ref2021_rg_name
-{
-        my( $plugin, $objects ) = @_;
-
-	my $subject = $objects->{subject} or return;
-	return $subject->render_description;
-}
 
 # Research Outputs Fields
 $c->{'ref'}->{'ref2_research_outputs'}->{'fields'} = [qw{ outputIdentifier webOfScienceIdentifier outputType title place publisher volumeTitle volume issue firstPage articleNumber isbn issn doi patentNumber month year url isPhysicalOutput supplementaryInformationDOI numberOfAdditionalAuthors isPendingPublication pendingPublicationReserve isForensicScienceOutput isCriminologyOutput isNonEnglishLanguage englishAbstract isInterdisciplinary proposeDoubleWeighting doubleWeightingStatement doubleWeightingReserve conflictedPanelMembers crossReferToUoa additionalInformation researchGroup openAccessStatus outputAllocation outputSubProfileCategory requiresAuthorContributionStatement isSensitive excludeFromSubmission }];
