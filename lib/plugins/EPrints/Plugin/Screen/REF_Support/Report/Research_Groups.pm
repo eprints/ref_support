@@ -5,24 +5,6 @@ use EPrints::Plugin::Screen::REF_Support::Report;
 
 use strict;
 
-# No UoAs required to see this role, but we do still insist users are a UoA Champion
-sub can_be_viewed
-{
-        my( $self ) = @_;
-
-        return 0 unless( $self->{session}->config( 'ref_enabled' ) );
-
-        my $user = $self->{processor}->{user};
-        return 0 if !defined $user;
-
-	if( $user->is_set( 'ref_support_uoa_role' ) )
-	{
-		return 1;
-	}
-
-	return 0;
-}
-
 sub research_groups
 {
 	my( $self ) = @_;
