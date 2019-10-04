@@ -23,19 +23,30 @@ sub research_groups
 
 sub export
 {
-        my( $self ) = @_;
-
+        my( $self, $fh, $skip_intro ) = @_;
         my $plugin = $self->{processor}->{plugin};
         return $self->SUPER::export if !defined $plugin;
-
 	my $rg_list = $self->research_groups;
 
-        $plugin->initialise_fh( \*STDOUT );
-        $plugin->output_list(
-                list => $rg_list,
-                fh => \*STDOUT,
-		benchmark => $self->{processor}->{benchmark},
-        );
+	if( defined $fh ) # we're being called from some other context, not via the export button on the report
+	{
+		$plugin->output_list(
+        	        list => $rg_list,
+                	fh => $fh,
+			benchmark => $self->{processor}->{benchmark},
+			skip_intro => $skip_intro,
+        	);
+	}
+	else # just download the report
+	{
+        	$plugin->initialise_fh( \*STDOUT );
+	        $plugin->output_list(
+        	        list => $rg_list,
+                	fh => \*STDOUT,
+			benchmark => $self->{processor}->{benchmark},
+			skip_intro => $skip_intro,
+        	);
+	}
 }
 
 sub properties_from

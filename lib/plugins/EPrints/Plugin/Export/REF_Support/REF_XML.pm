@@ -25,9 +25,10 @@ sub new
 sub output_list
 {
         my( $plugin, %opts ) = @_;
-
         my $list = $opts{list};
 	my $session = $plugin->{session};
+	my $fh = $opts{fh};
+	my $skip_intro = $opts{skip_intro};
 
 	my $institution = $plugin->escape_value( $session->config( 'ref', 'institution' ) || $session->phrase( 'archive_name' ) );
 	my $action = $session->config( 'ref', 'action' ) || 'Update';
@@ -54,16 +55,18 @@ sub output_list
 		$sub_tag = $secondary_tag;
 	}
 
-print <<HEADER;
+	if( !$skip_intro )
+	{
+print $fh <<HEADER;
 <?xml version="1.0" encoding="utf-8"?>
 <refData>
 	<institution>$institution</institution>
 	<submissions>
 HEADER
+	}
 
 	$opts{list}->map( sub {
 		my( undef, undef, $dataobj ) = @_;
-
 		my $uoa = $plugin->get_current_uoa( $dataobj );
 		return unless( defined $uoa );
 
@@ -80,13 +83,13 @@ HEADER
 
 			if( defined $current_uoa )
 			{
-				print <<CLOSING;
+				print $fh <<CLOSING;
 			</$main_tag>
 		</submission>
 CLOSING
 			}
 
-			print <<OPENING;
+			print $fh <<OPENING;
 		<submission>
 			<unitOfAssessment>$hefce_uoa_id</unitOfAssessment>
 			$multiple
@@ -95,7 +98,7 @@ CLOSING
 OPENING
 			if( defined $sub_tag )
 			{
-				print <<OPENING;
+				print $fh <<OPENING;
 					<$sub_tag>
 OPENING
 			}
@@ -103,7 +106,7 @@ OPENING
 		}
 		my $output = $plugin->output_dataobj( $dataobj );
 		return unless( EPrints::Utils::is_set( $output ) );
-		print "<$item_tag>\n$output\n</$item_tag>\n";
+		print $fh "<$item_tag>\n$output\n</$item_tag>\n";
 	} );
 
 
@@ -111,21 +114,47 @@ OPENING
 	{
 		if( defined $sub_tag )
 		{
-			print <<CLOSING;
+			print $fh <<CLOSING;
 				</$sub_tag>
 CLOSING
 		}
-		print <<CLOSING;
+		print $fh <<CLOSING;
 			</$main_tag>
 		</submission>
 CLOSING
 	}
 
-print <<FOOTER;
+	if( !$skip_intro )
+	{
+print $fh <<FOOTER;
 	</submissions>
 </refData>
 FOOTER
+	}
+}
 
+sub output_intro
+{
+        my( $plugin, $fh ) = @_;
+        my $session = $plugin->{session};
+
+        my $institution = $plugin->escape_value( $session->config( 'ref', 'institution' ) || $session->phrase( 'archive_name' ) );
+
+print $fh <<HEADER;
+<?xml version="1.0" encoding="utf-8"?>
+<ref2021Data>
+        <institution>$institution</institution>
+        <submissions>
+HEADER
+}
+
+sub output_outtro
+{
+	my( $plugin, $fh ) = @_;
+print $fh <<FOOTER;
+        </submissions>
+</ref2021Data>
+FOOTER
 }
 
 sub tags
@@ -150,15 +179,27 @@ sub tags
 	}
 	elsif( $report eq 'ref1_current_staff' )
 	{
-		$main = 'staff';
-		$secondary = 'current';
-		$tertiary = 'staffMember';
+		#$main = 'staff';
+		#$secondary = 'current';
+		#$tertiary = 'staffMember';
+		
+		$main = 'current';
+		$secondary = 'staffMember';
+
 	}
 	elsif( $report eq 'ref1_former_staff' ) # include former staff contracts
 	{
-		$main = 'staff';
-		$secondary = 'former';
-		$tertiary = 'staffMember';
+		#$main = 'staff';
+		#$secondary = 'former';
+		#$tertiary = 'staffMember';
+	
+		$main = 'former';
+		$secondary = 'staffMember';
+	}
+	elsif( $report eq 'ref1_former_staff_contracts')
+	{
+		$main = 'contracts';
+                $secondary = 'contract';
 	}
 	elsif( $report eq 'ref2_staff_outputs' )
 	{
@@ -209,9 +250,13 @@ sub output_dataobj
 		if( ref( $ep_field ) eq 'CODE' )
 		{
 			eval {
-				my $value = &$ep_field( $plugin, $objects );
+				my( $value, $no_escape ) = &$ep_field( $plugin, $objects );
 				next unless( EPrints::Utils::is_set( $value ) );
-				push @values, "<$hefce_field>".$plugin->escape_value( $value )."</$hefce_field>";
+				if( !$no_escape )
+				{
+					$value = $plugin->escape_value( $value );
+				}
+				push @values, "<$hefce_field>".$value."</$hefce_field>";
 			};
 			if( $@ )
 			{

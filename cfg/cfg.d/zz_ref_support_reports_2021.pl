@@ -1,3 +1,4 @@
+$c->{plugins}{"Screen::REF_Support::Report::Complete_Submission"}{params}{disable} = 0;
 $c->{plugins}{"Screen::REF_Support::Report::Research_Groups"}{params}{disable} = 0;
 $c->{plugins}{"Screen::REF_Support::Report::Current_Staff"}{params}{disable} = 0;
 $c->{plugins}{"Screen::REF_Support::Report::Former_Staff"}{params}{disable} = 0;
@@ -5,7 +6,7 @@ $c->{plugins}{"Screen::REF_Support::Report::Former_Staff_Contracts"}{params}{dis
 $c->{plugins}{"Screen::REF_Support::Report::Research_Outputs"}{params}{disable} = 0;
 $c->{plugins}{"Screen::REF_Support::Report::Staff_Outputs"}{params}{disable} = 0;
 
-$c->{ref_2021_reports} = [qw{ research_groups ref1_current_staff ref1_former_staff ref1_former_staff_contracts ref2_research_outputs ref2_staff_outputs }];
+$c->{ref_2021_reports} = [qw{ complete_submission research_groups ref1_current_staff ref1_former_staff ref1_former_staff_contracts ref2_research_outputs ref2_staff_outputs }];
 
 # Current Staff Fields
 $c->{'ref'}->{'ref1_current_staff'}->{'fields'} = [qw{ hesaStaffIdentifier staffIdentifier surname initials dateOfBirth orcid contractFTE researchConnection reasonForNoConnectionStatement isEarlyCareerResearcher isOnFixedTermContract contractStartDate contractEndDate isOnSecondment secondmentStartDate secondmentEndDate isOnUnpaidLeave unpaidLeaveStartDate unpaidLeaveEndDate researchGroup }];
@@ -93,7 +94,7 @@ sub ref2021_reason_no_connections
 }
 
 # Former Staff Fields
-$c->{'ref'}->{'ref1_former_staff'}->{'fields'} = [qw{ staffIdentifier surname initials dateOfBirth orcid excludeFromSubmission }];
+$c->{'ref'}->{'ref1_former_staff'}->{'fields'} = [qw{ staffIdentifier surname initials dateOfBirth orcid excludeFromSubmission contracts }];
 
 $c->{'ref'}->{'ref1_former_staff'}->{'mappings'} = {
 	hesaStaffIdentifier => "user.hesa",
@@ -103,7 +104,39 @@ $c->{'ref'}->{'ref1_former_staff'}->{'mappings'} = {
         dateOfBirth => "user.dob",
 	orcid => \&ref2021_orcid,
 	excludeFromSubmission => "user.exclude_from_submission",
+	contracts => \&ref2021_contracts,
 };      
+
+sub ref2021_contracts
+{
+	my( $plugin, $objects ) = @_;
+	
+	# we need to call the former staff contracts report for this...
+	my $session = $plugin->{session};
+	my $report_plugin = $session->plugin( "Screen::REF_Support::Report::Former_Staff_Contracts" );
+
+	# prep the export plugin
+	my $export_plugin = $plugin;
+	$export_plugin->{ref_fields} = undef;
+	$export_plugin->{ref_fields_order} = undef;
+        $export_plugin->{report} = 'ref1_former_staff_contracts';
+
+        # prep the screen plugin
+        #$report_plugin->{processor}->{plugin} = $export_plugin;
+        #$report_plugin->{processor}->{report} = 'ref1_former_staff_contracts';
+        #$report_plugin->{processor}->{benchmark} = $self->current_benchmark;
+        #$report_plugin->{processor}->{uoas} = \@report_uoas;
+	#$report_plugin->{predefined_user} = $objects->{user};
+
+        # run the export
+	#my $skip_intro = 1;
+        #$report_plugin->export( $fh, $skip_intro );
+        
+	my $no_escape = 1;
+	my $contracts = $export_plugin->output_dataobj( $objects->{user}, $no_escape );
+        
+	return ( $contracts, $no_escape );
+}
 
 # Former Staff Contracts Fields
 $c->{'ref'}->{'ref1_former_staff_contracts'}->{'fields'} = [qw{ hesaStaffIdentifier staffIdentifier contractFTE researchConnection reasonForNoConnectionStatement startDate endDate isOnSecondment secondmentStartDate secondmentEndDate isOnUnpaidLeave unpaidLeaveStartDate unpaidLeaveEndDate researchGroup }];
