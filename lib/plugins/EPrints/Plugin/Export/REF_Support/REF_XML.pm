@@ -59,7 +59,7 @@ sub output_list
 	{
 print $fh <<HEADER;
 <?xml version="1.0" encoding="utf-8"?>
-<refData>
+<refData2021>
 	<institution>$institution</institution>
 	<submissions>
 HEADER
@@ -128,7 +128,7 @@ CLOSING
 	{
 print $fh <<FOOTER;
 	</submissions>
-</refData>
+</refData2021>
 FOOTER
 	}
 }

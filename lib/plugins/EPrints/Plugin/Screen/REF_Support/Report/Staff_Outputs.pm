@@ -7,7 +7,7 @@ use strict;
 
 sub export
 {
-	my( $self ) = @_;
+	my( $self, $fh ) = @_;
 
 	my $plugin = $self->{processor}->{plugin};
 	return $self->SUPER::export if !defined $plugin;
@@ -40,11 +40,21 @@ sub export
 
 	my $selections = $self->{session}->dataset( "ref_support_selection" )->list( \@ids );
 
-	$plugin->initialise_fh( \*STDOUT );
-	$plugin->output_list(
-		list => $selections,
-		fh => \*STDOUT,
-	);
+	if( defined $fh )
+	{
+		$plugin->output_list(
+			list => $selections,
+			fh => $fh,
+		);
+	}
+	else
+	{
+		$plugin->initialise_fh( \*STDOUT );
+		$plugin->output_list(
+			list => $selections,
+			fh => \*STDOUT,
+		);
+	}
 }
 
 sub properties_from

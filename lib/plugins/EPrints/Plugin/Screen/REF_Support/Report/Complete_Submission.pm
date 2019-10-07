@@ -15,52 +15,96 @@ sub export
 	my $session = $self->{session};
 	my @uoas = @{ $self->{processor}->{uoas} || [] };
 	
-	# for each uoa we need to loop through the various report plugins and call output list with a different set of options each time
-	# get it's research groups
-	# get staff
-	# and get research outputs
+	my %reports = (
+		"research_groups" => "Research_Groups",
+		"ref1_current_staff" => "Current_Staff",
+		"ref1_former_staff" => "Former_Staff",
+		"ref2_research_outputs" => "Research_Outputs",
+		"ref2_staff_outputs" => "Staff_Outputs",
+	);
 
-	#my %reports = (
-	 #       "research_groups" => "Research_Groups",
-	#	"ref1_current_staff" => "",
-	#	"ref1_former_staff" => ""
-	#);
+	my $export_reports = {};
 
-	my $skip_intro = 1;
-
-	my $export_outputs;
-	open my $fh, '>', \$export_outputs or die "Can't open variable: $!";
-
-	# run export intro
-	$plugin->output_intro( $fh );
-
-	my $report_plugin; 
-	my $export_plugin;
-	my $report;
-
-	foreach my $uoa ( @uoas )
+	foreach my $report( keys %reports )
 	{
-		# research groups
-		$report_plugin = "Screen::REF_Support::Report::" . "Research_Groups";
-		$export_plugin = $plugin;
-		$report = "research_groups";
-		$self->run_report( $session, $fh, $export_plugin, $report, $report_plugin, $uoa );
+		# set up a filehandle
+		my $report_output;
+		open my $fh, '>', \$report_output or die "Can't open variable: $!";
 
-		# reinitialise export plugin	
-		$export_plugin->{ref_fields} = undef;
-        	$export_plugin->{ref_fields_order} = undef;
+		# produce the report
+		my $report_plugin = "Screen::REF_Support::Report::" . $reports{$report};
 
-		# current_staff
-		$report_plugin = "Screen::REF_Support::Report::" . "Current_Staff";
-		$export_plugin = $plugin;
-		$report = "ref1_current_staff";
-		$self->run_report( $session, $fh, $export_plugin, $report, $report_plugin, $uoa );
+		$self->run_report( $session, $fh, $plugin, $report, $report_plugin, \@uoas );
+
+		close $fh;
+		$export_reports->{$report} = $report_output;
+
+		# reinitialise the export plugin
+		$plugin->{ref_fields} = undef;
+       		$plugin->{ref_fields_order} = undef;
 	}
 
-	$plugin->output_outtro( $fh );
+	# now we have all the reports, create a master report merging them all together
+	# we'll use the research groups report to get us started
+	my $master_dom = XML::LibXML->load_xml(string => $export_reports->{research_groups});
 
-	close $fh;
-	print STDERR "export_outputs 2.....$export_outputs\n";
+	# for each report extract the contents for each submission
+	foreach my $report( keys %reports )
+	{
+		next if $report eq "research_groups"; # we're using this report as our starting point, so no need to extract anything from it
+		my $dom = XML::LibXML->load_xml(string => $export_reports->{$report});
+
+		# get tag for the content we'll want to extract
+		$plugin->{report} = $report;
+		my( $main_tag, $secondary_tag, $tertiary_tag ) = $plugin->tags;
+		foreach my $uoa ( $dom->findnodes( '//unitOfAssessment' ) )
+		{
+			# get the uoa id (used to place this section in the correct section for the master document) and the submission element
+			my $uoa_id = $uoa->textContent;
+			my $submission = $uoa->parentNode;
+
+			# now retrive the content we after from the submission
+			my $main = @{$submission->findnodes( $main_tag )}[0];
+			
+			# finally, append this to the correct unit of assessment in the master document
+			my $seen = 0;
+			foreach my $master_uoa( $master_dom->findnodes( '//unitOfAssessment' ) )
+			{
+				if( $master_uoa->textContent eq $uoa_id )
+				{
+					my $master_submission = $master_uoa->parentNode;
+
+					if( $report eq "ref1_current_staff" || $report eq "ref1_former_staff" ) # these sections need to go in their own staff section
+					{
+						my $staff = @{$master_submission->findnodes( 'staff' )}[0];
+						if( !defined $staff )
+						{
+							$staff = $master_submission->addNewChild( undef, 'staff' );
+						}
+						$staff->appendChild( $main );
+					}
+					else
+					{
+						$master_submission->appendChild( $main );
+					}
+					$seen = 1;
+					last; # we're done here
+				}
+			}
+			if( !$seen )
+			{
+				#print STDERR "master......$master_dom\n";
+				my $submissions = @{$master_dom->findnodes( "//submissions" )}[0];
+				$submissions->appendChild( $submission );
+			}
+		}
+	}
+
+	# now we have our final dom, comprised of all the other reports
+	$plugin->initialise_fh( \*STDOUT );
+	print $master_dom->toString;
+}
+
 
         # call initialise_fh if we want to download
         # $plugin->initialise_fh( \*STDOUT );
@@ -78,16 +122,13 @@ sub export
         #        fh => $fh,
         #        benchmark => $self->{processor}->{benchmark},
         # );
-}
+#}
 
 sub run_report
 {
-	my( $self, $session, $fh, $export_plugin, $report, $report_plugin, $uoa ) = @_;
+	my( $self, $session, $fh, $export_plugin, $report, $report_plugin, $uoas ) = @_;
 
-	my @report_uoas;
-	push @report_uoas, $uoa;
-
-	# get the research groups plugin
+	# get the report plugin
         $report_plugin = $session->plugin( $report_plugin );
 
         # prep the export plugin
@@ -97,11 +138,10 @@ sub run_report
         $report_plugin->{processor}->{plugin} = $export_plugin;
         $report_plugin->{processor}->{report} = $report;
         $report_plugin->{processor}->{benchmark} = $self->current_benchmark;
-        $report_plugin->{processor}->{uoas} = \@report_uoas;
+        $report_plugin->{processor}->{uoas} = $uoas;
 
         # run the export
-	my $skip_intro = 1;
-        $report_plugin->export( $fh, $skip_intro );
+        $report_plugin->export( $fh );
 }
 
 sub properties_from
