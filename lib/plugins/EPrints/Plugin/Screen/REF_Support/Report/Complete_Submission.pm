@@ -9,12 +9,15 @@ sub export
 {
         my( $self ) = @_;
 
-        my $plugin = $self->{processor}->{plugin};
-        return $self->SUPER::export if !defined $plugin;
+        my $export_plugin = $self->{processor}->{plugin};
+        return $self->SUPER::export if !defined $export_plugin;
 
 	my $session = $self->{session};
 	my @uoas = @{ $self->{processor}->{uoas} || [] };
 	
+	# the complete submission report only ever uses the XML plugin... so let's enforce that
+	my $plugin = $session->plugin( "Export::REF_Support::REF_XML" );
+
 	my %reports = (
 		"research_groups" => "Research_Groups",
 		"ref1_current_staff" => "Current_Staff",
@@ -100,9 +103,24 @@ sub export
 		}
 	}
 
+	# we now have a final XML dom comprised of all the other reports
+	# but what if we wanted a different type of export...?
+	my $final_string;
+	my $export = $export_plugin->{id};
+	if( $export eq "Export::REF_Support::REF_XML" )
+	{
+		$final_string = $master_dom->toString;
+	}
+	elsif( $export eq "Export::REF_Support::REF_JSON" )
+	{
+		use XML::XML2JSON;
+		my $XML2JSON = XML::XML2JSON->new();
+		$final_string = $XML2JSON->convert($master_dom->toString);
+ 	}
+
 	# now we have our final dom, comprised of all the other reports
-	$plugin->initialise_fh( \*STDOUT );
-	print $master_dom->toString;
+	$export_plugin->initialise_fh( \*STDOUT );
+	print $final_string;
 }
 
 

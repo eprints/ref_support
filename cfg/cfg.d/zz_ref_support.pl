@@ -7,6 +7,7 @@
 # Bazaar Configuration
 $c->{plugins}{"Export::REF_Support"}{params}{disable} = 0;
 $c->{plugins}{"Export::REF_Support::REF_XML"}{params}{disable} = 0;
+$c->{plugins}{"Export::REF_Support::REF_JSON"}{params}{disable} = 0;
 $c->{plugins}{"Export::REF_Support::REF_CSV"}{params}{disable} = 0;
 $c->{plugins}{"Export::REF_Support::REF_Excel"}{params}{disable} = 0;
 $c->{plugins}{"Screen::REF_Support"}{params}{disable} = 0;
@@ -19,9 +20,10 @@ $c->{plugins}{"Screen::REF_Support::Benchmark::Destroy"}{params}{disable} = 0;
 $c->{plugins}{"Screen::REF_Support::Benchmark::Edit"}{params}{disable} = 0;
 $c->{plugins}{"Screen::REF_Support::User::Edit"}{params}{disable} = 0;
 $c->{plugins}{"Screen::REF_Support::User::EditUoA"}{params}{disable} = 0;
-$c->{plugins}{"Screen::REF_Support::User::EditCirc"}{params}{disable} = 0;
-$c->{plugins}{"Screen::REF_Support::User::EditCircLink"}{params}{disable} = 0;
-$c->{plugins}{"Screen::REF_Support::User::EditCircLinkBack"}{params}{disable} = 0;
+#$c->{plugins}{"Screen::REF_Support::User::EditCirc"}{params}{disable} = 0;
+#$c->{plugins}{"Screen::REF_Support::User::EditCircLink"}{params}{disable} = 0;
+#$c->{plugins}{"Screen::REF_Support::User::EditCircLinkBack"}{params}{disable} = 0;
+$c->{plugins}{"Screen::REF_Support::User::ManageContracts"}{params}{disable} = 0;
 $c->{plugins}{"Screen::REF_Support::Listing"}{params}{disable} = 0;
 $c->{plugins}{"Screen::REF_Support::Overview"}{params}{disable} = 0;
 $c->{plugins}{"Screen::REF_Support::Report"}{params}{disable} = 0;
@@ -698,8 +700,8 @@ $c->add_dataset_field( 'user', {
 # researchGroup
 $c->add_dataset_field( 'user', {
 	name => 'research_groups',
-	type => 'subject',
-	top => 'ref_2021_research_groups',
+	type => 'text',
+	maxlength => 1,
 	multiple => 1,
 }, reuse => 1 );
 

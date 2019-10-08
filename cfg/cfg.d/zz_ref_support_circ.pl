@@ -6,6 +6,11 @@
 
 # REF Staff Circumstances dataset
 
+$c->{plugins}{"Screen::REF_Support::Circ::New"}{params}{disable} = 0;
+$c->{plugins}{"Screen::REF_Support::Circ::Edit"}{params}{disable} = 0;
+$c->{plugins}{"Screen::REF_Support::Circ::Destroy"}{params}{disable} = 0;
+$c->{plugins}{"Screen::REF_Support::Circ::View"}{params}{disable} = 0;
+
 # called when a ref_support_selection object is committed
 $c->{set_ref_support_circ_automatic_fields} = sub {
 	my( $circ ) = @_;
