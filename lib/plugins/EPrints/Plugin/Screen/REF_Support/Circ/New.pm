@@ -1,7 +1,7 @@
 package EPrints::Plugin::Screen::REF_Support::Circ::New;
 
-use EPrints::Plugin::Screen::REF_Support;
-@ISA = ( 'EPrints::Plugin::Screen::REF_Support' );
+use EPrints::Plugin::Screen::REF_Support::Circ;
+@ISA = ( 'EPrints::Plugin::Screen::REF_Support::Circ' );
 
 use strict;
 
@@ -24,14 +24,6 @@ sub new
 	$self->{appears} = $actions_appear;
 
 	return $self;
-}
-
-sub can_be_viewed 
-{ 
-	my( $self ) = @_;
-        my $ds = $self->{processor}->{dataset}; # set by Screen::Listing
-
-	return 1;
 }
 
 sub properties_from

@@ -39,8 +39,6 @@ sub properties_from
 	my $processor = $self->{processor};
 	my $session = $self->{session};
 
-	print STDERR "manage contracts properties from\n";
-
 	my $user_ds = $session->dataset( "user" );
 	my $circ_ds = $session->dataset( "ref_support_circ" );
 
@@ -53,13 +51,9 @@ sub properties_from
                 ],
         );
 
-	print STDERR "do we have a dataobj....." . $self->{processor}->{dataobj} . "\n";
-
 	my $id = $session->param( "dataobj" );
-	print STDERR "id.....$id\n";
 	my $dataobj = $self->{processor}->{dataobj};
         $dataobj = $user_ds->dataobj( $id ) if !defined $dataobj;
-	print STDERR "dataobj.....>$dataobj\n";
         if( !defined $dataobj )
         {
                 $processor->{screenid} = "Error";

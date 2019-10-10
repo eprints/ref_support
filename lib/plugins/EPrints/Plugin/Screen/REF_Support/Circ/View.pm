@@ -6,7 +6,13 @@ EPrints::Plugin::Screen::REF_Support::Circ::View
 
 package EPrints::Plugin::Screen::REF_Support::Circ::View;
 
-@ISA = ( 'EPrints::Plugin::Screen::Workflow::View' );
+use EPrints::Plugin::Screen::Workflow::View;
+use EPrints::Plugin::Screen::REF_Support::Circ;
+
+@ISA = qw(
+        EPrints::Plugin::Screen::Workflow::View
+        EPrints::Plugin::Screen::REF_Support::Circ
+);
 
 use strict;
 
@@ -32,10 +38,8 @@ sub new
 
 sub can_be_viewed
 {
-	my( $self ) = @_;
-
-	return 1;
-
+        my( $self ) = @_;
+        return $self->EPrints::Plugin::Screen::REF_Support::Circ::can_be_viewed;
 }
 
 sub render_common_action_buttons

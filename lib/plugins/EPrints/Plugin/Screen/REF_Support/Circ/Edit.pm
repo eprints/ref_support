@@ -1,11 +1,11 @@
 package EPrints::Plugin::Screen::REF_Support::Circ::Edit;
 
 use EPrints::Plugin::Screen::Workflow::Edit;
-use EPrints::Plugin::Screen::REF_Support;
+use EPrints::Plugin::Screen::REF_Support::Circ;
 
 @ISA = qw(
 	EPrints::Plugin::Screen::Workflow::Edit
-        EPrints::Plugin::Screen::REF_Support
+        EPrints::Plugin::Screen::REF_Support::Circ
 );
 
 use strict;
@@ -28,11 +28,8 @@ sub new
 
 sub can_be_viewed
 {
-        my( $self ) = @_;
-
-        return 0 if !$self->has_workflow();
-
-	return 1;
+	my( $self ) = @_;
+	return $self->EPrints::Plugin::Screen::REF_Support::Circ::can_be_viewed;
 }
 
 sub action_stop

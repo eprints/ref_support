@@ -1,7 +1,7 @@
 package EPrints::Plugin::Screen::REF_Support::Circ::Destroy;
 
-use EPrints::Plugin::Screen::REF_Support;
-@ISA = ( 'EPrints::Plugin::Screen::REF_Support' );
+use EPrints::Plugin::Screen::REF_Support::Circ;
+@ISA = ( 'EPrints::Plugin::Screen::REF_Support::Circ' );
 
 use strict;
 
@@ -23,13 +23,6 @@ sub new
 	];
 	
 	return $self;
-}
-
-sub can_be_viewed
-{
-	my( $self ) = @_;
-
-	return 1;
 }
 
 sub properties_from
