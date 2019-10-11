@@ -10,7 +10,7 @@ sub can_be_viewed
         my( $self ) = @_;
 
         return 0 unless( $self->{session}->config( 'ref_enabled' ) );
-
+	
         return 0 unless( defined $self->{processor}->{dataset} && ( $self->{processor}->{dataset}->id eq 'user' || $self->{processor}->{dataset}->id eq 'ref_support_circ' ) );
 
         # sf2 - allow local over-ride of whether a user can view the REF1 Data page

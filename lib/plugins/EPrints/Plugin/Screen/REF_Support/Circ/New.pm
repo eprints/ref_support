@@ -11,7 +11,7 @@ sub new
 
 	my $self = $class->SUPER::new(%params);
 
-	$self->{actions} = [qw/ create cancel /];
+	$self->{actions} = [qw/ create /];
 
 	my $actions_appear = [
 		{
@@ -72,21 +72,6 @@ sub allow_create
 
 	return $self->can_be_viewed();
 }
-
-sub allow_cancel
-{
-	my ( $self ) = @_;
-
-	return $self->can_be_viewed();
-}
-
-sub action_cancel
-{
-	my( $self ) = @_;
-
-	# redirect somewhere sensible
-	$self->{processor}->{redirect} = $self->{session}->config( 'userhome' )."?screen=Listing&dataset=ref_support_rg";
-}	
 
 sub action_create
 {

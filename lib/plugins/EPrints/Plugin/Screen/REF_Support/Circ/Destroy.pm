@@ -32,7 +32,8 @@ sub properties_from
         my $session = $self->{session};
 
         $self->SUPER::properties_from;
-
+	
+	$self->{processor}->{dataset} = $session->dataset( 'ref_support_circ' );
         $self->{processor}->{circ} = $session->dataset( 'ref_support_circ' )->dataobj( $session->param( 'dataobj' ) ); 
 }
 
@@ -95,15 +96,15 @@ sub action_cancel
 {
 	my( $self ) = @_;
 
-	$self->{processor}->{screenid} = "Listing";
-	$self->{processor}->{dataset} = $self->{session}->dataset( 'ref_support_circ' ) unless( defined $self->{processor}->{dataset} );
+	$self->{processor}->{screenid} = "REF_Support::Circ::View";
+	$self->{processor}->{dataobj} = $self->{processor}->{circ};
 }
 
 sub action_remove
 {
 	my( $self ) = @_;
 
-	$self->{processor}->{screenid} = "Listing";
+	$self->{processor}->{screenid} = "REF_Support::Overview";
 	$self->{processor}->{dataset} = $self->{session}->dataset( 'ref_support_circ' ) unless( defined $self->{processor}->{dataset} );
 
 	$self->properties_from;
