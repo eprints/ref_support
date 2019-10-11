@@ -9,7 +9,7 @@ $c->{plugins}{"Screen::REF_Support::Report::Staff_Outputs"}{params}{disable} = 0
 $c->{ref_2021_reports} = [qw{ complete_submission research_groups ref1_current_staff ref1_former_staff ref1_former_staff_contracts ref2_research_outputs ref2_staff_outputs }];
 
 # Current Staff Fields
-$c->{'ref'}->{'ref1_current_staff'}->{'fields'} = [qw{ hesaStaffIdentifier staffIdentifier surname initials dateOfBirth orcid contractFTE researchConnection reasonForNoConnectionStatement isEarlyCareerResearcher isOnFixedTermContract contractStartDate contractEndDate isOnSecondment secondmentStartDate secondmentEndDate isOnUnpaidLeave unpaidLeaveStartDate unpaidLeaveEndDate researchGroup }];
+$c->{'ref'}->{'ref1_current_staff'}->{'fields'} = [qw{ hesaStaffIdentifier staffIdentifier surname initials dateOfBirth orcid contractFTE researchConnection reasonForNoConnectionStatement isEarlyCareerResearcher isOnFixedTermContract contractStartDate contractEndDate isOnSecondment secondmentStartDate secondmentEndDate isOnUnpaidLeave unpaidLeaveStartDate unpaidLeaveEndDate researchGroups }];
 
 $c->{'ref'}->{'ref1_current_staff'}->{'mappings'} = {
 	hesaStaffIdentifier => "user.hesa",
@@ -31,7 +31,7 @@ $c->{'ref'}->{'ref1_current_staff'}->{'mappings'} = {
         isOnUnpaidLeave => "ref_support_circ.is_unpaid_leave",
         unpaidLeaveStartDate => "ref_support_circ.unpaid_leave_start",
         unpaidLeaveEndDate => "ref_support_circ.unpaid_leave_end",
-	researchGroup => \&ref2021_research_groups,
+	researchGroups => \&ref2021_research_groups,
         # + ResearchGroup[1|2|3|4]
 };      
 
@@ -73,7 +73,20 @@ sub ref2021_research_groups
 
 	if( $user->is_set( "research_groups" ) )
 	{
-		return join( ";", @{$user->get_value( "research_groups" )} )
+		if( $plugin->{is_hierarchical} )
+		{
+			my $results;
+			my $no_escape = 1;
+			foreach my $rg ( @{$user->get_value( "research_groups" )} )
+			{
+				$results = $results . "<group>$rg</group>"; # a hack for an XML export plugin, but this is our only hierarchical plugin at present
+			}
+			return ( $results, $no_escape );
+		}
+		else
+		{
+			return join( ";", @{$user->get_value( "research_groups" )} )
+		}
 	}
 
 	return undef;
@@ -136,7 +149,7 @@ sub ref2021_contracts
 }
 
 # Former Staff Contracts Fields
-$c->{'ref'}->{'ref1_former_staff_contracts'}->{'fields'} = [qw{ hesaStaffIdentifier staffIdentifier contractFTE researchConnection reasonForNoConnectionStatement startDate endDate isOnSecondment secondmentStartDate secondmentEndDate isOnUnpaidLeave unpaidLeaveStartDate unpaidLeaveEndDate researchGroup }];
+$c->{'ref'}->{'ref1_former_staff_contracts'}->{'fields'} = [qw{ hesaStaffIdentifier staffIdentifier contractFTE researchConnection reasonForNoConnectionStatement startDate endDate isOnSecondment secondmentStartDate secondmentEndDate isOnUnpaidLeave unpaidLeaveStartDate unpaidLeaveEndDate researchGroups }];
 
 $c->{'ref'}->{'ref1_former_staff_contracts'}->{'mappings'} = {
 	staffIdentifier => "user.staff_id",
@@ -152,7 +165,7 @@ $c->{'ref'}->{'ref1_former_staff_contracts'}->{'mappings'} = {
         isOnUnpaidLeave => "ref_support_circ.is_unpaid_leave",
         unpaidLeaveStartDate => "ref_support_circ.unpaid_leave_start",
         unpaidLeaveEndDate => "ref_support_circ.unpaid_leave_end",
-	researchGroup => \&ref2021_research_groups,
+	researchGroups => \&ref2021_research_groups,
 };      
 
 # Research Groups Fields

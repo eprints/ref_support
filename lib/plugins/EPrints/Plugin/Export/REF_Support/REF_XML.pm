@@ -17,6 +17,7 @@ sub new
 	$self->{suffix} = ".xml";
 	$self->{mimetype} = "text/xml";
         $self->{advertise} = $self->{enable} = EPrints::Utils::require_if_exists( "HTML::Entities" ) ? 1:0;
+	$self->{is_hierarchical} = 1;
 
 	return $self;
 }
@@ -29,7 +30,6 @@ sub output_list
 	my $session = $plugin->{session};
 	my $fh = $opts{fh};
 	my $skip_intro = $opts{skip_intro};
-
 	my $institution = $plugin->escape_value( $session->config( 'ref', 'institution' ) || $session->phrase( 'archive_name' ) );
 	my $action = $session->config( 'ref', 'action' ) || 'Update';
 
@@ -39,7 +39,7 @@ sub output_list
 	# the tags for opening/closing eg <outputs><output/></outputs> (ref2) or <staff><staffMember/></staff> (ref1abc)
 
 	my( $main_tag, $secondary_tag, $tertiary_tag ) = $plugin->tags;
-
+	
 	unless( defined $main_tag && defined $secondary_tag )
 	{
 		$session->log( "REF_XML error - missing tags for report ".$plugin->get_report );

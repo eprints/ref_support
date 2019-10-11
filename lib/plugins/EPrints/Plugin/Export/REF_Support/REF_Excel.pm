@@ -14,6 +14,7 @@ sub new
 	$self->{name} = "REF Support - Excel";
 	$self->{suffix} = ".xls";
 	$self->{mimetype} = 'application/vnd.ms-excel';
+	$self->{is_hierarchical} = 0;
 
 	my $rc = EPrints::Utils::require_if_exists('Spreadsheet::WriteExcel');
 	unless ($rc)
