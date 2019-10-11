@@ -124,6 +124,12 @@ sub ref2021_contracts
 {
 	my( $plugin, $objects ) = @_;
 	
+	# we can't handle contracts as a separate field in flat exports
+	if( !$plugin->{is_hierarchical} )
+	{
+		return undef;
+	}
+
 	# we need to call the former staff contracts report for this...
 	my $session = $plugin->{session};
 
@@ -149,10 +155,10 @@ sub ref2021_contracts
 }
 
 # Former Staff Contracts Fields
-$c->{'ref'}->{'ref1_former_staff_contracts'}->{'fields'} = [qw{ hesaStaffIdentifier staffIdentifier contractFTE researchConnection reasonForNoConnectionStatement startDate endDate isOnSecondment secondmentStartDate secondmentEndDate isOnUnpaidLeave unpaidLeaveStartDate unpaidLeaveEndDate researchGroups }];
+$c->{'ref'}->{'ref1_former_staff_contracts'}->{'fields'} = [qw{ staffIdentifier hesaStaffIdentifier contractFTE researchConnection reasonForNoConnectionStatement startDate endDate isOnSecondment secondmentStartDate secondmentEndDate isOnUnpaidLeave unpaidLeaveStartDate unpaidLeaveEndDate researchGroups }];
 
 $c->{'ref'}->{'ref1_former_staff_contracts'}->{'mappings'} = {
-	staffIdentifier => "user.staff_id",
+	staffIdentifier => \&ref2021_contract_staff_identifier,
 	hesaStaffIdentifier => "user.hesa",
         contractFTE => "user.ref_fte",
 	researchConnection => "user.research_connection",
@@ -167,6 +173,19 @@ $c->{'ref'}->{'ref1_former_staff_contracts'}->{'mappings'} = {
         unpaidLeaveEndDate => "ref_support_circ.unpaid_leave_end",
 	researchGroups => \&ref2021_research_groups,
 };      
+
+sub ref2021_contract_staff_identifier
+{
+	my( $plugin, $objects ) = @_;
+	
+	# we only need to include this in flat exports...
+	if( !$plugin->{is_hierarchical} )
+	{
+		my $user = $objects->{user};
+		return $user->get_value( "staff_id" );
+	}
+	return undef;
+}
 
 # Research Groups Fields
 $c->{'ref'}->{'research_groups'}->{'fields'} = [qw{ code name }];
