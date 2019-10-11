@@ -113,42 +113,39 @@ sub ref2021_contracts
 	
 	# we need to call the former staff contracts report for this...
 	my $session = $plugin->{session};
-	my $report_plugin = $session->plugin( "Screen::REF_Support::Report::Former_Staff_Contracts" );
 
 	# prep the export plugin
 	my $export_plugin = $plugin;
 	$export_plugin->{ref_fields} = undef;
 	$export_plugin->{ref_fields_order} = undef;
         $export_plugin->{report} = 'ref1_former_staff_contracts';
-
-        # prep the screen plugin
-        #$report_plugin->{processor}->{plugin} = $export_plugin;
-        #$report_plugin->{processor}->{report} = 'ref1_former_staff_contracts';
-        #$report_plugin->{processor}->{benchmark} = $self->current_benchmark;
-        #$report_plugin->{processor}->{uoas} = \@report_uoas;
-	#$report_plugin->{predefined_user} = $objects->{user};
-
-        # run the export
-	#my $skip_intro = 1;
-        #$report_plugin->export( $fh, $skip_intro );
         
+	# get the contracts and use the export plugin to export each one
 	my $no_escape = 1;
-	my $contracts = $export_plugin->output_dataobj( $objects->{user}, $no_escape );
+	my $contracts = EPrints::DataObj::REF_Support_Circ->search_by_user( $session, $objects->{user} );
+	my $results;
+	$contracts->map( sub {
+		my( undef, undef, $contract ) = @_;	
+
+		# this is currently a hacky solution for an XML export only...
+		$results = $results."<contract>".$export_plugin->output_dataobj( $contract )."</contract>"; 
+	} );
         
-	return ( $contracts, $no_escape );
+	# return the results
+	return ( $results, $no_escape );
 }
 
 # Former Staff Contracts Fields
 $c->{'ref'}->{'ref1_former_staff_contracts'}->{'fields'} = [qw{ hesaStaffIdentifier staffIdentifier contractFTE researchConnection reasonForNoConnectionStatement startDate endDate isOnSecondment secondmentStartDate secondmentEndDate isOnUnpaidLeave unpaidLeaveStartDate unpaidLeaveEndDate researchGroup }];
 
 $c->{'ref'}->{'ref1_former_staff_contracts'}->{'mappings'} = {
-	hesaStaffIdentifier => "user.hesa",
 	staffIdentifier => "user.staff_id",
+	hesaStaffIdentifier => "user.hesa",
         contractFTE => "user.ref_fte",
 	researchConnection => "user.research_connection",
 	reasonForNoConnectionStatement => \&ref2021_reason_no_connections,
-	startDate => "user.ref_start_date",
-	endDate => "user.ref_end_date",
+	startDate => "ref_support_circ.fixed_term_start",
+	endDate => "ref_support_circ.fixed_term_end",
         isOnSecondment => "ref_support_circ.is_secondment",
         secondmentStartDate => "ref_support_circ.secondment_start",
         secondmentEndDate => "ref_support_circ.secondment_end",

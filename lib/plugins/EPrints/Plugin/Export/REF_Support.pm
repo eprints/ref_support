@@ -17,7 +17,7 @@ sub new
 	my $self = $class->SUPER::new( %params );
 
 	$self->{name} = "REF Support - Abstract Exporter class";
-	$self->{accept} = [ 'report/ref1a', 'report/ref1b', 'report/ref1c', 'report/ref2', 'report/research_groups', 'report/ref1_current_staff', 'report/ref1_former_staff', 'report/ref1_former_staff_contracts', 'report/ref2_research_outputs', 'report/ref2_staff_outputs' ];
+	$self->{accept} = [ 'report/ref1a', 'report/ref1b', 'report/ref1c', 'report/ref2', 'report/research_groups', 'report/ref1_current_staff', 'report/ref1_former_staff', 'report/ref1_former_staff_contracts', 'report/ref2_research_outputs', 'report/ref2_staff_outputs', 'report/submission' ];
 	$self->{advertise} = 0;
 	$self->{enable} = 1;
 	$self->{visible} = 'staff';
@@ -81,12 +81,32 @@ sub get_current_uoa
 {
 	my( $plugin, $object ) = @_;
 	my $report = $plugin->get_report() or return undef;
+
 	return undef unless( EPrints::Utils::is_set( $report ) );
 	## technically, if we're viewing an old benchmark, a user UoA might not be set anymore :-( So we must get the info from somewhere else (and that is from one former ref_support_selection object)
-	if( $report =~ /^ref1/ )	# ref1a, ref1b, ref1c, ref1_current, etc.
+	if( $report eq 'ref1_former_staff_contracts' ) # object is a circ
 	{
-		# $object is EPrints::DataObj::User
-		my $uoa = $object->value( 'ref_support_uoa' );
+		my $user = $object->user;
+		my $uoa = $user->value( 'ref_support_uoa' );          
+                if( defined $uoa )
+                {
+                        return $uoa;
+                }
+                if( defined $plugin->{benchmark} )      # && !defined $uoa
+                {
+                        # we might get it from one selection object
+                        my $selections = $plugin->{benchmark}->user_selections( $user );
+                        my $record = $selections->item( 0 );
+                        if( defined $record )
+                        {
+                                return $record->current_uoa();
+                        }
+                }
+	}
+	elsif( $report =~ /^ref1/ )	# ref1a, ref1b, ref1c, ref1_current, etc.
+	{
+		# $object is EPrints::DataObj::User	
+		my $uoa = $object->value( 'ref_support_uoa' );		
 		if( defined $uoa )
 		{
 			return $uoa;
@@ -128,7 +148,17 @@ sub get_related_objects
 
 	my $objects = {};
 	my $session = $plugin->{session};
-	if( $report =~ /^ref1/ )	# ref1a, ref1b, ref1c, ref1_current_staff, etc.
+	
+	if( $report eq 'ref1_former_staff_contracts' )
+	{
+		$objects = {
+			ref_support_circ => $dataobj,
+		};
+
+		my $user = $dataobj->user;
+                $objects->{user} = $user if( defined $user );
+	}
+	elsif( $report =~ /^ref1/ )	# ref1a, ref1b, ref1c, ref1_current_staff, etc.
 	{
 		# we receive a user object and need to give back a "ref circumstance" object
 	        $objects = {

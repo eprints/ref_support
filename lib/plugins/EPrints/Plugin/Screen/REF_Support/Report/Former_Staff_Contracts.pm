@@ -11,10 +11,24 @@ sub export
         my $plugin = $self->{processor}->{plugin};
         return $self->SUPER::export if !defined $plugin;
 
+	my $session = $self->{session};
+	my $contracts_ds = $session->dataset( "ref_support_circ" );
+
+	my @ids = ();
+	# get out contracts from our users
+	my $contracts = EPrints::List->new( repository => $session, dataset => $contracts_ds, ids => \@ids );
+	my $users = $self->users;
+	$users->map( sub {
+		my( undef, undef, $user ) = @_;
+		my $user_contracts = EPrints::DataObj::REF_Support_Circ->search_by_user( $session, $user );
+		$contracts = $contracts->union( $user_contracts );
+	} );
+	
+	# send a list of contracts to be exported
 	if( defined $fh )
 	{
                 $plugin->output_list(
-                        list => $self->users,
+                        list => $contracts,
                         fh => $fh,
                         benchmark => $self->{processor}->{benchmark},
 			skip_intro => $skip_intro,
@@ -24,7 +38,7 @@ sub export
 	{	
         	$plugin->initialise_fh( \*STDOUT );
 	        $plugin->output_list(
-        	        list => $self->users,
+        	        list => $contracts,
                 	fh => \*STDOUT,
 			benchmark => $self->{processor}->{benchmark},
 			skip_intro => $skip_intro,
@@ -148,13 +162,14 @@ sub render_user
 	$link = $div->appendChild( $session->make_element( "a",
 		name => $user->value( "username" ),
 	) );
-
-	my $circ = EPrints::DataObj::REF_Support_Circ->new_from_user( $session, $user->get_id, 1);
-        my $inserts = { user_fields => $user->render_citation( 'ref_support_former_staff_contract' ) };
-
-        $chunk->appendChild( $circ->render_citation( 'ref1_former_staff_contracts',
-                        pindata => { inserts => $inserts } ) );
-
+ 
+	my $circs = EPrints::DataObj::REF_Support_Circ->search_by_user( $session, $user );
+	$circs->map(sub {
+                (undef, undef, my $circ) = @_;
+		
+		$chunk->appendChild( $circ->render_citation( 'ref1_former_staff_contracts' ) );
+	} );
+	
 	return $chunk;
 }
 

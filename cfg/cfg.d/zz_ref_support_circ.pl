@@ -73,7 +73,7 @@ sub search_by_user
 
 	return $session->dataset( $class->get_dataset_id )->search(
 		filters => [
-			{ meta_fields => [qw( user_id )], value => $user->id, match => "EX", },
+			{ meta_fields => [qw( userid )], value => $user->id, match => "EX", },
 		],
 	);
 }

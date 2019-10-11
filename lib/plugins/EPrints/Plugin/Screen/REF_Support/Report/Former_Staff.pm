@@ -7,17 +7,29 @@ use strict;
 
 sub export
 {
-        my( $self ) = @_;
+        my( $self, $fh ) = @_;
 
         my $plugin = $self->{processor}->{plugin};
         return $self->SUPER::export if !defined $plugin;
 
-        $plugin->initialise_fh( \*STDOUT );
-        $plugin->output_list(
-                list => $self->users,
-                fh => \*STDOUT,
-		benchmark => $self->{processor}->{benchmark},
-        );
+	if( defined $fh )
+	{
+ 	        $plugin->output_list(
+        	        list => $self->users,
+	                fh => $fh,
+			benchmark => $self->{processor}->{benchmark},
+	        );
+
+       	}
+	else
+	{
+	 	$plugin->initialise_fh( \*STDOUT );
+	        $plugin->output_list(
+        	        list => $self->users,
+	                fh => \*STDOUT,
+			benchmark => $self->{processor}->{benchmark},
+	        );
+	}
 }
 
 sub properties_from
