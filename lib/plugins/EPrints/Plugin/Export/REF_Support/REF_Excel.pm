@@ -37,8 +37,15 @@ sub output_list
 	my $output;
 	open(my $FH,'>',\$output);
 
+	my $predefined_workbook = 0;
 	my $workbook;
-	if (defined $opts{fh})
+	
+	if( defined $opts{fh} && ref $opts{fh} eq "Spreadsheet::WriteExcel" )
+	{
+		$predefined_workbook = 1; # flag the fact we have been given a workbook to work with
+		$workbook = $opts{fh};
+	}
+	elsif( defined $opts{fh} )
 	{
 		binmode($opts{fh});
 		$workbook = Spreadsheet::WriteExcel->new(\*{$opts{fh}});
@@ -50,9 +57,10 @@ sub output_list
 		die("Unable to create spreadsheet: $!")unless defined $workbook;
 	}
 
-	$workbook->set_properties( utf8 => 1 );
+	$workbook->set_properties( utf8 => 1 ) unless $predefined_workbook;
 
 	my $session = $plugin->{session};
+
 	my $worksheet = $workbook->add_worksheet( $session->phrase( 'ref/report/excel:'.$plugin->get_report ) );
 
 	# the appropriate REF::Report::{report_id} plugin will build up the list: 
@@ -92,9 +100,14 @@ sub output_list
 		$row_id++;
 	} );
 
-	$workbook->close;
+	$workbook->close unless $predefined_workbook;
 
-	if (defined $opts{fh})
+	if( $predefined_workbook )
+	{
+		# we were given a workbook (almost certainly from the complete report process) so we should return it
+		return $workbook;
+	}
+	elsif (defined $opts{fh})
 	{
 		return undef;
 	}

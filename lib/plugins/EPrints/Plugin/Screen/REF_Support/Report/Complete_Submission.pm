@@ -12,11 +12,66 @@ sub export
         my $export_plugin = $self->{processor}->{plugin};
         return $self->SUPER::export if !defined $export_plugin;
 
+
+	# different export plugins have different processes for building up the complete report
+	if( $export_plugin->{mimetype} eq "text/xml" || $export_plugin->{mimetype} eq "application/json" )
+	{
+		# both the XML and JSON exports use the XML export plugin - if we're doing a JSON export, we can just cnvert it from XML to JSON later
+		my $plugin = $self->{session}->plugin( "Export::REF_Support::REF_XML" );
+		$self->xml_export( $export_plugin, $plugin );
+	}
+	elsif( $export_plugin->{mimetype} eq "application/vnd.ms-excel" )
+	{
+		$self->excel_export( $export_plugin );
+	}
+}
+
+sub excel_export
+{
+	my( $self, $plugin ) = @_;
+
+	my $session = $self->{session};
+        my @uoas = @{ $self->{processor}->{uoas} || [] };
+
+	my %reports = (
+                "research_groups" => "Research_Groups",
+                "ref1_current_staff" => "Current_Staff",
+                "ref1_former_staff" => "Former_Staff",
+		"ref1_former_staff_contracts" => "Former_Staff_Contracts",
+                "ref2_research_outputs" => "Research_Outputs",
+                "ref2_staff_outputs" => "Staff_Outputs",
+        );
+
+	# we need a worksheet for each report
+	# to create worksheets we need a workbook
+	
+	#my $report_output;
+        #open my $fh, '>', \$report_output or die "Can't open variable: $!";
+        $plugin->initialise_fh( \*STDOUT );
+	my $workbook = Spreadsheet::WriteExcel->new( \*STDOUT );
+	$workbook->set_properties( utf8 => 1 );
+
+	foreach my $report( keys %reports )
+        {
+		 # produce the report
+		 my $report_plugin = "Screen::REF_Support::Report::" . $reports{$report};
+
+		 $workbook = $self->run_report( $session, $workbook, $plugin, $report, $report_plugin, \@uoas );
+
+		# reinitialise the export plugin
+		$plugin->{ref_fields} = undef;
+                $plugin->{ref_fields_order} = undef;
+	}
+
+	$workbook->close;
+}
+
+sub xml_export
+{
+	my( $self, $export_plugin, $plugin ) = @_;
+
 	my $session = $self->{session};
 	my @uoas = @{ $self->{processor}->{uoas} || [] };
-	
-	# the complete submission report only ever uses the XML plugin... so let's enforce that
-	my $plugin = $session->plugin( "Export::REF_Support::REF_XML" );
 
 	my %reports = (
 		"research_groups" => "Research_Groups",
@@ -96,7 +151,6 @@ sub export
 			}
 			if( !$seen )
 			{
-				#print STDERR "master......$master_dom\n";
 				my $submissions = @{$master_dom->findnodes( "//submissions" )}[0];
 				$submissions->appendChild( $submission );
 			}
@@ -159,7 +213,7 @@ sub run_report
         $report_plugin->{processor}->{uoas} = $uoas;
 
         # run the export
-        $report_plugin->export( $fh );
+        return $report_plugin->export( $fh );
 }
 
 sub properties_from
