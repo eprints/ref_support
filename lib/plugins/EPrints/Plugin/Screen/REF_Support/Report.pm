@@ -46,7 +46,7 @@ sub users
 	if( defined $self->{predefined_user} )
 	{
 		my $predefined_user = $self->{predefined_user};
-		return $self->{session}->dataset( "user" )->list( $predefined_user->id );
+		return $self->{session}->dataset( "user" )->list( [$predefined_user->id] );
 	}	
 
 	my $benchmark = $self->{processor}->{benchmark};

@@ -581,8 +581,8 @@ $c->add_dataset_field( 'ref_support_selection', { name => 'author_statement_text
 # excludeFromSubmission
 $c->add_dataset_field( 'ref_support_selection', { name => 'exclude_from_submission', type => 'boolean' }, reuse=> 1 );
 
-# outputPdfRequired (#export only field.... one that Research England provide???)
-# $c->add_dataset_field( 'ref_support_selection', { name => 'pdf_required', type => 'boolean' }, reuse=> 1 );	
+# outputPdfRequired
+$c->add_dataset_field( 'ref_support_selection', { name => 'pdf_required', type => 'boolean' }, reuse=> 1 );	
 
 # REF Search Configuration (as used by REF::Listing)
 

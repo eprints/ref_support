@@ -65,6 +65,7 @@ sub render
 
         my $session = $self->{session};
         my @uoas = @{ $self->{processor}->{uoas} || [] };
+	my $rg_ds = $session->dataset( 'ref_support_rg' );
 
         my $chunk = $session->make_doc_fragment;
 
@@ -78,18 +79,25 @@ sub render
                 class => "ep_ref_problems"
         ) );
 
-	my $rgs = $self->research_groups;
-        my $rg_ids = $rgs->ids;
+	foreach my $uoa ( @uoas )
+	{
+		my $rgs = $rg_ds->search( filters => [
+                	{ meta_fields => [ "uoa" ], value => $uoa->id,},
+        	]);
 
-	my $h3 = $chunk->appendChild( $session->make_element( 'h3', class => 'ep_ref_uoa_header' ) );
-	#$h3->appendChild( );
+		if( $rgs->count > 0 ) 
+		{
+			my $h3 = $chunk->appendChild( $session->make_element( 'h3', class => 'ep_ref_uoa_header' ) );
+			$h3->appendChild( $uoa->render_description );
 
-	$rgs->map( sub {
 
-		my( $session, undef, $rg ) = @_;
-		my $div = $chunk->appendChild( $session->make_element( "div", class => "ep_ref_report_box" ) );
-		$div->appendChild( $self->render_rg( $rg ) );	
-	} );
+			$rgs->map( sub {
+				my( $session, undef, $rg ) = @_;
+				my $div = $chunk->appendChild( $session->make_element( "div", class => "ep_ref_report_box" ) );
+				$div->appendChild( $self->render_rg( $rg ) );	
+			} );
+		}
+	}
 
 	return $chunk;
 }
@@ -102,25 +110,73 @@ sub render_rg
         my $chunk = $session->make_doc_fragment;
 
 	my $div = $chunk->appendChild( $session->make_element( "div", class => "ep_ref_user_citation" ) );
-	$div->appendChild( $rg->render_citation );
+	$div->appendChild( $rg->render_citation( "brief" ) );
 
 	$div = $chunk->appendChild( $session->make_element( "div" ) );
 	my $table = $div->appendChild( $session->make_element( "table" ) );	
 
+	my @rg_problems = $self->validate_rg( $rg );
+
 	my @table_cells;
-	push @table_cells, $session->make_text( $rg->id );
+	push @table_cells, $session->make_text( $rg->value( "code" ) );
 
 	# is there a problem with this rg's id?
-	if( $rg->get_value( "code" ) !~ m/^[a-zA-Z0-9]$/ )
+	if( scalar @rg_problems )
 	{
-		my $warning_div = $session->make_element( "div", class => "ep_ref_report_user_problems" );
-		$warning_div->appendChild( $self->html_phrase( "research_group:invalid_length" ) );
-		push @table_cells, $warning_div;
+		for( @rg_problems )
+		{
+			my $warning_div = $session->make_element( "div", class => "ep_ref_report_user_problems" );
+			$warning_div->appendChild( $_ );
+			push @table_cells, $warning_div;
+		}
 	}
-
-	$table->appendChild( $session->render_row( $self->html_phrase( "research_group:id" ), @table_cells ) );
+	
+	$table->appendChild( $session->render_row( $self->html_phrase( "research_group:code" ), @table_cells ) );
 
 	return $chunk;
+}
+
+sub validate_rg
+{
+        my( $self, $rg ) = @_;
+	
+	my $session = $self->{session};
+
+	my @problems;
+
+	# is there a code??
+	my $code = $rg->get_value( "code" );
+	if( !EPrints::Utils::is_set( $code ) )
+	{
+		push @problems, $self->html_phrase( "research_group:no_code" );
+		return @problems;
+	}
+
+	# is the code more than a single alphanumeric character
+	if( $rg->get_value( "code" ) !~ m/^[a-zA-Z0-9]$/ )
+	{
+		push @problems, $self->html_phrase( "research_group:invalid_length" );
+	}
+
+	# are there any duplicate codes within this UoA
+	# this approach is probably a bit inefficient, but this is unlikely to be a huge dataset so it should be ok :S
+	my $rg_ds = $session->dataset( 'ref_support_rg' );
+	my $rgs = $rg_ds->search( filters => [
+        	{ meta_fields => [ "uoa" ], value => $rg->get_value( "uoa" ) },
+        ]);
+
+	my @uoa_codes;
+        $rgs->map( sub {
+		my( $session, undef, $other_rg ) = @_;
+		push @uoa_codes, $other_rg->get_value( "code" ) unless $rg->id == $other_rg->id;
+	} );
+	
+	if( grep { $rg->get_value( "code" ) eq $_ } @uoa_codes )
+	{
+		push @problems, $self->html_phrase( "research_group:duplicate_code" );
+	}
+
+        return @problems;
 }
 
 1;

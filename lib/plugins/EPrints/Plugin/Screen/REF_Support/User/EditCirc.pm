@@ -26,6 +26,12 @@ sub new
 		},
 	];
 =cut
+	$self->{appears} = [
+		{
+			place => "circ_item_actions",
+		},
+	];
+
 	$self->{staff} = 0;
 
 	return $self;
@@ -51,7 +57,7 @@ sub can_be_viewed
 
         my $role_uoa = $role->value( 'ref_support_uoa' );
         return 0 unless( defined $role_uoa );
-        
+
 	my $user = $self->{session}->current_user;
 
         # current_user is a champion

@@ -69,19 +69,33 @@ sub output_list
 	my $institution = $session->config( 'ref', 'institution' ) || $session->phrase( 'archive_name' );
 	my $action = $session->config( 'ref', 'action' ) || 'Update';
 
+	my $report = $plugin->get_report();
+
 	# headers / field list
-	my @cols = ("institution","unitOfAssessment","multipleSubmission","action", @{$plugin->ref_fields_order()} );
+	my @cols;
+	my $commons = {};
+	if( grep { $report eq $_ } @{$plugin->{session}->config( 'ref_2021_reports' )} )
+	{
+		@cols = ("UKPRN","UnitOfAssessment","MultipleSubmission", @{$plugin->ref_fields_order()} );
+		# common fields/values
+                $commons = {
+                        UKPRN => $institution,
+                };
+	}
+	else
+	{
+		@cols = ("institution","unitOfAssessment","multipleSubmission","action", @{$plugin->ref_fields_order()} );
+		# common fields/values
+		$commons = {
+			institution => $institution,
+			action => $action,
+		};
+	}
 	my $col_id = 0;
 	foreach my $col (@cols)
 	{
 		$worksheet->write( 0, $col_id++, $col );
 	}
-
-	# common fields/values
-	my $commons = {
-		institution => $institution,
-		action => $action,
-	};
 	
 	my $row_id = 1;
 
@@ -128,6 +142,8 @@ sub output_dataobj
 
 	my $objects = $plugin->get_related_objects( $dataobj );
 
+	my $report = $plugin->get_report();
+	
 	my @rows;
 	my $uoa_id = $plugin->get_current_uoa( $dataobj );
 	return [] unless( defined $uoa_id );	# abort!
@@ -141,8 +157,18 @@ sub output_dataobj
 		$valid_ds->{$dsid} = $session->dataset( $dsid );
 	}
 
+	my @common_fields;
+        if( grep { $report eq $_ } @{$plugin->{session}->config( 'ref_2021_reports' )} )
+        {
+                @common_fields = ( "UKPRN", "UnitOfAssessment", "MultipleSubmission" );
+        }
+        else
+        {
+                @common_fields = ( "institution", "unitOfAssessment", "multipleSubmission", "action" );
+        }
+
 	# first we need to output the first 4 fields (the 'common' fields)
-	foreach( "institution", "unitOfAssessment", "multipleSubmission", "action" )
+	foreach( @common_fields )
 	{
 		my $value;
 		if( $_ eq 'unitOfAssessment' )	# get it from the ref_support_selection object

@@ -807,8 +807,10 @@ No users found in your UoA.</epp:phrase>
 
  <epp:phrase id='ref:researcher_no_select:help'><p>You have not been assigned a REF Select role and are therefore unable to select research ouputs for your Unit of Assessment.</p></epp:phrase>
 
- <epp:phrase id="Plugin/Screen/REF_Support/Report/Research_Groups:research_group:id">Research Group ID</epp:phrase>
- <epp:phrase id="Plugin/Screen/REF_Support/Report/Research_Groups:research_group:invalid_length">Research Group ID must be a single alpha or numeric character</epp:phrase>
+ <epp:phrase id="Plugin/Screen/REF_Support/Report/Research_Groups:research_group:code">Research Group Code</epp:phrase>
+ <epp:phrase id="Plugin/Screen/REF_Support/Report/Research_Groups:research_group:invalid_length">Research Group Code must be a single alpha or numeric character</epp:phrase>
+ <epp:phrase id="Plugin/Screen/REF_Support/Report/Research_Groups:research_group:no_code">The Research Group must have a code</epp:phrase>
+ <epp:phrase id="Plugin/Screen/REF_Support/Report/Research_Groups:research_group:duplicate_code">This Unit of Assessment already has a Research Group with this code</epp:phrase>
 
  <epp:phrase id="datasetname_ref_support_rg">REF Research Groups</epp:phrase>
  <epp:phrase id="datasethelp_ref_support_rg">Manage Research Groups definitions for the REF2021 submission</epp:phrase> 
@@ -830,7 +832,6 @@ No users found in your UoA.</epp:phrase>
  <epp:phrase id="Plugin/Screen/REF_Support/Research_Group/Destroy:title">Remove Research Group</epp:phrase>
  <epp:phrase id="Plugin/Screen/REF_Support/Research_Group/Destroy:sure_delete">Are you sure you want to remove this research group?</epp:phrase>
 
-
  <epp:phrase id="Plugin/Screen/REF_Support/User/ManageContracts:title">Manage Contracts (Former Staff)</epp:phrase>
  <epp:phrase id="Plugin/Screen/REF_Support/Circ/Edit:title">Contract (Former Staff)</epp:phrase>
  <epp:phrase id="Plugin/Screen/REF_Support/Circ/New:action:create:title">New Contract</epp:phrase>
@@ -842,5 +843,9 @@ No users found in your UoA.</epp:phrase>
  <epp:phrase id="ref_support_circ_fieldname_circid">Contract ID</epp:phrase>
  <epp:phrase id="ref_support_circ_fieldname_datestamp">Datestamp</epp:phrase>
  <epp:phrase id="ref_support_circ_fieldname_lastmod">Last Modified</epp:phrase>
+
+ <epp:phrase id="ref_support:validate:char_limit">Length exceeded for REF field <b><epc:pin name="fieldname" /></b> (max: <epc:pin name="maxlen"/> characters)</epp:phrase>
+ <epp:phrase id="ref_support:validate:invalid_orcid">Invalid ORCID format</epp:phrase>
+
 
 </epp:phrases>

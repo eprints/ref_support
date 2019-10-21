@@ -8,8 +8,61 @@ $c->{plugins}{"Screen::REF_Support::Report::Staff_Outputs"}{params}{disable} = 0
 
 $c->{ref_2021_reports} = [qw{ complete_submission research_groups ref1_current_staff ref1_former_staff ref1_former_staff_contracts ref2_research_outputs ref2_staff_outputs }];
 
+sub ref_support_check_characters
+{
+        my( $session, $report, $plugin, $objects, $problems ) = @_;
+
+	my $ds;
+	my $fields_length = $session->config( 'ref_support', $report.'_fields_length' ) || {};
+
+	my $field_mappings = $session->config( 'ref', $report, 'mappings' );
+
+        foreach my $key ( sort keys %{$fields_length} )
+        {
+                #get the value...              
+		my $value;
+		my $ep_fieldname;
+
+		my $ep_field = $field_mappings->{$key};
+		if( ref( $ep_field ) eq 'CODE' )
+		{
+			eval
+			{
+                        	$value = &$ep_field( $plugin, $objects );
+			};
+		}
+		elsif( $ep_field =~ /^([a-z_]+)\.([a-z_]+)$/ )  # using an object field to extract data from
+                {
+			# get the dataset
+			my $ds_id = $1;
+			$ds = $session->dataset( $ds_id ); 
+
+			# get the fieldname...
+			$ep_fieldname = $2;
+			
+			# get the value if a valid thing to ask for
+			if( defined $ds && $ds->has_field( $ep_fieldname ) )
+			{
+				$value = $objects->{$ds_id}->value( $ep_fieldname );
+			}
+		}
+	
+		if( EPrints::Utils::is_set( $value ) )
+		{
+			my $maxlen = $fields_length->{$key};
+                        my $curlen = length( $value );
+
+			if( $curlen > $maxlen )
+                        {
+				my $desc = ( $ds->has_field( $key ) ) ? $session->html_phrase( "eprint_fieldname_$key" ) : $session->make_text( $key );
+				push @$problems, { field => $ep_fieldname, desc => $session->html_phrase( 'ref_support:validate:char_limit', fieldname => $desc, maxlen => $session->make_text( $maxlen ) ) }; 
+                        }
+		}		
+        }
+}
+
 # Current Staff Fields
-$c->{'ref'}->{'ref1_current_staff'}->{'fields'} = [qw{ hesaStaffIdentifier staffIdentifier surname initials dateOfBirth orcid contractFTE researchConnection reasonForNoConnectionStatement isEarlyCareerResearcher isOnFixedTermContract contractStartDate contractEndDate isOnSecondment secondmentStartDate secondmentEndDate isOnUnpaidLeave unpaidLeaveStartDate unpaidLeaveEndDate researchGroups }];
+$c->{'ref'}->{'ref1_current_staff'}->{'fields'} = [qw{ hesaStaffIdentifier staffIdentifier surname initials dateOfBirth orcid contractFTE researchConnection isEarlyCareerResearcher isOnFixedTermContract contractStartDate contractEndDate isOnSecondment secondmentStartDate secondmentEndDate isOnUnpaidLeave unpaidLeaveStartDate unpaidLeaveEndDate researchGroups }];
 
 $c->{'ref'}->{'ref1_current_staff'}->{'mappings'} = {
 	hesaStaffIdentifier => "user.hesa",
@@ -20,7 +73,6 @@ $c->{'ref'}->{'ref1_current_staff'}->{'mappings'} = {
 	orcid => \&ref2021_orcid,
         contractFTE => "user.ref_fte",
 	researchConnection => "user.research_connection",
-	reasonForNoConnectionStatement => \&ref2021_reason_no_connections,
         isEarlyCareerResearcher => "ref_support_circ.is_ecr",
         isOnFixedTermContract => "ref_support_circ.is_fixed_term",
         contractStartDate => "ref_support_circ.fixed_term_start",
@@ -58,7 +110,7 @@ sub ref2021_orcid
 		# Borrowed from https://github.com/eprints/orcid_support/commit/4fa9c37e1de7ca7570703ddf4539c055e8a0008d (credit: John Salter)
 		if( defined $orcid && $orcid =~ m/^(?:\s*(?:https?:\/\/)?orcid(?:\.org\/|:))?(\d{4}\-?\d{4}\-?\d{4}\-?\d{3}(?:\d|X))(?:\s*)$/ )
 		{
-			return $1;
+			return "https://orcid.org/$1";
 		}
 	}
 
@@ -92,20 +144,6 @@ sub ref2021_research_groups
 	return undef;
 }
 
-sub ref2021_reason_no_connections
-{
-	my( $plugin, $objects ) = @_;
-	
-	my $user = $objects->{user} or return;
-
-	if( $user->is_set( "reason_no_connections" ) )
-	{
-		return join( ";", @{$user->get_value( "reason_no_connections" )} )
-	}
-
-	return undef;
-}
-
 # Former Staff Fields
 $c->{'ref'}->{'ref1_former_staff'}->{'fields'} = [qw{ staffIdentifier surname initials dateOfBirth orcid excludeFromSubmission contracts }];
 
@@ -119,6 +157,13 @@ $c->{'ref'}->{'ref1_former_staff'}->{'mappings'} = {
 	excludeFromSubmission => "user.exclude_from_submission",
 	contracts => \&ref2021_contracts,
 };      
+
+# in characters
+$c->{'ref_support'}->{'ref1_former_staff_fields_length'} = {
+        staffIdentifier => 24,
+	surname => 64,
+	initials => 12,
+};
 
 sub ref2021_contracts
 {
@@ -154,6 +199,27 @@ sub ref2021_contracts
 	return ( $results, $no_escape );
 }
 
+$c->{plugins}->{"Screen::REF_Support::Report::Former_Staff"}->{params}->{validate_user} = sub {
+        my( $plugin, $objects ) = @_;
+	
+	my $session = $plugin->{session};
+	my @problems;
+
+	# character length checks...
+	&ref_support_check_characters( $session, 'ref1_former_staff', $plugin, $objects, \@problems );
+
+	# orcid check
+	my $user = $objects->{user};
+	my $ds = $user->dataset;
+	my $orcid = $user->value( 'orcid' );
+        if( defined $orcid && $orcid !~ m/^(?:\s*(?:https?:\/\/)?orcid(?:\.org\/|:))?(\d{4}\-?\d{4}\-?\d{4}\-?\d{3}(?:\d|X))(?:\s*)$/ )
+        {
+       		my $desc = $session->html_phrase( "user_fieldname_orcid" );
+		push @problems, { field => "orcid", desc => $session->html_phrase( 'ref_support:validate:invalid_orcid', fieldname => $desc ) };
+ 	}
+	return @problems;
+};
+
 # Former Staff Contracts Fields
 $c->{'ref'}->{'ref1_former_staff_contracts'}->{'fields'} = [qw{ staffIdentifier hesaStaffIdentifier contractFTE researchConnection reasonForNoConnectionStatement startDate endDate isOnSecondment secondmentStartDate secondmentEndDate isOnUnpaidLeave unpaidLeaveStartDate unpaidLeaveEndDate researchGroups }];
 
@@ -162,7 +228,6 @@ $c->{'ref'}->{'ref1_former_staff_contracts'}->{'mappings'} = {
 	hesaStaffIdentifier => "user.hesa",
         contractFTE => "user.ref_fte",
 	researchConnection => "user.research_connection",
-	reasonForNoConnectionStatement => \&ref2021_reason_no_connections,
 	startDate => "ref_support_circ.fixed_term_start",
 	endDate => "ref_support_circ.fixed_term_end",
         isOnSecondment => "ref_support_circ.is_secondment",
@@ -196,7 +261,7 @@ $c->{'ref'}->{'research_groups'}->{'mappings'} = {
 };
 
 # Research Outputs Fields
-$c->{'ref'}->{'ref2_research_outputs'}->{'fields'} = [qw{ outputIdentifier webOfScienceIdentifier outputType title place publisher volumeTitle volume issue firstPage articleNumber isbn issn doi patentNumber month year url isPhysicalOutput supplementaryInformationDOI numberOfAdditionalAuthors isPendingPublication pendingPublicationReserve isForensicScienceOutput isCriminologyOutput isNonEnglishLanguage englishAbstract isInterdisciplinary proposeDoubleWeighting doubleWeightingStatement doubleWeightingReserve conflictedPanelMembers crossReferToUoa additionalInformation researchGroup openAccessStatus outputAllocation outputSubProfileCategory requiresAuthorContributionStatement isSensitive excludeFromSubmission }];
+$c->{'ref'}->{'ref2_research_outputs'}->{'fields'} = [qw{ outputIdentifier webOfScienceIdentifier outputType title place publisher volumeTitle volume issue firstPage articleNumber isbn issn doi patentNumber month year url isPhysicalOutput supplementaryInformationDOI numberOfAdditionalAuthors isPendingPublication pendingPublicationReserve isForensicScienceOutput isCriminologyOutput isNonEnglishLanguage englishAbstract isInterdisciplinary proposeDoubleWeighting doubleWeightingStatement doubleWeightingReserve conflictedPanelMembers crossReferToUoa additionalInformation researchGroup openAccessStatus outputAllocation outputSubProfileCategory requiresAuthorContributionStatement isSensitive excludeFromSubmission outputPdfRequired }];
 
 $c->{'ref'}->{'ref2_research_outputs'}->{'mappings'} = {
 	"outputIdentifier" => "ref_support_selection.selectionid",
@@ -240,6 +305,7 @@ $c->{'ref'}->{'ref2_research_outputs'}->{'mappings'} = {
 	"requiresAuthorContributionStatement" => "ref_support_selection.author_statement",
 	"isSensitive" => "ref_support_selection.sensitive",
 	"excludeFromSubmission" => "ref_support_selection.exclude_from_submission",
+	"outputPdfRequired" => "ref_support_selection.pdf_required",
 };
 
 sub ref2021_month
@@ -263,3 +329,5 @@ $c->{'ref'}->{'ref2_staff_outputs'}->{'mappings'} = {
         "outputIdentifier" => "ref_support_selection.selectionid",
         "authorContributionStatement" => "ref_support_selection.author_statement_text",
 };
+
+

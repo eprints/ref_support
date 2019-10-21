@@ -25,6 +25,11 @@ sub new
 			place => "ref_support_listing_user_actions",
 			position => 200
 		},
+		{
+			place => "circ_item_actions",
+			position => 200
+		},
+
 	];
 
 	$self->{staff} = 0;

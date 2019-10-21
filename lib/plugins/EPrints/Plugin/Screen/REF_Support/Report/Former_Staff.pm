@@ -121,8 +121,13 @@ sub render_user
         ) );
         $chunk->appendChild( $user->render_citation( "ref_support" ) );
 
-	# User metadata problems (and/or local checks!) - See part 3, section 1 of REF Framework (esp. paragraph 84)
-	my @user_problems = $self->validate_user( $user );
+	# perform validation checks on the data
+	# to do this we'll need all the related objects which we can get by borrowing a REF Support Export plugin
+	my $export_plugin = $self->{session}->plugin( "Export::REF_Support" );
+	$export_plugin->{report} = $self->{processor}->{report};
+	my $objects = $export_plugin->get_related_objects( $user );	
+	
+	my @user_problems = $self->validate_user( $export_plugin, $objects );
 
 	# gather problems together (under one user)
 	if( scalar( @user_problems ) )
@@ -216,7 +221,7 @@ sub user_control_url
 
 sub validate_user
 {
-	my( $self, $user, $selection, $eprint ) = @_;
+	my( $self, $export_plugin, $user ) = @_;
 
 	my $f = $self->param( "validate_user" );
 	return () if !defined $f;
