@@ -87,6 +87,14 @@ $c->{'ref'}->{'ref1_current_staff'}->{'mappings'} = {
         # + ResearchGroup[1|2|3|4]
 };      
 
+# character limits
+$c->{'ref_support'}->{'ref1_current_staff_fields_length'} = {
+        staffIdentifier => 24,
+        surname => 64,
+        initials => 12,
+	researchConnection => 7500,
+};
+
 sub ref2021_orcid
 {
         my( $plugin, $objects ) = @_;
@@ -144,6 +152,57 @@ sub ref2021_research_groups
 	return undef;
 }
 
+# Current Staff Validation
+$c->{plugins}->{"Screen::REF_Support::Report::Current_Staff"}->{params}->{validate_user} = sub {
+        my( $plugin, $objects ) = @_;
+
+        my $session = $plugin->{session};
+        my @problems;
+
+        # character length checks...
+        &ref_support_check_characters( $session, 'ref1_current_staff', $plugin, $objects, \@problems );
+
+	# hesa check
+        my $user = $objects->{user};
+        my $ds = $user->dataset;
+        my $hesa = $user->value( 'hesa' );
+        if( defined $hesa && length( $hesa ) != 13  )
+        {
+                my $desc = $session->html_phrase( "user_fieldname_hesa" );
+                push @problems, { field => "hesa", desc => $session->html_phrase( 'ref_support:validate:invalid_hesa', fieldname => $desc ) };
+        }
+
+	# research group check
+	my $rgs = $user->value( 'research_groups' );
+	my $rg_ds = $session->dataset( 'ref_support_rg' );
+	my $desc = $session->html_phrase( "user_fieldname_research_groups" );
+	if( scalar @$rgs > 4 )
+	{
+		push @problems, { field => "research_groups", desc => $session->html_phrase( 'ref_support:validate:number_user_research_group', fieldname => $desc ) };
+	}
+	else # we have a valid number, so start checking each one is ok
+	{
+		foreach my $rg ( @$rgs )
+		{
+			# check each rg is only a single alpha-numeric character
+			if( $rg !~ m/^[a-zA-Z0-9]$/ )
+			{
+				push @problems, { field => "research_groups", desc => $session->html_phrase( 'ref_support:validate:user_research_group_code', fieldname => $desc ) };
+			}	
+
+			# check an RG record exists for the UoA
+			my $research_groups = EPrints::DataObj::REF_Support_Research_Group::search_by_uoa_and_code( $session, $user->get_value( "ref_support_uoa" ), $rg );
+			if( $research_groups->count == 0 )
+			{
+				push @problems, { field => "research_groups", desc => $session->html_phrase( 'ref_support:validate:no_user_research_group', fieldname => $desc ) };
+			}
+		}
+	}
+
+        return @problems;
+};
+
+
 # Former Staff Fields
 $c->{'ref'}->{'ref1_former_staff'}->{'fields'} = [qw{ staffIdentifier surname initials dateOfBirth orcid excludeFromSubmission contracts }];
 
@@ -158,7 +217,7 @@ $c->{'ref'}->{'ref1_former_staff'}->{'mappings'} = {
 	contracts => \&ref2021_contracts,
 };      
 
-# in characters
+# character limits
 $c->{'ref_support'}->{'ref1_former_staff_fields_length'} = {
         staffIdentifier => 24,
 	surname => 64,
@@ -239,6 +298,12 @@ $c->{'ref'}->{'ref1_former_staff_contracts'}->{'mappings'} = {
 	researchGroups => \&ref2021_research_groups,
 };      
 
+# character limits
+$c->{'ref_support'}->{'ref1_former_staff_contracts_fields_length'} = {
+	research_connection => 7500,
+};
+
+
 sub ref2021_contract_staff_identifier
 {
 	my( $plugin, $objects ) = @_;
@@ -251,6 +316,30 @@ sub ref2021_contract_staff_identifier
 	}
 	return undef;
 }
+
+# Former Staff Contracts Validation
+$c->{plugins}->{"Screen::REF_Support::Report::Former_Staff_Contracts"}->{params}->{validate_user} = sub {
+        my( $plugin, $objects ) = @_;
+
+        my $session = $plugin->{session};
+        my @problems;
+	
+        # character length checks...
+        #&ref_support_check_characters( $session, 'ref1_former_staff_contracts', $plugin, $objects, \@problems );
+
+	# hesa check
+        #my $user = $objects->{user};
+        #my $ds = $user->dataset;
+        #my $hesa = $user->value( 'hesa' );
+        #if( defined $hesa && length( $hesa ) != 13  )
+        #{
+        #       my $desc = $session->html_phrase( "user_fieldname_hesa" );
+        #       push @problems, { field => "hesa", desc => $session->html_phrase( 'ref_support:validate:invalid_hesa', fieldname => $desc ) };
+        #}
+        return @problems;
+
+};
+
 
 # Research Groups Fields
 $c->{'ref'}->{'research_groups'}->{'fields'} = [qw{ code name }];

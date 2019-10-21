@@ -40,10 +40,28 @@ sub search_by_uoa
 
         return $session->dataset( $class->get_dataset_id )->search(
                 filters => [
-                        { meta_fields => [qw( uoa_id )], value => $uoa->id, match => "EX", },
+                        { meta_fields => [qw( uoa )], value => $uoa->id, match => "EX", },
                 ],
         );
 }
+
+=item $list = EPrints::DataObj::REF_Support_Research_Group::search_by_uoa_and_code( $session, $uoa, $code )
+
+Returns a Research Group by uoa nd code
+
+=cut
+sub search_by_uoa_and_code
+{
+        my( $session, $uoa, $code ) = @_;
+
+        return $session->dataset( 'ref_support_rg' )->search(
+                filters => [
+                        { meta_fields => [qw( uoa )], value => $uoa, match => "EX", },
+			{ meta_fields => [qw( code )], value => $code, match => "EX", },
+                ],
+        );
+}
+
 
 } # end of package
 

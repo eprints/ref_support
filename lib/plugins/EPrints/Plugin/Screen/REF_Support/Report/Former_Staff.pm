@@ -221,7 +221,7 @@ sub user_control_url
 
 sub validate_user
 {
-	my( $self, $export_plugin, $user ) = @_;
+	my( $self, $export_plugin, $objects ) = @_;
 
 	my $f = $self->param( "validate_user" );
 	return () if !defined $f;
