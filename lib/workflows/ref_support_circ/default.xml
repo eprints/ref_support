@@ -8,13 +8,12 @@
 
   <stage name="main">
     <component type="Field::Multi">
-      <title>REF - Staff Circumstances</title>
+      <title>Former Staff Contract</title>
 
-      <field ref="circ"/>
-      <field ref="circ_text"/>
-      <field ref="is_ecr"/>
-      <field ref="ecr_start"/>
-      <field ref="is_fixed_term"/>
+      <field ref="ref_fte"/>
+      <field ref="research_connection"/>
+      <field ref="reason_no_connections"/> 
+      <field ref="research_groups"/>
       <field ref="fixed_term_start"/>
       <field ref="fixed_term_end"/>
       <field ref="is_secondment"/>
@@ -23,12 +22,7 @@
       <field ref="is_unpaid_leave"/>
       <field ref="unpaid_leave_start"/>
       <field ref="unpaid_leave_end"/>
-      <field ref="is_fellow"/>
-      <field ref="is_non_uk"/>
-      <field ref="non_uk_text"/>
-      <field ref="absence"/>
-      <field ref="qual_periods"/>
-      <field ref="complex_reduction"/>
+
     </component>
 
   </stage>

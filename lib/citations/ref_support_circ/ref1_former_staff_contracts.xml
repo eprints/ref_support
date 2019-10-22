@@ -7,6 +7,9 @@
 <cite:citation xmlns="http://www.w3.org/1999/xhtml" xmlns:cite="http://eprints.org/ep3/citation" xmlns:epc="http://eprints.org/ep3/control">
 
 <table cellpadding="3" style="margin:1em 0em">
+<tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_ref_fte"/>:</th><td><print expr="ref_fte"/></td><td id="user_{userid.as_string()}_ref_fte"/></tr>
+<tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_research_connection"/>:</th><td><print expr="research_connection"/></td><td id="user_{userid.as_string()}_research_connection"/></tr>
+<tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_research_groups"/>:</th><td><print expr="research_groups"/></td><td id="user_{userid.as_string()}_research_groups"/></tr>
 <tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_fixed_term_start"/>:</th><td><print expr="fixed_term_start"/></td><td id="user_{userid.as_string()}_fixed_term_start"/></tr>
 <tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_fixed_term_end"/>:</th><td><print expr="fixed_term_end"/></td><td id="user_{userid.as_string()}_fixed_term_end"/></tr>
 <tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_is_secondment"/>:</th><td><print expr="is_secondment"/></td><td id="user_{userid.as_string()}_is_secondment"/></tr>

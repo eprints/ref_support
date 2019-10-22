@@ -308,6 +308,19 @@ Please choose one of the following options:<br/>
 <epp:phrase id="ref_support_circ_fieldname_catc_text">(Cat. C) Explanation</epp:phrase>
 <epp:phrase id="ref_support_circ_fieldhelp_catc_text">Text explaining their research responsibilities and how their reseearch is focused in the submitting unit. For category C staff only</epp:phrase>
 
+<epp:phrase id="ref_support_circ_fieldname_ref_fte">Full-time Equivalent</epp:phrase>
+<epp:phrase id="ref_support_circ_fieldhelp_ref_fte">The FTE of the contract as a fraction between 0 and 1.</epp:phrase>
+<epp:phrase id="ref_support_circ_fieldname_research_connection">Research Connection</epp:phrase>
+<epp:phrase id="ref_support_circ_fieldhelp_research_connection">A short statement evidencing the clear connection of the former staff contract with the submitting unit.</epp:phrase>
+<epp:phrase id="ref_support_circ_fieldname_reason_no_connections">Reason for no substantive connection</epp:phrase>
+<epp:phrase id="ref_support_circ_fieldhelp_reason_no_connections">Select one or more instances for why a statement evidencing a substantive connection will not be required (not included in submission but may be required in the event of audit).</epp:phrase>
+<epp:phrase id="ref_support_circ_fieldopt_reason_no_connections_CaringResponsibilities">Caring Responsibilities</epp:phrase>
+<epp:phrase id="ref_support_circ_fieldopt_reason_no_connections_PersonalCircumstances">Personal Circumstances</epp:phrase>
+<epp:phrase id="ref_support_circ_fieldopt_reason_no_connections_ReducedHours">Reduced Hours</epp:phrase>
+<epp:phrase id="ref_support_circ_fieldopt_reason_no_connections_NormalDisciplinePractice">Normal Discipline Practice</epp:phrase>
+<epp:phrase id="ref_support_circ_fieldname_research_groups">Research Group</epp:phrase>
+<epp:phrase id="ref_support_circ_fieldhelp_research_groups">Please select up to 4 research groups.</epp:phrase>
+
 <!-- REF Benchmark -->
 <epp:phrase id="ref_support_benchmark:workflow:stage:main:title">Details</epp:phrase>
 <epp:phrase id="ref_support_benchmark_fieldname_title">Name of benchmark</epp:phrase>

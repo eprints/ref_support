@@ -228,6 +228,21 @@ unshift @{$c->{fields}->{ref_support_circ}}, (
 		{ name => 'catc_jobtitle', type => 'text' },
 		# explanatoryText
 		{ name => 'catc_text', type => 'longtext' },
+
+		# New fields for REF2021 now that the circ dataset has been repurposed for Former Staff Contracts
+		# contractFTE
+		{ name => 'ref_fte', type => 'float' },
+		# researchConnection
+		{ name => 'research_connection', type => 'text' },
+		# reasonForNoConnectionStatement
+		{ 
+			name => 'reason_no_connections',
+		        type => 'set',
+		        multiple => 1,
+		        options => [ 'CaringResponsibilities', 'PersonalCircumstances', 'ReducedHours', 'NormalDisciplinePractice' ],
+		},
+		# researchGroup
+		{ name => 'research_groups', type => 'text', maxlength => 1, multiple => 1 },
 );
 
 1;

@@ -61,6 +61,37 @@ sub ref_support_check_characters
         }
 }
 
+sub ref_support_check_research_groups
+{
+        my( $session, $dataobj, $problems ) = @_;
+
+	my $rgs = $dataobj->value( 'research_groups' );
+	my $rg_ds = $session->dataset( 'ref_support_rg' );
+	my $desc = $session->html_phrase( "user_fieldname_research_groups" );
+	if( scalar @$rgs > 4 )
+	{
+		push @$problems, { field => "research_groups", desc => $session->html_phrase( 'ref_support:validate:number_user_research_group', fieldname => $desc ) };
+	}
+	else # we have a valid number, so start checking each one is ok
+	{
+		foreach my $rg ( @$rgs )
+		{
+			# check each rg is only a single alpha-numeric character
+			if( $rg !~ m/^[a-zA-Z0-9]$/ )
+			{
+				push @$problems, { field => "research_groups", desc => $session->html_phrase( 'ref_support:validate:user_research_group_code', fieldname => $desc ) };
+			}	
+
+			# check an RG record exists for the UoA
+			my $research_groups = EPrints::DataObj::REF_Support_Research_Group::search_by_uoa_and_code( $session, $user->get_value( "ref_support_uoa" ), $rg );
+			if( $research_groups->count == 0 )
+			{
+				push @$problems, { field => "research_groups", desc => $session->html_phrase( 'ref_support:validate:no_user_research_group', fieldname => $desc ) };
+			}
+		}
+	}
+}
+
 # Current Staff Fields
 $c->{'ref'}->{'ref1_current_staff'}->{'fields'} = [qw{ hesaStaffIdentifier staffIdentifier surname initials dateOfBirth orcid contractFTE researchConnection isEarlyCareerResearcher isOnFixedTermContract contractStartDate contractEndDate isOnSecondment secondmentStartDate secondmentEndDate isOnUnpaidLeave unpaidLeaveStartDate unpaidLeaveEndDate researchGroups }];
 
@@ -129,15 +160,26 @@ sub ref2021_research_groups
 {
 	my( $plugin, $objects ) = @_;
 	
-	my $user = $objects->{user} or return;
+	# get the object we want to get research groups from - this will change depending on the type of report
+	my $dataobj;
+	my $report = $plugin->{report};
+	if( $report eq "ref1_former_staff_contracts" )
+	{
+		$dataobj = $objects->{ref_support_circ};
+	}	
+	else
+	{
+		$dataobj = $objects->{user};
+	}
+	return if !defined $dataobj;
 
-	if( $user->is_set( "research_groups" ) )
+	if( $dataobj->is_set( "research_groups" ) )
 	{
 		if( $plugin->{is_hierarchical} )
 		{
 			my $results;
 			my $no_escape = 1;
-			foreach my $rg ( @{$user->get_value( "research_groups" )} )
+			foreach my $rg ( @{$dataobj->get_value( "research_groups" )} )
 			{
 				$results = $results . "<group>$rg</group>"; # a hack for an XML export plugin, but this is our only hierarchical plugin at present
 			}
@@ -145,7 +187,7 @@ sub ref2021_research_groups
 		}
 		else
 		{
-			return join( ";", @{$user->get_value( "research_groups" )} )
+			return join( ";", @{$dataobj->get_value( "research_groups" )} )
 		}
 	}
 
@@ -159,11 +201,15 @@ $c->{plugins}->{"Screen::REF_Support::Report::Current_Staff"}->{params}->{valida
         my $session = $plugin->{session};
         my @problems;
 
+	my $user = $objects->{user};
+
         # character length checks...
         &ref_support_check_characters( $session, 'ref1_current_staff', $plugin, $objects, \@problems );
 
+	# research group check
+	&ref_support_check_research_groups( $session, $user, \@problems );
+
 	# hesa check
-        my $user = $objects->{user};
         my $ds = $user->dataset;
         my $hesa = $user->value( 'hesa' );
         if( defined $hesa && length( $hesa ) != 13  )
@@ -171,33 +217,6 @@ $c->{plugins}->{"Screen::REF_Support::Report::Current_Staff"}->{params}->{valida
                 my $desc = $session->html_phrase( "user_fieldname_hesa" );
                 push @problems, { field => "hesa", desc => $session->html_phrase( 'ref_support:validate:invalid_hesa', fieldname => $desc ) };
         }
-
-	# research group check
-	my $rgs = $user->value( 'research_groups' );
-	my $rg_ds = $session->dataset( 'ref_support_rg' );
-	my $desc = $session->html_phrase( "user_fieldname_research_groups" );
-	if( scalar @$rgs > 4 )
-	{
-		push @problems, { field => "research_groups", desc => $session->html_phrase( 'ref_support:validate:number_user_research_group', fieldname => $desc ) };
-	}
-	else # we have a valid number, so start checking each one is ok
-	{
-		foreach my $rg ( @$rgs )
-		{
-			# check each rg is only a single alpha-numeric character
-			if( $rg !~ m/^[a-zA-Z0-9]$/ )
-			{
-				push @problems, { field => "research_groups", desc => $session->html_phrase( 'ref_support:validate:user_research_group_code', fieldname => $desc ) };
-			}	
-
-			# check an RG record exists for the UoA
-			my $research_groups = EPrints::DataObj::REF_Support_Research_Group::search_by_uoa_and_code( $session, $user->get_value( "ref_support_uoa" ), $rg );
-			if( $research_groups->count == 0 )
-			{
-				push @problems, { field => "research_groups", desc => $session->html_phrase( 'ref_support:validate:no_user_research_group', fieldname => $desc ) };
-			}
-		}
-	}
 
         return @problems;
 };
@@ -285,8 +304,8 @@ $c->{'ref'}->{'ref1_former_staff_contracts'}->{'fields'} = [qw{ staffIdentifier 
 $c->{'ref'}->{'ref1_former_staff_contracts'}->{'mappings'} = {
 	staffIdentifier => \&ref2021_contract_staff_identifier,
 	hesaStaffIdentifier => "user.hesa",
-        contractFTE => "user.ref_fte",
-	researchConnection => "user.research_connection",
+        contractFTE => "ref_support_circ.ref_fte",
+	researchConnection => "ref_support_circ.research_connection",
 	startDate => "ref_support_circ.fixed_term_start",
 	endDate => "ref_support_circ.fixed_term_end",
         isOnSecondment => "ref_support_circ.is_secondment",
