@@ -47,10 +47,10 @@
 <epp:phrase id="user_fieldhelp_ref_is_sensitive">Indicate that the staff record contains sensitive information and should be excluded from publication.</epp:phrase>
 
 <epp:phrase id="user_fieldname_research_connection">Research Connection</epp:phrase>
-<epp:phrase id="user_fieldhelp_research_connection">A short statement (up to 200 words) evidencing the clear connection of the staff member with the submitting unit.</epp:phrase>
+<epp:phrase id="user_fieldhelp_research_connection">A short statement evidencing the clear connection of the staff member with the submitting unit.</epp:phrase>
 
 <epp:phrase id="user_fieldname_reason_no_connections">Reason for no substantive connection</epp:phrase>
-<epp:phrase id="user_fieldhelp_reason_no_connections">Select one or more instances for why a statement evidencing a substantive connection will not be required.</epp:phrase>
+<epp:phrase id="user_fieldhelp_reason_no_connections">Select one or more instances for why a statement evidencing a substantive connection will not be required (not included in submission but may be required in the event of audit).</epp:phrase>
 <epp:phrase id="user_fieldopt_reason_no_connections_CaringResponsibilities">Caring Responsibilities</epp:phrase>
 <epp:phrase id="user_fieldopt_reason_no_connections_PersonalCircumstances">Personal Circumstances</epp:phrase>
 <epp:phrase id="user_fieldopt_reason_no_connections_ReducedHours">Reduced Hours</epp:phrase>
@@ -62,6 +62,29 @@
 <epp:phrase id="user_fieldname_exclude_from_submission">Exclude from Submission</epp:phrase>
 <epp:phrase id="user_fieldhelp_exclude_from_submission">Indicates the staff member should not be included in the submission.</epp:phrase>
 
+<epp:phrase id="user_fieldname_is_ecr">Early Career Researcher</epp:phrase>
+<epp:phrase id="user_fieldhelp_is_ecr">Indicate whether this user is an Early Career Researcher.</epp:phrase>
+
+<epp:phrase id="user_fieldname_is_fixed_term">Fixed-term contract</epp:phrase>
+<epp:phrase id="user_fieldhelp_is_fixed_term"></epp:phrase>
+<epp:phrase id="user_fieldname_fixed_term_start">Fixed-term contract starts</epp:phrase>
+<epp:phrase id="user_fieldhelp_fixed_term_start"></epp:phrase>
+<epp:phrase id="user_fieldname_fixed_term_end">Fixed-term contract ends</epp:phrase>
+<epp:phrase id="user_fieldhelp_fixed_term_end"></epp:phrase>
+
+<epp:phrase id="user_fieldname_is_secondment">Secondment</epp:phrase>
+<epp:phrase id="user_fieldhelp_is_secondment"></epp:phrase>
+<epp:phrase id="user_fieldname_secondment_start">Secondment starts</epp:phrase>
+<epp:phrase id="user_fieldhelp_secondment_start"></epp:phrase>
+<epp:phrase id="user_fieldname_secondment_end">Secondment ends</epp:phrase>
+<epp:phrase id="user_fieldhelp_secondment_end"></epp:phrase>
+
+<epp:phrase id="user_fieldname_is_unpaid_leave">Unpaid leave</epp:phrase>
+<epp:phrase id="user_fieldhelp_is_unpaid_leave"></epp:phrase>
+<epp:phrase id="user_fieldname_unpaid_leave_start">Unpaid leave starts</epp:phrase>
+<epp:phrase id="user_fieldhelp_unpaid_leave_start"></epp:phrase>
+<epp:phrase id="user_fieldname_unpaid_leave_end">Unpiad leave ends</epp:phrase>
+<epp:phrase id="user_fieldhelp_unpaid_leave_end"></epp:phrase>
 
 
 <!-- REF Selection Dataset -->

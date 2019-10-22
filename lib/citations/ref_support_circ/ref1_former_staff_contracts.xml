@@ -7,7 +7,8 @@
 <cite:citation xmlns="http://www.w3.org/1999/xhtml" xmlns:cite="http://eprints.org/ep3/citation" xmlns:epc="http://eprints.org/ep3/control">
 
 <table cellpadding="3" style="margin:1em 0em">
-<epc:pin name="user_fields"/>
+<tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_fixed_term_start"/>:</th><td><print expr="fixed_term_start"/></td><td id="user_{userid.as_string()}_fixed_term_start"/></tr>
+<tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_fixed_term_end"/>:</th><td><print expr="fixed_term_end"/></td><td id="user_{userid.as_string()}_fixed_term_end"/></tr>
 <tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_is_secondment"/>:</th><td><print expr="is_secondment"/></td><td id="user_{userid.as_string()}_is_secondment"/></tr>
 <if test="is_secondment = 'TRUE'">
 <tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_secondment_start"/>:</th><td><print expr="secondment_start"/></td><td id="user_{userid.as_string()}_secondment_start"/></tr>

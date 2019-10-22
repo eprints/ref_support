@@ -5,6 +5,7 @@
 -->
 
 <cite:citation xmlns="http://www.w3.org/1999/xhtml" xmlns:cite="http://eprints.org/ep3/citation" xmlns:epc="http://eprints.org/ep3/control">
+<table cellpadding="3" style="margin:1em 0em">
 <tr><th align="right"><epc:phrase ref="user_fieldname_ref_category"/>:</th><td><print expr="ref_category"/></td><td id="user_{userid}_ref_category"/></tr>
 <tr><th align="right"><epc:phrase ref="user_fieldname_hesa"/>:</th><td><print expr="hesa"/></td><td id="user_{userid}_hesa"/></tr>
 <tr><th align="right"><epc:phrase ref="user_fieldname_staff_id"/>:</th><td><print expr="staff_id"/></td><td id="user_{userid}_staff_id"/></tr>
@@ -16,5 +17,17 @@
 <tr><th align="right"><epc:phrase ref="user_fieldname_ref_start_date"/>:</th><td><print expr="ref_start_date"/></td><td id="user_{userid}_ref_start_date"/></tr>
 <tr><th align="right"><epc:phrase ref="user_fieldname_ref_is_sensitive"/>:</th><td><print expr="ref_is_sensitive"/></td><td id="user_{userid}_ref_is_sensitive"/></tr>
 <tr><th align="right"><epc:phrase ref="user_fieldname_research_groups"/>:</th><td><print expr="research_groups"/></td><td id="user_{userid}_research_groups"/></tr>
+<tr><th align="right"><epc:phrase ref="user_fieldname_is_ecr"/>:</th><td><print expr="is_ecr"/></td><td id="user_{userid}_is_ecr"/></tr>
+<tr><th align="right"><epc:phrase ref="user_fieldname_is_fixed_term"/>:</th><td><print expr="is_fixed_term"/></td><td id="user_{userid}_is_fixed_term"/></tr>
+<tr><th align="right"><epc:phrase ref="user_fieldname_fixed_term_start"/>:</th><td><print expr="fixed_term_start"/></td><td id="user_{userid}_fixed_term_start"/></tr>
+<tr><th align="right"><epc:phrase ref="user_fieldname_fixed_term_end"/>:</th><td><print expr="fixed_term_end"/></td><td id="user_{userid}_fixed_term_end"/></tr>
+<tr><th align="right"><epc:phrase ref="user_fieldname_is_secondment"/>:</th><td><print expr="is_secondment"/></td><td id="user_{userid}_is_secondment"/></tr>
+<tr><th align="right"><epc:phrase ref="user_fieldname_secondment_start"/>:</th><td><print expr="secondment_start"/></td><td id="user_{userid}_secondment_start"/></tr>
+<tr><th align="right"><epc:phrase ref="user_fieldname_secondment_end"/>:</th><td><print expr="secondment_end"/></td><td id="user_{userid}_secondment_end"/></tr>
+<tr><th align="right"><epc:phrase ref="user_fieldname_is_unpaid_leave"/>:</th><td><print expr="is_unpaid_leave"/></td><td id="user_{userid}_is_unpaid_leave"/></tr>
+<tr><th align="right"><epc:phrase ref="user_fieldname_unpaid_leave_start"/>:</th><td><print expr="unpaid_leave_start"/></td><td id="user_{userid}_unpaid_leave_start"/></tr>
+<tr><th align="right"><epc:phrase ref="user_fieldname_unpaid_leave_end"/>:</th><td><print expr="unpaid_leave_end"/></td><td id="user_{userid}_unpaid_leave_end"/></tr>
+
 <!-- sf2 - moved to REF_Support_Circ <tr><th align="right"><epc:phrase ref="user_fieldname_ref_is_ecr" />:</th><td><print expr="ref_is_ecr"/></td></tr> -->
+</table>
 </cite:citation>

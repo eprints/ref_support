@@ -714,4 +714,30 @@ $c->add_dataset_field( 'user', {
 # REF End date
 $c->add_dataset_field( 'user', { name => 'ref_end_date', type => 'date' }, reuse => 1 );
 
+# The circ dataset is now used to model former staff contracts,
+# as such some of the old circ fields are now added to the user dataset
+# for the current staff field
+$c->add_dataset_field( 'user', { name => 'is_ecr', type => 'boolean' }, reuse => 1 );
+
+# isOnFixedTermContract
+$c->add_dataset_field( 'user', { name => 'is_fixed_term', type => 'boolean' }, reuse => 1 );
+# contractStartDate
+$c->add_dataset_field( 'user', { name => 'fixed_term_start', type => 'date' }, reuse => 1 );
+# contractEndDate
+$c->add_dataset_field( 'user', { name => 'fixed_term_end', type => 'date' }, reuse => 1 );
+
+# isOnSecondment
+$c->add_dataset_field( 'user', { name => 'is_secondment', type => 'boolean' }, reuse => 1 );
+# secondmentStartDate
+$c->add_dataset_field( 'user', { name => 'secondment_start', type => 'date' }, reuse => 1 );
+# secondmentEndDate
+$c->add_dataset_field( 'user', { name => 'secondment_end', type => 'date' }, reuse => 1 );
+
+# isOnUnpaidLeave
+$c->add_dataset_field( 'user', { name => 'is_unpaid_leave', type => 'boolean' }, reuse => 1 );
+# unpaidLeaveStartDate
+$c->add_dataset_field( 'user', { name => 'unpaid_leave_start', type => 'date' }, reuse => 1 );
+# unpaidLeaveEndDate
+$c->add_dataset_field( 'user', { name => 'unpaid_leave_end', type => 'date' }, reuse => 1 );
+
 1;

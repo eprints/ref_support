@@ -165,13 +165,7 @@ sub render_user
 	) );
 
 	# cf Screen::REF::Overview
-	my $circ = EPrints::DataObj::REF_Support_Circ->new_from_user( $session, $user->get_id, 1);
-        my $inserts = { user_fields => $user->render_citation( 'ref_support_current_staff' ) };
-
-        $chunk->appendChild( $circ->render_citation( 'ref1a',
-                        pindata => { inserts => $inserts } ) );
-
-	#my %uoas;
+        $chunk->appendChild( $user->render_citation( 'ref_support_current_staff' ) );
 
 	return $chunk;
 }

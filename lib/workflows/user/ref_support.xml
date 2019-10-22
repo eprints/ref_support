@@ -24,8 +24,25 @@
 
       <field ref="exclude_from_submission"/>
 
+      <field ref="is_ecr"/>
+
+      <field ref="is_fixed_term"/>
+      <field ref="fixed_term_start"/>
+      <field ref="fixed_term_end"/>
+
+      <field ref="is_secondment"/>
+      <field ref="secondment_start"/>
+      <field ref="secondment_end"/>
+
+      <field ref="is_unpaid_leave"/>
+      <field ref="unpaid_leave_start"/>
+      <field ref="unpaid_leave_end"/>
+
       <!--<field ref="ref_uoa"/>-->
       <field ref="ref_support_uoa"/>
+
+	
+
    </component>
   </stage>
 </workflow>
