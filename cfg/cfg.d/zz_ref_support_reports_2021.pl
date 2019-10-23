@@ -83,7 +83,7 @@ sub ref_support_check_research_groups
 			}	
 
 			# check an RG record exists for the UoA
-			my $research_groups = EPrints::DataObj::REF_Support_Research_Group::search_by_uoa_and_code( $session, $user->get_value( "ref_support_uoa" ), $rg );
+			my $research_groups = EPrints::DataObj::REF_Support_Research_Group::search_by_uoa_and_code( $session, $dataobj->get_value( "ref_support_uoa" ), $rg );
 			if( $research_groups->count == 0 )
 			{
 				push @$problems, { field => "research_groups", desc => $session->html_phrase( 'ref_support:validate:no_user_research_group', fieldname => $desc ) };

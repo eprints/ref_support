@@ -226,4 +226,126 @@ sub properties_from
 	$self->SUPER::properties_from;
 }
 
+sub render
+{
+        my( $self ) = @_;
+
+        my $session = $self->{session};
+        my @uoas = @{ $self->{processor}->{uoas} || [] };
+
+	# set things up
+        my $chunk = $session->make_doc_fragment;
+
+        $chunk->appendChild( $session->html_phrase( "Plugin/Screen/REF_Support/Report:header",
+                benchmark => $self->render_current_benchmark,
+                export => $self->render_export_bar
+        ) );
+
+	# define our collection of sub reports
+	my %reports = (
+                "research_groups" => "Research_Groups",
+                "ref1_current_staff" => "Current_Staff",
+                "ref1_former_staff" => "Former_Staff",
+                #"ref1_former_staff_contracts" => "Former_Staff_Contracts",
+                #"ref2_research_outputs" => "Research_Outputs",
+                #"ref2_staff_outputs" => "Staff_Outputs",
+        );
+
+        foreach my $uoa ( @uoas )
+        {
+		# display the uoa title
+		my $h3 = $chunk->appendChild( $session->make_element( 'h3', class => 'ep_ref_uoa_header' ) );
+		$h3->appendChild( $uoa->render_description );
+
+		# set up a report box
+		my $div = $chunk->appendChild( $session->make_element( "div", class => "ep_ref_report_box" ) );
+
+		# report box title
+		my $title = $div->appendChild( $session->make_element( "div", class => "ep_ref_user_citation" ) );
+		$title->appendChild( $session->make_text( "Reports Summary" ) );
+
+		# set up a table for the summary
+		my $table = $div->appendChild( $session->make_element( "table" ) );	
+
+		# for each sub report provide some basi stats, i.e. how many records, are there any problems
+		foreach my $report( keys %reports )
+        	{			
+			# prep the report plugin	
+                	my $report_plugin = "Screen::REF_Support::Report::" . $reports{$report};
+			my $plugin = $session->plugin( $report_plugin );
+			$plugin->{processor}->{uoas} = [ $uoa ];
+			
+			# display the relevant information for each report plugin
+			my @table_cells;
+			if( $report eq "research_groups" )
+			{
+				my $no_records = 0;
+				my $no_problems = 0;
+
+				# get the research groups and check for problems
+				my $rgs = $plugin->research_groups;			
+				if( EPrints::Utils::is_set( $rgs ) )
+				{
+					$no_records = $rgs->count;
+				
+					# check to see if there are any problems with them
+					$rgs->map( sub {
+						my( $session, undef, $rg ) = @_;
+						my @problems = $plugin->validate_rg( $rg );
+						$no_problems = $no_problems + scalar @problems;
+					} );
+				}
+				
+				push @table_cells, ( $session->make_text( $no_records ) );
+				
+				if( $no_problems > 0 )
+				{
+					my $warning_div = $session->make_element( "div", class => "ep_ref_report_user_problems" );
+		                        $warning_div->appendChild( $self->html_phrase( "problems_reported" ) );
+                        		push @table_cells, $warning_div;
+				}
+				
+			}
+			elsif( $report eq "ref1_current_staff" || $report eq "ref1_former_staff" )
+			{
+				my $no_records = 0;
+                                my $no_problems = 0;
+				
+				# get the users and check for problems
+				my $users = $plugin->users_by_uoa;
+				if( EPrints::Utils::is_set( $users ) )
+                                {
+					# first get the number of records
+					$no_records = $users->count;
+
+					# now chekc for problems with any of them	
+					# we need to borrow an export plugin to perform some of the validation checks
+					my $export_plugin = $self->{session}->plugin( "Export::REF_Support" );
+			        	$export_plugin->{report} = $report;
+					$users->map( sub {
+                                                my( $session, undef, $user ) = @_;
+					        my $objects = $export_plugin->get_related_objects( $user );
+						my @problems = $plugin->validate_user( $export_plugin, $objects );
+						$no_problems = $no_problems + scalar @problems;
+					} );
+				}
+
+				push @table_cells, ( $session->make_text( $no_records ) );
+				if( $no_problems > 0 )
+                                {
+                                        my $warning_div = $session->make_element( "div", class => "ep_ref_report_user_problems" );
+                                        $warning_div->appendChild( $self->html_phrase( "problems_reported" ) );
+                                        push @table_cells, $warning_div;
+                                }
+			}
+			$table->appendChild( $session->render_row( $plugin->render_title, @table_cells ) );
+
+
+		}
+
+	}
+
+	return $chunk;
+}
+
 1;

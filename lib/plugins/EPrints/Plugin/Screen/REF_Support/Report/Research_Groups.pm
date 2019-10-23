@@ -159,7 +159,7 @@ sub validate_rg
 	}
 
 	# are there any duplicate codes within this UoA
-	# this approach is probably a bit inefficient, but this is unlikely to be a huge dataset so it should be ok :S
+	# this approach is probably a bit inefficient, but this is unlikely to be a huge dataset so it should be ok...
 	my $rg_ds = $session->dataset( 'ref_support_rg' );
 	my $rgs = $rg_ds->search( filters => [
         	{ meta_fields => [ "uoa" ], value => $rg->get_value( "uoa" ) },
