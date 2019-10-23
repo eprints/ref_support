@@ -17,7 +17,7 @@ sub research_groups
         my $rgs = $rg_ds->search( filters => [
                 { meta_fields => [ "uoa" ], value => join( " ", @uoa_ids ),},
         ]);
-
+	return $rgs->reorder( "uoa/code" );
 	return $rgs;
 }
 

@@ -143,14 +143,12 @@ sub output_dataobj
 	my $objects = $plugin->get_related_objects( $dataobj );
 
 	my $report = $plugin->get_report();
-	
 	my @rows;
 	my $uoa_id = $plugin->get_current_uoa( $dataobj );
 	return [] unless( defined $uoa_id );	# abort!
 	
 	my ( $hefce_uoa_id, $is_multiple ) = $plugin->parse_uoa( $uoa_id );
 	return [] unless( defined $hefce_uoa_id );
-
 	my $valid_ds = {};
 	foreach my $dsid ( keys %$objects )
 	{
@@ -171,11 +169,11 @@ sub output_dataobj
 	foreach( @common_fields )
 	{
 		my $value;
-		if( $_ eq 'unitOfAssessment' )	# get it from the ref_support_selection object
+		if( $_ eq 'unitOfAssessment' || $_ eq 'UnitOfAssessment' )	# get it from the ref_support_selection object
 		{
 			$value = $hefce_uoa_id;
 		}
-		elsif( $_ eq 'multipleSubmission' ) 
+		elsif( $_ eq 'multipleSubmission' || $_ eq 'MultipleSubmission' ) 
 		{ 
 			$value = $is_multiple || ""; 
 		}

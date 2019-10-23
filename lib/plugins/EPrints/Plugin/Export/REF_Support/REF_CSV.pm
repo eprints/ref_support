@@ -83,14 +83,11 @@ sub output_dataobj
 	my $hefce_uoa_id;
 	my $is_multiple;
 
-	if( $report ne "research_groups" )
-	{
-		$uoa_id = $plugin->get_current_uoa( $dataobj );
-		return "" unless( defined $uoa_id );	# abort!
+	$uoa_id = $plugin->get_current_uoa( $dataobj );
+	return "" unless( defined $uoa_id );	# abort!
 	
-		( $hefce_uoa_id, $is_multiple ) = $plugin->parse_uoa( $uoa_id );
-		return "" unless( defined $hefce_uoa_id );
-	}
+	( $hefce_uoa_id, $is_multiple ) = $plugin->parse_uoa( $uoa_id );
+	return "" unless( defined $hefce_uoa_id );	
 	
 	my $valid_ds = {};
 	foreach my $dsid ( keys %$objects )
