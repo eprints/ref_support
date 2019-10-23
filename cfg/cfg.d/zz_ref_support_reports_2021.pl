@@ -319,7 +319,7 @@ $c->{'ref'}->{'ref1_former_staff_contracts'}->{'mappings'} = {
 
 # character limits
 $c->{'ref_support'}->{'ref1_former_staff_contracts_fields_length'} = {
-	research_connection => 7500,
+	researchConnection => 7500,
 };
 
 
@@ -337,14 +337,14 @@ sub ref2021_contract_staff_identifier
 }
 
 # Former Staff Contracts Validation
-$c->{plugins}->{"Screen::REF_Support::Report::Former_Staff_Contracts"}->{params}->{validate_user} = sub {
+$c->{plugins}->{"Screen::REF_Support::Report::Former_Staff_Contracts"}->{params}->{validate_circ} = sub {
         my( $plugin, $objects ) = @_;
 
         my $session = $plugin->{session};
         my @problems;
 	
         # character length checks...
-        #&ref_support_check_characters( $session, 'ref1_former_staff_contracts', $plugin, $objects, \@problems );
+        &ref_support_check_characters( $session, 'ref1_former_staff_contracts', $plugin, $objects, \@problems );
 
 	# hesa check
         #my $user = $objects->{user};
@@ -356,7 +356,6 @@ $c->{plugins}->{"Screen::REF_Support::Report::Former_Staff_Contracts"}->{params}
         #       push @problems, { field => "hesa", desc => $session->html_phrase( 'ref_support:validate:invalid_hesa', fieldname => $desc ) };
         #}
         return @problems;
-
 };
 
 
@@ -416,6 +415,35 @@ $c->{'ref'}->{'ref2_research_outputs'}->{'mappings'} = {
 	"outputPdfRequired" => "ref_support_selection.pdf_required",
 };
 
+# character limits
+$c->{'ref_support'}->{'ref2_research_outputs_fields_length'} = {
+	outputIdentifier => 24,
+	webOfScienceIdentifier => 15,
+	title => 7500,
+	place => 256,
+	publisher => 256,
+	volumeTitle => 256,
+	volume => 16,
+	issue => 16,
+	firstPage => 8,
+	articleNumber => 32,
+	isbn => 24,
+	issn => 24,
+	doi => 1024,
+	patentNumber => 24,
+	url => 1024,
+	supplementaryInformationDOI => 1024,
+	pendingPublicationReserve => 24,
+	englishAbstract => 7500,
+	doubleWeightingStatement => 7500,
+	doubleWeightingReserve => 24,
+	conflictedPanelMembers => 512,
+	additionalInformation => 7500,
+	outputAllocation => 128,
+	outputSubProfileCategory => 128,	
+};
+         
+
 sub ref2021_month
 {
         my( $plugin, $objects ) = @_;
@@ -427,6 +455,19 @@ sub ref2021_month
 
 	return undef;
 }
+
+# Research Outputs Validation
+$c->{plugins}->{"Screen::REF_Support::Report::Research_Outputs"}->{params}->{validate_selection} = sub {
+	my( $plugin, $objects ) = @_;
+
+        my $session = $plugin->{session};
+        my @problems;
+
+        # character length checks...
+        &ref_support_check_characters( $session, 'ref2_research_outputs', $plugin, $objects, \@problems );
+
+	return @problems;
+};
 
 # Link between staff and outputs fields
 $c->{'ref'}->{'ref2_staff_outputs'}->{'fields'} = [qw{ hesaStaffIdentifier staffIdentifier outputIdentifier authorContributionStatement }];

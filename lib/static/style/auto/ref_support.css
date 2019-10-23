@@ -82,6 +82,13 @@ div.ep_ref_report_box
 	padding: 0px;
 }
 
+div.ep_ref_report_box div.ep_ref_contract_title
+{
+	font-weight: bold;
+	padding: 4px;
+	text-decoration: underline;
+}
+
 div.ep_ref_listing_top_box
 {
 	padding: 5px 10px; 

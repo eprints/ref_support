@@ -15,7 +15,8 @@ sub export
 	my $contracts_ds = $session->dataset( "ref_support_circ" );
 
 	my @ids = ();
-	# get out contracts from our users
+	
+	# get contracts from our users
 	my $contracts = EPrints::List->new( repository => $session, dataset => $contracts_ds, ids => \@ids );
 	my $users = $self->users;
 	$users->map( sub {
@@ -93,7 +94,6 @@ sub ajax_user
 		my $userid = $user->get_id;
 
 		my $frag = $self->render_user( $user, \@problems );
-
 		my @json_problems;
 		foreach my $problem (@problems)
 		{
@@ -108,10 +108,9 @@ sub ajax_user
 				$problem_data->{field} = $problem->{field};
 			}
 
-			if( defined $problem->{eprint} )
+			if( defined $problem->{ref_support_circ} )
 			{
-				$problem_data->{eprintid} = $problem->{eprint}->get_id;
-				$problem_data->{edit_url} = $problem->{eprint}->get_control_url;
+				$problem_data->{eprintid} = $problem->{ref_support_circ}->get_id;
 			}
 
 			push @json_problems, $problem_data;
@@ -135,85 +134,28 @@ sub render_user
         ) );
         $chunk->appendChild( $user->render_citation( "ref_support" ) );
 
-	# User metadata problems (and/or local checks!) - See part 3, section 1 of REF Framework (esp. paragraph 84)
-	my @user_problems = $self->validate_user( $user );
-
-	# gather problems together (under one user)
-	if( scalar( @user_problems ) )
-	{
-		my $frag = $session->make_doc_fragment;
-		
-		my $c = 0;
-		for( @user_problems )
-		{
-			if( defined $_->{field} )
-			{
-				push @$problems, { user => $user, problem => $_->{desc}, field => $_->{field} };
-				next;
-			}
-			$frag->appendChild( $session->make_element( 'br' ) ) if( $c++ > 0 );
-			$frag->appendChild( $_->{desc} );
-		}
-
-		push @$problems, { user => $user, problem => $frag };
-	}
-
 	my $div = $chunk->appendChild( $session->make_element( "div" ) );
 	$link = $div->appendChild( $session->make_element( "a",
 		name => $user->value( "username" ),
 	) );
  
+
+	my $export_plugin = $self->{session}->plugin( "Export::REF_Support" );
+        $export_plugin->{report} = $self->{processor}->{report};
+
 	my $circs = EPrints::DataObj::REF_Support_Circ->search_by_user( $session, $user );
 	$circs->map(sub {
                 (undef, undef, my $circ) = @_;
-		
-		$chunk->appendChild( $circ->render_citation( 'ref1_former_staff_contracts' ) );
+	
+		# display contract title (i.e. start and end date of contract)
+		$chunk->appendChild( $circ->render_citation( 'ref1_former_staff_contracts' ) );	
+
+		# get and display contract problems
+		my $objects = $export_plugin->get_related_objects( $circ );
+		push @$problems, $self->validate_circ( $export_plugin, $objects );
 	} );
 	
 	return $chunk;
-}
-
-sub render_problem_row
-{
-	my( $self, $problem ) = @_;
-
-        my $session = $self->{session};
-        my $benchmark = $self->{processor}->{benchmark};
-        my $uoa = $self->{processor}->{uoa};
-
-        my $tr = $session->make_element( "tr" );
-        my $td;
-
-        my $link_td = $tr->appendChild( $session->make_element( "td" ) );
-
-        my $users = $problem->{user};
-        $users = [$users] if ref($users) ne "ARRAY";
-        $td = $tr->appendChild( $session->make_element( "td",
-                style => "white-space: nowrap",
-        ) );
-        foreach my $user (@$users)
-        {
-                $td->appendChild( $session->make_element( "br" ) )
-                        if $td->hasChildNodes;
-                $td->appendChild( $user->render_citation_link( "brief" ) );
-
-                $link_td->appendChild( $session->make_text( " " ) )
-                        if $link_td->hasChildNodes;
-                my $link = $link_td->appendChild( $session->render_link(
-                        "#".$user->value( "username" ),
-                ) );
-                $link->appendChild( $self->html_phrase( "view" ) );
-                $link_td->appendChild( $session->make_text( "/" ) );
-                $link = $link_td->appendChild( $session->render_link(
-                        $self->user_control_url( $user ),
-                ) );
-                $link->appendChild( $self->html_phrase( "edit" ) );
-        }
-
-        $td = $tr->appendChild( $session->make_element( "td" ) );
-      	$td->appendChild( $problem->{problem} );
-
-        return $tr;
 }
 
 sub user_control_url
@@ -233,16 +175,30 @@ sub user_control_url
 	return $href;
 }
 
-sub validate_user
+sub validate_circ
 {
-	my( $self, $user, $selection, $eprint ) = @_;
+	my( $self, $export_plugin, $objects ) = @_;
 
-	my $f = $self->param( "validate_user" );
+	my $f = $self->param( "validate_circ" );
 	return () if !defined $f;
 
 	my @problems = &$f( @_[1..$#_], $self );
 
-	return @problems;
+	if( @problems == 0 )
+        {
+                return ();
+        }
+        else
+        {
+                my $frag = $self->{session}->make_doc_fragment;
+                foreach my $problem (@problems)
+                {
+                        my $p = $frag->appendChild( $self->{session}->make_element( 'p' ) );
+                        $p->appendChild( $problem->{desc} );
+                }
+                $objects->{problem} = $frag;
+                return $objects;
+        }
 }
 
 1;

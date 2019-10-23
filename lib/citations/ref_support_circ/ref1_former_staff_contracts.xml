@@ -5,24 +5,23 @@
 -->
 
 <cite:citation xmlns="http://www.w3.org/1999/xhtml" xmlns:cite="http://eprints.org/ep3/citation" xmlns:epc="http://eprints.org/ep3/control">
-
-<table cellpadding="3" style="margin:1em 0em">
-<tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_ref_fte"/>:</th><td><print expr="ref_fte"/></td><td id="user_{userid.as_string()}_ref_fte"/></tr>
-<tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_research_connection"/>:</th><td><print expr="research_connection"/></td><td id="user_{userid.as_string()}_research_connection"/></tr>
-<tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_research_groups"/>:</th><td><print expr="research_groups"/></td><td id="user_{userid.as_string()}_research_groups"/></tr>
-<tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_fixed_term_start"/>:</th><td><print expr="fixed_term_start"/></td><td id="user_{userid.as_string()}_fixed_term_start"/></tr>
-<tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_fixed_term_end"/>:</th><td><print expr="fixed_term_end"/></td><td id="user_{userid.as_string()}_fixed_term_end"/></tr>
-<tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_is_secondment"/>:</th><td><print expr="is_secondment"/></td><td id="user_{userid.as_string()}_is_secondment"/></tr>
+<div class="ep_ref_report_eprint" id="ep_ref_eprint_{userid.as_string()}_{circid.as_string()}">
+<div class="ep_ref_contract_title">Contract: <print expr="fixed_term_start"/> - <print expr="fixed_term_end"/></div>
+<table cellpadding="3" style="margin-bottom:1em">
+<tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_ref_fte"/>:</th><td><print expr="ref_fte"/></td><td id="circ_{circid.as_string()}_ref_fte"/></tr>
+<tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_research_connection"/>:</th><td><print expr="research_connection"/></td><td id="circ_{circid.as_string()}_research_connection"/></tr>
+<tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_research_groups"/>:</th><td><print expr="research_groups"/></td><td id="circ_{circid.as_string()}_research_groups"/></tr>
+<tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_is_secondment"/>:</th><td><print expr="is_secondment"/></td><td id="circ_{circid.as_string()}_is_secondment"/></tr>
 <if test="is_secondment = 'TRUE'">
-<tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_secondment_start"/>:</th><td><print expr="secondment_start"/></td><td id="user_{userid.as_string()}_secondment_start"/></tr>
-<tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_secondment_end"/>:</th><td><print expr="secondment_end"/></td><td id="user_{userid.as_string()}_secondment_end"/></tr>
+<tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_secondment_start"/>:</th><td><print expr="secondment_start"/></td><td id="circ_{circid.as_string()}_secondment_start"/></tr>
+<tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_secondment_end"/>:</th><td><print expr="secondment_end"/></td><td id="circ_{circid.as_string()}_secondment_end"/></tr>
 </if>
-<tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_is_unpaid_leave"/>:</th><td><print expr="is_unpaid_leave"/></td><td id="user_{userid.as_string()}_is_unpaid_leave"/></tr>
+<tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_is_unpaid_leave"/>:</th><td><print expr="is_unpaid_leave"/></td><td id="circ_{circid.as_string()}_is_unpaid_leave"/></tr>
 <if test="is_unpaid_leave = 'TRUE'">
-<tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_unpaid_leave_start"/>:</th><td><print expr="unpaid_leave_start"/></td><td id="user_{userid.as_string()}_unpaid_leave_start"/></tr>
-<tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_unpaid_leave_end"/>:</th><td><print expr="unpaid_leave_end"/></td><td id="user_{userid.as_string()}_unpaid_leave_end"/></tr>
+<tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_unpaid_leave_start"/>:</th><td><print expr="unpaid_leave_start"/></td><td id="circ_{circid.as_string()}_unpaid_leave_start"/></tr>
+<tr><th align="right"><epc:phrase ref="ref_support_circ_fieldname_unpaid_leave_end"/>:</th><td><print expr="unpaid_leave_end"/></td><td id="circ_{circid.as_string()}_unpaid_leave_end"/></tr>
 </if>
 <!-- sf2: + research groups [1..4] -->
 </table>
-
+</div>
 </cite:citation>

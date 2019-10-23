@@ -7,7 +7,7 @@
 # Bazaar Configuration
 $c->{plugins}{"Export::REF_Support"}{params}{disable} = 0;
 $c->{plugins}{"Export::REF_Support::REF_XML"}{params}{disable} = 0;
-$c->{plugins}{"Export::REF_Support::REF_JSON"}{params}{disable} = 0;
+#$c->{plugins}{"Export::REF_Support::REF_JSON"}{params}{disable} = 0;
 $c->{plugins}{"Export::REF_Support::REF_CSV"}{params}{disable} = 0;
 $c->{plugins}{"Export::REF_Support::REF_Excel"}{params}{disable} = 0;
 $c->{plugins}{"Screen::REF_Support"}{params}{disable} = 0;

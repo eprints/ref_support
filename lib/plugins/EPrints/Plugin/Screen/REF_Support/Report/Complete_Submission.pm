@@ -167,9 +167,7 @@ sub xml_export
 	}
 	elsif( $export eq "Export::REF_Support::REF_JSON" )
 	{
-		use XML::XML2JSON;
-		my $XML2JSON = XML::XML2JSON->new();
-		$final_string = $XML2JSON->convert($master_dom->toString);
+		# not a priority right now...
  	}
 
 	# now we have our final dom, comprised of all the other reports
@@ -247,7 +245,7 @@ sub render
                 "ref1_current_staff" => "Current_Staff",
                 "ref1_former_staff" => "Former_Staff",
                 #"ref1_former_staff_contracts" => "Former_Staff_Contracts",
-                #"ref2_research_outputs" => "Research_Outputs",
+                "ref2_research_outputs" => "Research_Outputs",
                 #"ref2_staff_outputs" => "Staff_Outputs",
         );
 
@@ -274,6 +272,7 @@ sub render
                 	my $report_plugin = "Screen::REF_Support::Report::" . $reports{$report};
 			my $plugin = $session->plugin( $report_plugin );
 			$plugin->{processor}->{uoas} = [ $uoa ];
+			$plugin->{processor}->{benchmark} = $self->current_benchmark;
 			
 			# display the relevant information for each report plugin
 			my @table_cells;
@@ -318,7 +317,7 @@ sub render
 					# first get the number of records
 					$no_records = $users->count;
 
-					# now chekc for problems with any of them	
+					# now check for problems with any of them	
 					# we need to borrow an export plugin to perform some of the validation checks
 					my $export_plugin = $self->{session}->plugin( "Export::REF_Support" );
 			        	$export_plugin->{report} = $report;
@@ -332,6 +331,37 @@ sub render
 
 				push @table_cells, ( $session->make_text( $no_records ) );
 				if( $no_problems > 0 )
+                                {
+                                        my $warning_div = $session->make_element( "div", class => "ep_ref_report_user_problems" );
+                                        $warning_div->appendChild( $self->html_phrase( "problems_reported" ) );
+                                        push @table_cells, $warning_div;
+                                }
+			}
+			elsif( $report eq "ref2_research_outputs" )
+			{
+				my $no_records = 0;
+                                my $no_problems = 0;
+
+				# get the users and check for problems
+                                my $selections = $plugin->get_selections;
+                                if( EPrints::Utils::is_set( $selections ) )
+                                {
+					# first get the number of records
+                                        $no_records = $selections->count;
+
+					# now check for problems with any of them       
+                                        # we need to borrow an export plugin to perform some of the validation checks
+                                        my $export_plugin = $self->{session}->plugin( "Export::REF_Support" );
+                                        $export_plugin->{report} = $report;
+                                        $selections->map( sub {
+                                                my( $session, undef, $selection ) = @_;
+                                                my $objects = $export_plugin->get_related_objects( $selection );
+                                                my $problems_object = $plugin->validate_selection( $export_plugin, $objects );
+						$no_problems = $no_problems + 1 if defined $problems_object->{problem};
+                                        } );
+				}
+				push @table_cells, ( $session->make_text( $no_records ) );
+                                if( $no_problems > 0 )
                                 {
                                         my $warning_div = $session->make_element( "div", class => "ep_ref_report_user_problems" );
                                         $warning_div->appendChild( $self->html_phrase( "problems_reported" ) );
