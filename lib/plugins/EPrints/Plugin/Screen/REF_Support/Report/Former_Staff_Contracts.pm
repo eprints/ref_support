@@ -11,19 +11,7 @@ sub export
         my $plugin = $self->{processor}->{plugin};
         return $self->SUPER::export if !defined $plugin;
 
-	my $session = $self->{session};
-	my $contracts_ds = $session->dataset( "ref_support_circ" );
-
-	my @ids = ();
-	
-	# get contracts from our users
-	my $contracts = EPrints::List->new( repository => $session, dataset => $contracts_ds, ids => \@ids );
-	my $users = $self->users;
-	$users->map( sub {
-		my( undef, undef, $user ) = @_;
-		my $user_contracts = EPrints::DataObj::REF_Support_Circ->search_by_user( $session, $user );
-		$contracts = $contracts->union( $user_contracts );
-	} );
+	my $contracts = $self->get_contracts;
 	
 	# send a list of contracts to be exported
 	if( defined $fh )
@@ -45,6 +33,27 @@ sub export
 			skip_intro => $skip_intro,
         	);
 	}
+}
+
+sub get_contracts
+{
+	my( $self ) = @_;
+
+	my $session = $self->{session};
+        my $contracts_ds = $session->dataset( "ref_support_circ" );
+
+        my @ids = ();
+
+        # get contracts from our users
+        my $contracts = EPrints::List->new( repository => $session, dataset => $contracts_ds, ids => \@ids );
+        my $users = $self->users;
+        $users->map( sub {
+                my( undef, undef, $user ) = @_;
+                my $user_contracts = EPrints::DataObj::REF_Support_Circ->search_by_user( $session, $user );
+                $contracts = $contracts->union( $user_contracts );
+        } );
+		
+	return $contracts;
 }
 
 sub properties_from

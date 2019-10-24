@@ -12,33 +12,7 @@ sub export
 	my $plugin = $self->{processor}->{plugin};
 	return $self->SUPER::export if !defined $plugin;
 
-	my @ids;
-
-	my $benchmark = $self->{processor}->{benchmark};
-	my @uoas = @{ $self->{processor}->{uoas} || [] };
-
-	$self->users->map(sub {
-		(undef, undef, my $user ) = @_;
-
-		$benchmark->user_selections( $user )->map(sub {
-			(undef, undef, my $selection) = @_;
-
-			# return if $selection->uoa( $benchmark ) ne $uoa->id;
-			my $keep = 0;
-			foreach my $uoa (@uoas)
-			{
-				if( $selection->uoa( $benchmark ) eq $uoa->id )
-				{
-					$keep = 1;
-					last;
-				}
-			}
-
-			push @ids, $selection->id if( $keep );
-		});
-	});
-
-	my $selections = $self->{session}->dataset( "ref_support_selection" )->list( \@ids );
+	my $selections = $self->get_selections;
 
 	if( defined $fh )
 	{
@@ -55,6 +29,40 @@ sub export
 			fh => \*STDOUT,
 		);
 	}
+}
+
+sub get_selections
+{
+	my( $self ) = @_;
+
+        my @ids;
+
+        my $benchmark = $self->{processor}->{benchmark};
+        my @uoas = @{ $self->{processor}->{uoas} || [] };
+
+        $self->users->map(sub {
+                (undef, undef, my $user ) = @_;
+
+                $benchmark->user_selections( $user )->map(sub {
+                        (undef, undef, my $selection) = @_;
+
+                        # return if $selection->uoa( $benchmark ) ne $uoa->id;
+                        my $keep = 0;
+                        foreach my $uoa (@uoas)
+                        {
+                                if( $selection->uoa( $benchmark ) eq $uoa->id )
+                                {
+                                        $keep = 1;
+                                        last;
+                                }
+                        }
+
+                        push @ids, $selection->id if( $keep );
+                });
+        });
+
+        my $selections = $self->{session}->dataset( "ref_support_selection" )->list( \@ids );
+	return $selections;
 }
 
 sub properties_from
@@ -129,25 +137,6 @@ sub render_user
 
 	my $selections = $benchmark->user_selections( $user );
 
-	my $circ = EPrints::DataObj::REF_Support_Circ->new_from_user( $session, $user->get_id );
-	my $expected_count = 4;
-	if( defined $circ && $circ->is_set( 'complex_reduction' ) )
-	{
-		# complex_reduction = [0,1,2,3]
-		$expected_count = 4 - $circ->get_value( 'complex_reduction' );
-		$expected_count = 1 if( $expected_count < 1 );
-	}
-
-	if( $selections->count != $expected_count )
-	{
-		push @$problems, {
-			user => $user,
-			problem => $self->html_phrase( "error:bad_count",
-				count => $session->make_text( $selections->count ),
-			),
-		};
-	}
-
 	my %uoas;
 
 	my $select_n = 1;
@@ -161,7 +150,7 @@ sub render_user
 			
 		if( defined $eprint )
 		{
-			$chunk->appendChild( $selection->render_citation( "report",
+			$chunk->appendChild( $selection->render_citation( "staff_output_link",
 					user => $user,
 					eprint => $eprint,
 					n => [$select_n, 'INTEGER' ]
@@ -181,8 +170,17 @@ sub render_user
 
 		$select_n++;
 
+		my $objects = {
+                        user => $user,
+                        ref_support_selection => $selection,
+                        eprint => $eprint,
+                };
+
+                my $export_plugin = $self->{session}->plugin( "Export::REF_Support" );
+                $export_plugin->{report} = $self->{processor}->{report};
+
 		push @$problems,
-			$self->validate_selection( $user, $selection, $eprint );
+			$self->validate_selection( $export_plugin, $objects );
 
 		my @others;
 
@@ -315,7 +313,7 @@ sub user_control_url
 
 sub validate_selection
 {
-	my( $self, $user, $selection, $eprint ) = @_;
+	my( $self, $export_plugin, $objects ) = @_;
 
 	my $f = $self->param( "validate_selection" );
 	return () if !defined $f;
@@ -331,14 +329,10 @@ sub validate_selection
 		foreach my $problem (@problems)
 		{
 			my $p = $frag->appendChild( $self->{session}->make_element( 'p' ) );
-			$p->appendChild( $problem );
+			$p->appendChild( $problem->{desc} );
 		}
-		return {
-			user => $user,
-			selection => $selection,
-			eprint => $eprint,
-			problem => $frag,
-		};
+		$objects->{problem} = $frag;
+		return $objects;
 	}
 }
 

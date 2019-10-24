@@ -244,9 +244,9 @@ sub render
                 "research_groups" => "Research_Groups",
                 "ref1_current_staff" => "Current_Staff",
                 "ref1_former_staff" => "Former_Staff",
-                #"ref1_former_staff_contracts" => "Former_Staff_Contracts",
+                "ref1_former_staff_contracts" => "Former_Staff_Contracts",
                 "ref2_research_outputs" => "Research_Outputs",
-                #"ref2_staff_outputs" => "Staff_Outputs",
+                "ref2_staff_outputs" => "Staff_Outputs",
         );
 
         foreach my $uoa ( @uoas )
@@ -337,7 +337,7 @@ sub render
                                         push @table_cells, $warning_div;
                                 }
 			}
-			elsif( $report eq "ref2_research_outputs" )
+			elsif( $report eq "ref2_research_outputs" || $report eq "ref2_staff_outputs" )
 			{
 				my $no_records = 0;
                                 my $no_problems = 0;
@@ -368,11 +368,39 @@ sub render
                                         push @table_cells, $warning_div;
                                 }
 			}
+			elsif( $report eq "ref1_former_staff_contracts" )
+			{
+				my $no_records = 0;
+                                my $no_problems = 0;
+
+                                # get the contracts and check for problems
+                                my $contracts = $plugin->get_contracts;
+                                if( EPrints::Utils::is_set( $contracts ) )
+                                {
+                                        # first get the number of records
+                                        $no_records = $contracts->count;
+
+                                        # now check for problems with any of them       
+                                        # we need to borrow an export plugin to perform some of the validation checks
+                                        my $export_plugin = $self->{session}->plugin( "Export::REF_Support" );
+                                        $export_plugin->{report} = $report;
+                                        $contracts->map( sub {
+                                                my( $session, undef, $contract ) = @_;
+                                                my $objects = $export_plugin->get_related_objects( $contract );
+                                                my $problems_object = $plugin->validate_circ( $export_plugin, $objects );
+                                                $no_problems = $no_problems + 1 if defined $problems_object->{problem};
+                                        } );
+                                }
+                                push @table_cells, ( $session->make_text( $no_records ) );
+                                if( $no_problems > 0 )
+                                {
+                                        my $warning_div = $session->make_element( "div", class => "ep_ref_report_user_problems" );
+                                        $warning_div->appendChild( $self->html_phrase( "problems_reported" ) );
+                                        push @table_cells, $warning_div;
+                                }
+			}
 			$table->appendChild( $session->render_row( $plugin->render_title, @table_cells ) );
-
-
 		}
-
 	}
 
 	return $chunk;

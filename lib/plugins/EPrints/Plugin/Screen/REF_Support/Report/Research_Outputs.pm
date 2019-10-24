@@ -12,9 +12,6 @@ sub export
 	my $plugin = $self->{processor}->{plugin};
 	return $self->SUPER::export if !defined $plugin;
 
-	my $benchmark = $self->{processor}->{benchmark};
-	my @uoas = @{ $self->{processor}->{uoas} || [] };
-
 	my $selections = $self->get_selections;
 
 	if( defined $fh )

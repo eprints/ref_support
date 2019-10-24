@@ -479,4 +479,23 @@ $c->{'ref'}->{'ref2_staff_outputs'}->{'mappings'} = {
         "authorContributionStatement" => "ref_support_selection.author_statement_text",
 };
 
+# character limits
+$c->{'ref_support'}->{'ref2_staff_outputs_fields_length'} = {
+        staffIdentifier => 13,
+	outputIdentifier => 13,
+	authorContributionStatement => 7500,
+};
+
+# Link between staff and outputs validation
+$c->{plugins}->{"Screen::REF_Support::Report::Staff_Outputs"}->{params}->{validate_selection} = sub {
+        my( $plugin, $objects ) = @_;
+
+        my $session = $plugin->{session};
+        my @problems;
+
+        # character length checks...
+        &ref_support_check_characters( $session, 'ref2_staff_outputs', $plugin, $objects, \@problems );
+
+        return @problems;
+};
 
