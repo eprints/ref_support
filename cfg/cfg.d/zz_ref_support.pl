@@ -586,7 +586,7 @@ $c->add_dataset_field( 'ref_support_selection', { name => 'pdf_required', type =
 
 # REF Search Configuration (as used by REF::Listing)
 
-$c->{search}->{"ref"} =
+$c->{search}->{"ref_support"} =
 {
         search_fields => [
                 { meta_fields => [ $EPrints::Utils::FULLTEXT ] },

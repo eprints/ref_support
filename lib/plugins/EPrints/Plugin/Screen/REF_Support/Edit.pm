@@ -26,6 +26,15 @@ sub can_be_viewed
         my $rc = $self->EPrints::Plugin::Screen::REF_Support::can_be_viewed;
         return 0 if( !defined $rc || !$rc );
 
+	my $selection = $self->{processor}->{selection};
+        my $selection_uoa = $selection->uoa( $self->current_benchmark );
+	
+	# is this my selection
+	if( $selection_uoa eq $self->{session}->current_user->value( 'ref_support_uoa' ) && $selection->value( "user_id" ) eq $self->{session}->current_user->id )
+        {
+                return 1;
+        }
+
 	#if current user is a champion....are they the right champion for this selection
 	if( $self->{session}->current_user->exists_and_set( 'ref_support_uoa_role' ) )
 	{
@@ -35,16 +44,11 @@ sub can_be_viewed
 		my $seen = 0;
 		if( grep { $selection_uoa eq $_ } @{$uoas} )
 		{
-			$seen = 1;
+			return 1;
 		}	
-		if( !$seen ) #we're a champion, but not the right champion for this selection!
-		{
-			return 0;
-		}
 	}
-	return 1;
+	return 0;
 }
-
 
 sub from
 {

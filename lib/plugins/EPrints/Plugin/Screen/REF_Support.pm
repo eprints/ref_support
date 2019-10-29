@@ -107,7 +107,7 @@ sub properties_from
 
 	$self->SUPER::properties_from;
 
-	my $sconf = $session->config( "search", "ref" );
+	my $sconf = $session->config( "search", "ref_support" );
 	$sconf->{"allow_blank"} = 1;	# to allow the search by userid
 
 	$self->{processor}->{sconf} = $sconf;
