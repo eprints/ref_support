@@ -213,7 +213,7 @@ sub render_contracts
 	my $imagesurl = $session->current_url( path => "static", "style/images" );
 	my $ds = $session->dataset( "ref_support_circ" );
 
-	my $columns = [ "circ","fixed_term_start","fixed_term_end" ];
+	my $columns = [ "fixed_term_start","fixed_term_end" ];
 	
 	# Paginate list
 	my %opts = (
