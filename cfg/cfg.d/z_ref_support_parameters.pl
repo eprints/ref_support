@@ -5,7 +5,7 @@ $c->{ref_support}->{income_years} = [qw( 2014 2015 2016 2017 2018 2019 )];
 
 
 $c->{ref_support}->{first_year} = 2014;
-$c->{ref_support}->{last_year} = 2019;
+$c->{ref_support}->{last_year} = 2020;
 
 #The earliest year of the REF period - used by Screen/REF_Support/Listing.pm 'sub search_filters'
 $c->{ref_support}->{earliest_year} = 2013;
