@@ -277,3 +277,8 @@ h1 .ref_support_help{
 img.compliance-icon{
 	vertical-align: baseline;
 }
+
+#role_lookup{
+	display: block;
+	margin: 0 auto 3px auto;
+}
