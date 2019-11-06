@@ -17,7 +17,7 @@ sub new
 	my $self = $class->SUPER::new( %params );
 
 	$self->{name} = "REF Support - Abstract Exporter class";
-	$self->{accept} = [ 'report/ref1a', 'report/ref1b', 'report/ref1c', 'report/ref2', 'report/research_groups', 'report/ref1_current_staff', 'report/ref1_former_staff', 'report/ref1_former_staff_contracts', 'report/ref2_research_outputs', 'report/ref2_staff_outputs', 'report/submission' ];
+	$self->{accept} = [ 'report/ref1a', 'report/ref1b', 'report/ref1c', 'report/ref2', 'report/research_groups', 'report/ref1_current_staff', 'report/ref1_former_staff', 'report/ref1_former_staff_contracts', 'report/ref2_research_outputs', 'report/ref2_staff_outputs', 'report/ref4_doctoral_degrees', 'report/submission' ];
 	$self->{advertise} = 0;
 	$self->{enable} = 1;
 	$self->{visible} = 'staff';
@@ -122,7 +122,7 @@ sub get_current_uoa
 			}
 		}
 	}
-	elsif( $report =~ /^ref2/ || $report eq 'ref4' )
+	elsif( $report =~ /^ref2/ || $report =~ /^ref4/ )
 	{
 		# $object is EPrints::DataObj::REF_Support_Selection
 		return $object->current_uoa();
@@ -175,6 +175,12 @@ sub get_related_objects
                 };
                 my $eprint = $session->dataset( 'eprint' )->dataobj( $dataobj->value( 'eprint_id' ) );
                 $objects->{eprint} = $eprint if( defined $eprint );
+	}
+	elsif( $report eq "ref4_doctoral_degrees" )
+	{
+		$objects = {
+                        ref_support_env => $dataobj,
+		}
 	}
 	elsif( $report eq 'research_groups' )
 	{

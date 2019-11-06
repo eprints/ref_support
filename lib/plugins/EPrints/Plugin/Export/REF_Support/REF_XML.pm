@@ -211,6 +211,11 @@ sub tags
 		$main = 'outputs';
 		$secondary = 'output';
 	}
+	elsif( $report eq 'ref4_doctoral_degrees' )
+	{
+		$main = 'researchDoctoralsAwarded';
+		$secondary = 'doctoralsAwarded';
+	}
 	elsif( $report eq 'research_groups' )
 	{
 		$main = 'researchGroups';

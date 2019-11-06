@@ -9,7 +9,7 @@
 
 # Used by REF::Report::Listing to pre-populate the list of available reports (and their order):
 $c->{'ref_support'}->{'reports'} = [] if !defined $c->{'ref_support'}->{'reports'};
-unshift @{$c->{'ref_support'}->{'reports'}}, ( 'Complete_Submission', 'Research_Groups', 'Current_Staff', 'Former_Staff', 'Former_Staff_Contracts', 'Research_Outputs', 'Staff_Outputs', 'REF1a', 'REF1b', 'REF1c', 'REF2' );
+unshift @{$c->{'ref_support'}->{'reports'}}, ( 'Complete_Submission', 'Research_Groups', 'Current_Staff', 'Former_Staff', 'Former_Staff_Contracts', 'Research_Outputs', 'Staff_Outputs', 'Doctoral_Degrees', 'REF1a', 'REF1b', 'REF1c', 'REF2' );
 
 
 ##################

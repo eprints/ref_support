@@ -379,6 +379,7 @@ Please choose one of the following options:<br/>
 <epp:phrase id="Plugin/Screen/REF_Support/Report/Research_Groups:title">Research Groups</epp:phrase>
 <epp:phrase id="Plugin/Screen/REF_Support/Report/Research_Outputs:title">Research Outputs</epp:phrase>
 <epp:phrase id="Plugin/Screen/REF_Support/Report/Staff_Outputs:title">Link between staff and outputs</epp:phrase>
+<epp:phrase id="Plugin/Screen/REF_Support/Report/Doctoral_Degrees:title">Research doctoral degrees awarded</epp:phrase>
 
 <epp:phrase id="Plugin/Screen/REF_Support/Report:header">
 <div class="ep_ref_report_top_box" style="height:25px;line-height:25px;">
@@ -734,7 +735,7 @@ No users found in your UoA.</epp:phrase>
 <epp:phrase id="ref/report/excel:ref1_former_staff_contracts">FormerStaffContract</epp:phrase>
 <epp:phrase id="ref/report/excel:ref2_research_outputs">Output</epp:phrase>
 <epp:phrase id="ref/report/excel:ref2_staff_outputs">StaffOutputLink</epp:phrase>
-
+<epp:phrase id="ref/report/excel:ref4_doctoral_degrees">ResearchDoctoralsAwarded</epp:phrase>
 
 <!-- REF4 add-ons -->
 
@@ -890,4 +891,9 @@ No users found in your UoA.</epp:phrase>
  <epp:phrase id="Plugin/Screen/REF_Support/Report/Complete_Submission:problems_reported">Problems reported. See individual report for further details</epp:phrase>
 
  <epp:phrase id="Plugin/Screen/REF_Support/Report/Research_Outputs:error:bad_count">User has <epc:pin name="count"/> selection(s).</epp:phrase>
+
+ <epp:phrase id="Plugin/Screen/REF_Support/Report/Doctoral_Degrees:degrees_awarded">Research Doctoral Degrees Awarded</epp:phrase>
+ <epp:phrase id="Plugin/Screen/REF_Support/Report/Doctoral_Degrees:year">Year</epp:phrase>
+ <epp:phrase id="Plugin/Screen/REF_Support/Report/Doctoral_Degrees:degrees">Degrees Awarded</epp:phrase>
+
 </epp:phrases>
