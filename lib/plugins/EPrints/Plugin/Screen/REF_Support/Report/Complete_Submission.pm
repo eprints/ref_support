@@ -87,7 +87,7 @@ sub xml_export
 	{
 		# set up a filehandle
 		my $report_output;
-		open my $fh, '>', \$report_output or die "Can't open variable: $!";
+		open my $fh, '>:encoding(UTF-8)', \$report_output or die "Can't open variable: $!";
 
 		# produce the report
 		my $report_plugin = "Screen::REF_Support::Report::" . $reports{$report};
@@ -170,8 +170,13 @@ sub xml_export
 		# not a priority right now...
  	}
 
-	# now we have our final dom, comprised of all the other reports
-	$export_plugin->initialise_fh( \*STDOUT );
+	# now we have our final dom, comprised of all the other reports we just need to download it
+        my $filename = ($export_plugin->{report}||'report')."_".EPrints::Time::iso_date().($export_plugin->{suffix}||".txt");
+        EPrints::Apache::AnApache::header_out(
+                $export_plugin->{session}->get_request,
+                "Content-Disposition" => "attachment; filename=$filename"
+        );
+	
 	print $final_string;
 }
 
