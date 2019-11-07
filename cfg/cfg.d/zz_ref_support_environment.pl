@@ -12,7 +12,7 @@ $c->{plugins}{"Export::REF_Support::REF4_Excel"}{params}{disable} = 0;
 
 # REF 4 Report
 $c->{'ref_support'}->{'reports'} = [] if !defined $c->{'ref'}->{'reports_support'};
-unshift @{$c->{'ref_support'}->{'reports'}}, ( 'REF4' );
+#unshift @{$c->{'ref_support'}->{'reports'}}, ( 'REF4' );
 
 # REF Environment Dataset definition
 

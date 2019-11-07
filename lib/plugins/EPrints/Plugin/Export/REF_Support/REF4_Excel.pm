@@ -36,9 +36,16 @@ sub output_list
 
 	my $output;
 	open(my $FH,'>',\$output);
-
+	
+	my $predefined_workbook = 0;
 	my $workbook;
-	if (defined $opts{fh})
+
+	if( defined $opts{fh} && ref $opts{fh} eq "Spreadsheet::WriteExcel" )
+        {
+                $predefined_workbook = 1; # flag the fact we have been given a workbook to work with
+                $workbook = $opts{fh};
+        }
+	elsif (defined $opts{fh})
 	{
 		binmode($opts{fh});
 		$workbook = Spreadsheet::WriteExcel->new(\*{$opts{fh}});
@@ -53,13 +60,13 @@ sub output_list
 	$workbook->set_properties( utf8 => 1 );
 
 	# headers / field list
-	my $ref4a = [ 'institution', 'unitofAssessment', 'multipleSubmission', 'action', 'year', 'degreesAwarded' ];
-	my $ref4b = [ 'institution', 'unitofAssessment', 'multipleSubmission', 'action', 'source' ];
-	my $ref4c = [ 'institution', 'unitofAssessment', 'multipleSubmission', 'action', 'source' ];
+	my $ref4a = [ 'UKPRN', 'UnitOfAssessment', 'MultipleSubmission', 'Year', 'DegreesAwarded' ];
+	my $ref4b = [ 'UKPRN', 'UnitOfAssessment', 'MultipleSubmission', 'Source' ];
+	my $ref4c = [ 'UKPRN', 'UnitOfAssessment', 'MultipleSubmission', 'Source' ];
 	foreach my $year ( @{$session->config( 'ref_support', 'income_years' )} )
 	{
-		push @$ref4b, 'income' . $year;
-		push @$ref4c, 'income' . $year;
+		push @$ref4b, 'Income' . $year;
+		push @$ref4c, 'Income' . $year;
 	}
 
 	my $columns = {
@@ -80,7 +87,6 @@ sub output_list
 	}	
 
 	my $institution = $session->config( 'ref', 'institution' ) || $session->phrase( 'archive_name' );
-	my $action = $session->config( 'ref', 'action' ) || 'Update';
 
 	# REF4: iterate over the entire list, pre-calculate what needs to be
 	# $degrees->{$uoa}->{$year} = 12;
@@ -147,7 +153,7 @@ sub output_list
 			if( $worksheets->{ref4a} )
 			{
 				my $col_id = 0;
-				$worksheets->{ref4a}->write( $rows{ref4a}, $col_id++, $_ ) for( $institution, $hefce_uoa_id, $is_multiple, $action, $year, $plugin->escape_value( $total ) );
+				$worksheets->{ref4a}->write( $rows{ref4a}, $col_id++, $_ ) for( $institution, $hefce_uoa_id, $is_multiple, $year, $plugin->escape_value( $total ) );
 				$rows{ref4a}++;
 			}
 		}
@@ -166,7 +172,7 @@ sub output_list
 			if( $worksheets->{ref4b} )
 			{
 				my $col_id = 0;
-				$worksheets->{ref4b}->write( $rows{ref4b}, $col_id++, $_ ) for( $institution, $hefce_uoa_id, $is_multiple, $action, $source, @income_years );
+				$worksheets->{ref4b}->write( $rows{ref4b}, $col_id++, $_ ) for( $institution, $hefce_uoa_id, $is_multiple, $source, @income_years );
 				$rows{ref4b}++;
 			}
 		}
@@ -185,15 +191,20 @@ sub output_list
 			if( $worksheets->{ref4c} )
 			{	
 				my $col_id = 0;
-				$worksheets->{ref4c}->write( $rows{ref4c}, $col_id++, $_ ) for( $institution, $hefce_uoa_id, $is_multiple, $action, $source, @income_years );
+				$worksheets->{ref4c}->write( $rows{ref4c}, $col_id++, $_ ) for( $institution, $hefce_uoa_id, $is_multiple, $source, @income_years );
 				$rows{ref4c}++;
 			}
 		}
 	}
 
-	$workbook->close;
+	$workbook->close unless $predefined_workbook;
 
-	if (defined $opts{fh})
+	if( $predefined_workbook )
+        {
+                # we were given a workbook (almost certainly from the complete report process) so we should return it
+                return $workbook;
+        }
+	elsif (defined $opts{fh})
 	{
 		return undef;
 	}

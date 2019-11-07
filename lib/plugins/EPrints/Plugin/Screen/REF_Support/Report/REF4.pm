@@ -7,11 +7,11 @@ use strict;
 
 sub export
 {
-	my( $self ) = @_;
-
+	my( $self, $fh ) = @_;
+	
 	my $benchmark = $self->{processor}->{benchmark};
 	my $uoa = $self->{processor}->{uoa};
-
+	
 	my $plugin = $self->{processor}->{plugin};
 	return $self->SUPER::export if !defined $plugin;
 	
@@ -23,11 +23,21 @@ sub export
 			{ meta_fields => [ 'ref_support_uoa' ], value => join(" ", %uoa_ids ) },
 		] );
 
-	$plugin->initialise_fh( \*STDOUT );
-	$plugin->output_list(
-		list => $list,
-		fh => \*STDOUT,
-	);
+	if( defined $fh )
+	{
+		$plugin->output_list(
+                        list => $list,
+                        fh => $fh,
+                );
+	}
+	else
+	{
+		$plugin->initialise_fh( \*STDOUT );
+		$plugin->output_list(
+			list => $list,
+			fh => \*STDOUT,
+		);
+	}
 }
 
 # For REF4, select the appropriate data from the dataset 

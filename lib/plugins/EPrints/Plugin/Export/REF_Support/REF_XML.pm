@@ -211,10 +211,10 @@ sub tags
 		$main = 'outputs';
 		$secondary = 'output';
 	}
-	elsif( $report eq 'ref4_doctoral_degrees' )
+	elsif( $report eq 'ref4' ) # used only by the complete submission report to extract content from the REF4_XML output
 	{
-		$main = 'researchDoctoralsAwarded';
-		$secondary = 'doctoralsAwarded';
+		$main = 'environment';
+		$secondary = 'researchDoctoralsAwarded';
 	}
 	elsif( $report eq 'research_groups' )
 	{

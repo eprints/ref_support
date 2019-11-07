@@ -40,6 +40,7 @@ sub excel_export
 		"ref1_former_staff_contracts" => "Former_Staff_Contracts",
                 "ref2_research_outputs" => "Research_Outputs",
                 "ref2_staff_outputs" => "Staff_Outputs",
+                "ref4" => "REF4",
         );
 
 	# we need a worksheet for each report
@@ -56,7 +57,18 @@ sub excel_export
 		 # produce the report
 		 my $report_plugin = "Screen::REF_Support::Report::" . $reports{$report};
 
-		 $workbook = $self->run_report( $session, $workbook, $plugin, $report, $report_plugin, \@uoas );
+		# check for any custom export plugins...
+                my $export;
+                if( $report eq "ref4" )
+                {
+                        $export = $session->plugin( "Export::REF_Support::REF4_Excel" );
+                }
+                else
+                {
+                        $export = $plugin;
+                }
+
+		 $workbook = $self->run_report( $session, $workbook, $export, $report, $report_plugin, \@uoas );
 
 		# reinitialise the export plugin
 		$plugin->{ref_fields} = undef;
@@ -79,6 +91,7 @@ sub xml_export
 		"ref1_former_staff" => "Former_Staff",
 		"ref2_research_outputs" => "Research_Outputs",
 		"ref2_staff_outputs" => "Staff_Outputs",
+		"ref4" => "REF4",
 	);
 
 	my $export_reports = {};
@@ -92,7 +105,18 @@ sub xml_export
 		# produce the report
 		my $report_plugin = "Screen::REF_Support::Report::" . $reports{$report};
 
-		$self->run_report( $session, $fh, $plugin, $report, $report_plugin, \@uoas );
+		# check for any custom export plugins...
+		my $export;
+		if( $report eq "ref4" )
+		{
+			$export = $session->plugin( "Export::REF_Support::REF4_XML" );
+		}
+		else
+		{
+			$export = $plugin;
+		}
+
+		$self->run_report( $session, $fh, $export, $report, $report_plugin, \@uoas );
 
 		close $fh;
 		$export_reports->{$report} = $report_output;
@@ -110,6 +134,7 @@ sub xml_export
 	foreach my $report( keys %reports )
 	{
 		next if $report eq "research_groups"; # we're using this report as our starting point, so no need to extract anything from it
+
 		my $dom = XML::LibXML->load_xml(string => $export_reports->{$report});
 
 		# get tag for the content we'll want to extract

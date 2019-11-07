@@ -5,9 +5,8 @@ $c->{plugins}{"Screen::REF_Support::Report::Former_Staff"}{params}{disable} = 0;
 $c->{plugins}{"Screen::REF_Support::Report::Former_Staff_Contracts"}{params}{disable} = 0;
 $c->{plugins}{"Screen::REF_Support::Report::Research_Outputs"}{params}{disable} = 0;
 $c->{plugins}{"Screen::REF_Support::Report::Staff_Outputs"}{params}{disable} = 0;
-$c->{plugins}{"Screen::REF_Support::Report::Doctoral_Degrees"}{params}{disable} = 0;
 
-$c->{ref_2021_reports} = [qw{ complete_submission research_groups ref1_current_staff ref1_former_staff ref1_former_staff_contracts ref2_research_outputs ref2_staff_outputs ref4_doctoral_degrees }];
+$c->{ref_2021_reports} = [qw{ complete_submission research_groups ref1_current_staff ref1_former_staff ref1_former_staff_contracts ref2_research_outputs ref2_staff_outputs }];
 
 sub ref_support_check_characters
 {
@@ -496,32 +495,6 @@ $c->{plugins}->{"Screen::REF_Support::Report::Staff_Outputs"}->{params}->{valida
 
         # character length checks...
         &ref_support_check_characters( $session, 'ref2_staff_outputs', $plugin, $objects, \@problems );
-
-        return @problems;
-};
-
-
-# Doctoral Degrees fields
-$c->{'ref'}->{'ref4_doctoral_degrees'}->{'fields'} = [qw{ year degreesAwarded }];
-
-$c->{'ref'}->{'ref4_doctoral_degrees'}->{'mappings'} = {
-        "year" => "ref_support_env.year",
-	"degreesAwarded" => "ref_support_env.degrees",
-};
-
-# character limits
-$c->{'ref_support'}->{'ref4_doctoral_degrees_fields_length'} = {
-};
-
-# Link between staff and outputs validation
-$c->{plugins}->{"Screen::REF_Support::Report::Doctoral_Degrees"}->{params}->{validate_selection} = sub {
-        my( $plugin, $objects ) = @_;
-
-        my $session = $plugin->{session};
-        my @problems;
-
-        # character length checks...
-        &ref_support_check_characters( $session, 'ref4_doctoral_degrees', $plugin, $objects, \@problems );
 
         return @problems;
 };

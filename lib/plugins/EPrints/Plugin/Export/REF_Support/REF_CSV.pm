@@ -17,7 +17,7 @@ sub new
 	$self->{suffix} = ".csv";
 	$self->{mimetype} = "text/plain; charset=utf-8";
 	$self->{advertise} = 1;
-	$self->{accept} = [ 'report/ref1a', 'report/ref1b', 'report/ref1c', 'report/ref2', 'report/research_groups', 'report/ref1_current_staff', 'report/ref1_former_staff', 'report/ref1_former_staff_contracts', 'report/ref2_research_outputs', 'report/ref2_staff_outputs', 'report/ref4_doctoral_degrees' ];
+	$self->{accept} = [ 'report/ref1a', 'report/ref1b', 'report/ref1c', 'report/ref2', 'report/research_groups', 'report/ref1_current_staff', 'report/ref1_former_staff', 'report/ref1_former_staff_contracts', 'report/ref2_research_outputs', 'report/ref2_staff_outputs' ];
 	$self->{is_hierarchical} = 0;
 
 	return $self;

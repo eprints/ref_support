@@ -29,11 +29,11 @@ sub output_list
         my( $plugin, %opts ) = @_;
 	
 	my $session = $plugin->{session};
-
+	my $fh = $opts{fh};
 	my $institution = $plugin->escape_value( $session->config( 'ref', 'institution' ) || $session->phrase( 'archive_name' ) );
 	my $action = $session->config( 'ref', 'action' ) || 'Update';
 
-print <<HEADER;
+print $fh <<HEADER;
 <?xml version="1.0" encoding="utf-8"?>
 <refData>
 	<institution>$institution</institution>
@@ -54,7 +54,6 @@ HEADER
 
 	$opts{list}->map( sub {
 		my( undef, undef, $dataobj ) = @_;
-
 		# must know the year
 		my $year = $dataobj->value( 'year' ) or return;
 		
@@ -100,7 +99,7 @@ HEADER
 			$multiple = "<multipleSubmission>$is_multiple</multipleSubmission>";
 		}
 
-		print <<OPENING;
+		print $fh <<OPENING;
 	<submission>
 		<unitOfAssessment>$hefce_uoa_id</unitOfAssessment>
 		$multiple
@@ -120,7 +119,7 @@ OPENING
 		}
 		if( scalar( @degrees ) )
 		{
-			print "<researchDoctoralsAwarded>\n".join("\n",@degrees)."\n</researchDoctoralsAwarded>\n";
+			print $fh "<researchDoctoralsAwarded>\n".join("\n",@degrees)."\n</researchDoctoralsAwarded>\n";
 		}
 
 		# REF4b
@@ -142,7 +141,7 @@ OPENING
 		}
 		if( scalar( @incomes ) )
 		{
-			print "<researchIncome>\n".join( "\n", @incomes )."\n</researchIncome>\n";
+			print $fh "<researchIncome>\n".join( "\n", @incomes )."\n</researchIncome>\n";
 		}
 
 		# REF4c
@@ -158,22 +157,22 @@ OPENING
 					push @incomes_kind, "<source>$source</source>";
 					$done_any++;
 				}
-				push @incomes_kind, "<Income".$year.">$value</Income".$year."/>";
+				push @incomes_kind, "<Income".$year.">$value</Income".$year.">";
 			}
 			push @incomes, "\n</income>\n" if( $done_any );
 		}
 		if( scalar( @incomes_kind ) )
 		{
-			print "<researchIncomeInKind>\n".join( "\n", @incomes_kind )."\n</researchIncomeInKind>\n";
+			print $fh "<researchIncomeInKind>\n".join( "\n", @incomes_kind )."\n</researchIncomeInKind>\n";
 		}
 		
-		print <<CLOSING;
+		print $fh <<CLOSING;
 		</environment>
 	</submission>
 CLOSING
 
 	}
-		print <<FOOTER;
+		print $fh <<FOOTER;
     </submissions>
 </refData>
 FOOTER
