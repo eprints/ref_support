@@ -34,6 +34,7 @@
       <field ref="output_sub_profile_cat"/>
       <field ref="author_statement"/>
       <field ref="author_statement_text"/>
+      <field ref="is_additional_staff"/>
       <field ref="exclude_from_submission"/>
       <!--<field ref="pdf_required"/>-->
     </component>
@@ -62,7 +63,11 @@
       <field ref="conflicted_members"/>
     </component>
       
-    <component collapse="yes">
+    <component type="Field::Multi">
+	<title>Additional Information</title>
+	<field ref="does_include_sig"/>
+	<field ref="does_include_res"/>
+	<field ref="does_include_fact"/>
 	<field ref="details"/>	<!-- Additional Information -->
     </component>
 

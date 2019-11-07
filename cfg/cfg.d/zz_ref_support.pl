@@ -560,9 +560,9 @@ $c->add_dataset_field( 'ref_support_selection', {
 				'DepositException',
 				'AccessException',
 				'TechnicalException',
-				'OtherFurtherException',
+				'OtherException',
 				'OutOfScope',
-				'ExceptionWith3MonthsOfPublication',
+				'ExceptionWithin3MonthsOfPublication',
 			],
 		}, reuse => 1 );
 
@@ -583,6 +583,19 @@ $c->add_dataset_field( 'ref_support_selection', { name => 'exclude_from_submissi
 
 # outputPdfRequired
 $c->add_dataset_field( 'ref_support_selection', { name => 'pdf_required', type => 'boolean' }, reuse=> 1 );	
+
+# doesIncludeSignificantMaterialBefore2014
+$c->add_dataset_field( 'ref_support_selection', { name => "does_include_sig", type => "boolean" }, reuse => 1 );
+
+# doesIncludeResearchProcess
+$c->add_dataset_field( 'ref_support_selection', { name => "does_include_res", type => "boolean" }, reuse => 1 );
+
+# doesIncludeFactualInformationAboutSignificance
+$c->add_dataset_field( 'ref_support_selection', { name => "does_include_fact", type => "boolean" }, reuse => 1 );
+
+# isAdditionalAttributedStaffMember
+$c->add_dataset_field( 'ref_support_selection', { name => "is_additional_staff", type => "boolean" }, reuse => 1 );
+
 
 # REF Search Configuration (as used by REF::Listing)
 

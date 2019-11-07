@@ -149,7 +149,7 @@ sub ref2021_orcid
 		# Borrowed from https://github.com/eprints/orcid_support/commit/4fa9c37e1de7ca7570703ddf4539c055e8a0008d (credit: John Salter)
 		if( defined $orcid && $orcid =~ m/^(?:\s*(?:https?:\/\/)?orcid(?:\.org\/|:))?(\d{4}\-?\d{4}\-?\d{4}\-?\d{3}(?:\d|X))(?:\s*)$/ )
 		{
-			return "https://orcid.org/$1";
+			return $1;
 		}
 	}
 
@@ -368,7 +368,7 @@ $c->{'ref'}->{'research_groups'}->{'mappings'} = {
 };
 
 # Research Outputs Fields
-$c->{'ref'}->{'ref2_research_outputs'}->{'fields'} = [qw{ outputIdentifier webOfScienceIdentifier outputType title place publisher volumeTitle volume issue firstPage articleNumber isbn issn doi patentNumber month year url isPhysicalOutput supplementaryInformationDOI numberOfAdditionalAuthors isPendingPublication pendingPublicationReserve isForensicScienceOutput isCriminologyOutput isNonEnglishLanguage englishAbstract isInterdisciplinary proposeDoubleWeighting doubleWeightingStatement doubleWeightingReserve conflictedPanelMembers crossReferToUoa additionalInformation researchGroup openAccessStatus outputAllocation outputSubProfileCategory requiresAuthorContributionStatement isSensitive excludeFromSubmission outputPdfRequired }];
+$c->{'ref'}->{'ref2_research_outputs'}->{'fields'} = [qw{ outputIdentifier webOfScienceIdentifier outputType title place publisher volumeTitle volume issue firstPage articleNumber isbn issn doi patentNumber month year url isPhysicalOutput supplementaryInformation numberOfAdditionalAuthors isPendingPublication pendingPublicationReserve isForensicScienceOutput isCriminologyOutput isNonEnglishLanguage englishAbstract isInterdisciplinary proposeDoubleWeighting doubleWeightingStatement doubleWeightingReserve conflictedPanelMembers crossReferToUoa additionalInformation doesIncludeSignificantMaterialBefore2014 doesIncludeResearchProcess doesIncludeFactualInformationAboutSignificance researchGroup openAccessStatus outputAllocation outputSubProfileCategory requiresAuthorContributionStatement isSensitive excludeFromSubmission outputPdfRequired }];
 
 $c->{'ref'}->{'ref2_research_outputs'}->{'mappings'} = {
 	"outputIdentifier" => "ref_support_selection.selectionid",
@@ -390,7 +390,7 @@ $c->{'ref'}->{'ref2_research_outputs'}->{'mappings'} = {
 	"year" => \&ref2_support_year,
 	"url" => \&ref2_support_url,
 	"isPhysicalOutput" => "ref_support_selection.is_physical_output",
-	"supplementaryInformationDOI" => "ref_support_selection.supplementary_information_doi",
+	"supplementaryInformation" => "ref_support_selection.supplementary_information_doi",
 	"numberOfAdditionalAuthors" => \&ref2_support_additionalAuthors,
 	"isPendingPublication" => "ref_support_selection.pending",
 	"pendingPublicationReserve" => "ref_support_selection.pending_publication",
@@ -405,6 +405,9 @@ $c->{'ref'}->{'ref2_research_outputs'}->{'mappings'} = {
 	"conflictedPanelMembers" => "ref_support_selection.conflicted_members",
 	"crossReferToUoa" => \&ref2_support_cross_ref,
 	"additionalInformation" => "ref_support_selection.details",
+	"doesIncludeSignificantMaterialBefore2014" => "ref_support_selection.does_include_sig",
+	"doesIncludeResearchProcess" => "ref_support_selection.does_include_res",
+	"doesIncludeFactualInformationAboutSignificance" => "ref_support_selection.does_include_fact",
 	"researchGroup" => "ref_support_selection.research_group",
 	"openAccessStatus" => "ref_support_selection.open_access_status",
 	"outputAllocation" => "ref_support_selection.output_allocation",
@@ -432,7 +435,7 @@ $c->{'ref_support'}->{'ref2_research_outputs_fields_length'} = {
 	doi => 1024,
 	patentNumber => 24,
 	url => 1024,
-	supplementaryInformationDOI => 1024,
+	supplementaryInformation => 1024,
 	pendingPublicationReserve => 24,
 	englishAbstract => 7500,
 	doubleWeightingStatement => 7500,
@@ -470,13 +473,14 @@ $c->{plugins}->{"Screen::REF_Support::Report::Research_Outputs"}->{params}->{val
 };
 
 # Link between staff and outputs fields
-$c->{'ref'}->{'ref2_staff_outputs'}->{'fields'} = [qw{ hesaStaffIdentifier staffIdentifier outputIdentifier authorContributionStatement }];
+$c->{'ref'}->{'ref2_staff_outputs'}->{'fields'} = [qw{ hesaStaffIdentifier staffIdentifier outputIdentifier authorContributionStatement isAdditionalAttributedStaffMember }];
 
 $c->{'ref'}->{'ref2_staff_outputs'}->{'mappings'} = {
         "hesaStaffIdentifier" => "user.hesa",
         "staffIdentifier" => "user.staff_id",
         "outputIdentifier" => "ref_support_selection.selectionid",
         "authorContributionStatement" => "ref_support_selection.author_statement_text",
+	"isAdditionalAttributedStaffMember" => "ref_support_selection.is_additional_staff",
 };
 
 # character limits

@@ -207,7 +207,7 @@ Please choose one of the following options:<br/>
 
 <epp:phrase id="ref_support_selection_fieldname_is_physical_output">Physical Output</epp:phrase>
 <epp:phrase id="ref_support_selection_fieldhelp_is_physical_output">Indicate whether a physical copy of the output should be provided for this output.</epp:phrase>
-<epp:phrase id="ref_support_selection_fieldname_supplementary_information_doi">Supplementary Information DOI</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldname_supplementary_information_doi">Supplementary Information</epp:phrase>
 <epp:phrase id="ref_support_selection_fieldhelp_supplementary_information_doi">The DOI (or other URL, if no DOI is available) for any supplementary information published alongside an output.</epp:phrase>
 
 <epp:phrase id="ref_support_selection_fieldname_is_forensic">Forensic Science Output</epp:phrase>
@@ -222,9 +222,9 @@ Please choose one of the following options:<br/>
 <epp:phrase id="ref_support_selection_fieldopt_open_access_status_DepositException">Deposit Exception</epp:phrase>
 <epp:phrase id="ref_support_selection_fieldopt_open_access_status_AccessException">Access Exception</epp:phrase>
 <epp:phrase id="ref_support_selection_fieldopt_open_access_status_TechnicalException">Technical Exception</epp:phrase>
-<epp:phrase id="ref_support_selection_fieldopt_open_access_status_OtherFurtherException">Other Further Exception</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldopt_open_access_status_OtherException">Other Exception</epp:phrase>
 <epp:phrase id="ref_support_selection_fieldopt_open_access_status_OutOfScope">Out of Scope</epp:phrase>
-<epp:phrase id="ref_support_selection_fieldopt_open_access_status_ExceptionWith3MonthsOfPublication">Exception With 3 Months Of Publication</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldopt_open_access_status_ExceptionWithin3MonthsOfPublication">Exception Within 3 Months Of Publication</epp:phrase>
 
 <epp:phrase id="ref_support_selection_fieldname_output_allocation">Output Allocation</epp:phrase>
 <epp:phrase id="ref_support_selection_fieldhelp_output_allocation">Required when requested in the panel criteria and working methods.</epp:phrase>
@@ -237,6 +237,16 @@ Please choose one of the following options:<br/>
 <epp:phrase id="ref_support_selection_fieldname_exclude_from_submission">Exclude from Submission</epp:phrase>
 <epp:phrase id="ref_support_selection_fieldhelp_exclude_from_submission">Indicate that the output record should be excluded from submission. No records with this flag set should remain in the submission when submitting it to the REF 2021.</epp:phrase>
 <epp:phrase id="ref_support_selection_fieldname_pdf_required">Output PDF Required</epp:phrase>
+
+<epp:phrase id="ref_support_selection_fieldname_does_include_sig">Does Include Significant Material Before 2014</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldhelp_does_include_sig">Indicates the additional information statement includes a statement about significant material in common with an output submitted to REF 2014.</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldname_does_include_res">Does Include Research Process</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldhelp_does_include_res">Indicates the additional information statement includes information about the research process and/or content. </epp:phrase>
+<epp:phrase id="ref_support_selection_fieldname_does_include_fact">Does Include Factual Information About Significance</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldhelp_does_include_fact">Indicates the additional information statement includes factual information about the significance of the research.</epp:phrase>
+
+<epp:phrase id="ref_support_selection_fieldname_is_additional_staff">Is Additional Attributed Staff Member</epp:phrase>
+<epp:phrase id="ref_support_selection_fieldhelp_is_additional_staff">A value indicating whether this staff member is an additional attributed staff member for a double weighted output or an output submitted to main panel D.</epp:phrase>
 
 <epp:phrase id="ref_support_selection_fieldname_pending_publication">Pending Publication Reserve</epp:phrase>
 <epp:phrase id="ref_support_selection_fieldhelp_pending_publication">Select a different REF Selection as a reserve for the pending publication.</epp:phrase>
@@ -845,6 +855,8 @@ No users found in your UoA.</epp:phrase>
  <epp:phrase id="Plugin/Screen/REF_Support/Report/Research_Groups:research_group:code">Research Group Code</epp:phrase>
  <epp:phrase id="Plugin/Screen/REF_Support/Report/Research_Groups:research_group:invalid_length">Research Group Code must be a single alpha or numeric character</epp:phrase>
  <epp:phrase id="Plugin/Screen/REF_Support/Report/Research_Groups:research_group:no_code">The Research Group must have a code</epp:phrase>
+ <epp:phrase id="Plugin/Screen/REF_Support/Report/Research_Groups:research_group:no_name">The Research Group must have a name</epp:phrase>
+ <epp:phrase id="Plugin/Screen/REF_Support/Report/Research_Groups:research_group:name_length">Length exceeded for Research Group name (max: 128 characters)</epp:phrase>
  <epp:phrase id="Plugin/Screen/REF_Support/Report/Research_Groups:research_group:duplicate_code">This Unit of Assessment already has a Research Group with this code</epp:phrase>
 
  <epp:phrase id="datasetname_ref_support_rg">REF Research Groups</epp:phrase>

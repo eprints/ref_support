@@ -152,6 +152,14 @@ sub validate_rg
 		return @problems;
 	}
 
+	# is there a name??
+	my $name = $rg->get_value( "name" );
+	if( !EPrints::Utils::is_set( $name ) )
+	{
+		push @problems, $self->html_phrase( "research_group:no_name" );
+		return @problems;
+	}
+
 	# is the code more than a single alphanumeric character
 	if( $rg->get_value( "code" ) !~ m/^[a-zA-Z0-9]$/ )
 	{
@@ -175,6 +183,12 @@ sub validate_rg
 	{
 		push @problems, $self->html_phrase( "research_group:duplicate_code" );
 	}
+
+	# is the name too long?
+	if( length( $name ) > 128 )
+	{
+		push @problems, $self->html_phrase( "research_group:name_length" );
+	} 	
 
         return @problems;
 }
