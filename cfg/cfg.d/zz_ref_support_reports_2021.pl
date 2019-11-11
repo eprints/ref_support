@@ -8,6 +8,7 @@ $c->{plugins}{"Screen::REF_Support::Report::Staff_Outputs"}{params}{disable} = 0
 
 $c->{ref_2021_reports} = [qw{ complete_submission research_groups ref1_current_staff ref1_former_staff ref1_former_staff_contracts ref2_research_outputs ref2_staff_outputs }];
 
+# generic function for checking the character lengths of the fields for a given report have not exceeded a maximum limit
 sub ref_support_check_characters
 {
         my( $session, $report, $plugin, $objects, $problems ) = @_;
@@ -61,6 +62,7 @@ sub ref_support_check_characters
         }
 }
 
+# generic function for checking a research groups field, ensuring the research groups exist and there are no more than 4
 sub ref_support_check_research_groups
 {
         my( $session, $dataobj, $problems ) = @_;
@@ -218,6 +220,30 @@ $c->{plugins}->{"Screen::REF_Support::Report::Current_Staff"}->{params}->{valida
                 push @problems, { field => "hesa", desc => $session->html_phrase( 'ref_support:validate:invalid_hesa', fieldname => $desc ) };
         }
 
+	if( !$user->is_set( "hesa" ) && !$user->is_set( "staff_id" ) )
+	{
+                push @problems, { field => "hesa", desc => $session->html_phrase( 'ref_support:validate:no_staff_id' ) };
+	}
+
+	# fte check
+	if( $user->is_set( "ref_fte" ) )
+	{
+		my $fte = $user->get_value( "ref_fte" );
+		my $decimal_points = length(($fte =~ /\.(.*)/)[0]);
+		if( $fte > 1.0 )
+		{
+ 	               push @problems, { field => "ref_fte", desc => $session->html_phrase( 'ref:validate_user:high_fte' ) };
+		}	
+		elsif( $fte >= 0.2 && $fte < 0.3 && ( !$user->is_set( "research_connection" ) && !$user->is_set( "reason_no_connections" ) ) )
+		{
+			push @problems, { field => "research_connection", desc => $session->html_phrase( 'ref_support:validate_user:fte_research_connection' ) };
+		}	
+		if( $decimal_points > 2 )
+		{
+ 	               push @problems, { field => "ref_fte", desc => $session->html_phrase( 'ref_support:validate:fte_decimal' ) };
+		}
+	}
+
         return @problems;
 };
 
@@ -295,6 +321,14 @@ $c->{plugins}->{"Screen::REF_Support::Report::Former_Staff"}->{params}->{validat
        		my $desc = $session->html_phrase( "user_fieldname_orcid" );
 		push @problems, { field => "orcid", desc => $session->html_phrase( 'ref_support:validate:invalid_orcid', fieldname => $desc ) };
  	}
+
+	# exclude check (should users where this is set not even feature or should the UoA Champion unset this user's UoA field?)
+	if( $user->is_set( "exclude_from_submission" ) && $user->get_value( "exclude_from_submission" ) eq 'TRUE' )
+	{
+		my $desc = $session->html_phrase( "user_fieldname_exclude_from_submission" );
+		push @problems, { field => "exclude_from_submission", desc => $session->html_phrase( 'ref_support:validate:exclude_from_submission', fieldname => $desc ) };
+	} 
+
 	return @problems;
 };
 
