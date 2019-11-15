@@ -65,7 +65,7 @@ sub ref_support_check_characters
 # generic function for checking a research groups field, ensuring the research groups exist and there are no more than 4
 sub ref_support_check_research_groups
 {
-        my( $session, $dataobj, $problems ) = @_;
+        my( $session, $dataobj, $objects, $problems ) = @_;
 
 	my $rgs = $dataobj->value( 'research_groups' );
 	my $rg_ds = $session->dataset( 'ref_support_rg' );
@@ -76,19 +76,32 @@ sub ref_support_check_research_groups
 	}
 	else # we have a valid number, so start checking each one is ok
 	{
+		# we need to check the RG is valid for the given uoa, so first we need a uoa...
+		my $ref = ref $dataobj;
+		my $uoa;
+		if( $ref eq "EPrints::DataObj::User" )
+		{
+			$uoa = $dataobj->get_value( "ref_support_uoa" );
+		}
+		elsif( $ref eq "EPrints::DataObj::REF_Support_Circ" )
+		{
+			my $user = $objects->{user};
+			$uoa = $user->get_value( "ref_support_uoa" );
+		}	
+
 		foreach my $rg ( @$rgs )
 		{
 			# check each rg is only a single alpha-numeric character
 			if( $rg !~ m/^[a-zA-Z0-9]$/ )
 			{
-				push @$problems, { field => "research_groups", desc => $session->html_phrase( 'ref_support:validate:user_research_group_code', fieldname => $desc ) };
+				push @$problems, { field => "research_groups", desc => $session->html_phrase( 'ref_support:validate:user_research_group_code', rg => $session->make_text( $rg ) ) };
 			}	
 
 			# check an RG record exists for the UoA
-			my $research_groups = EPrints::DataObj::REF_Support_Research_Group::search_by_uoa_and_code( $session, $dataobj->get_value( "ref_support_uoa" ), $rg );
+			my $research_groups = EPrints::DataObj::REF_Support_Research_Group::search_by_uoa_and_code( $session, $uoa, $rg );
 			if( $research_groups->count == 0 )
 			{
-				push @$problems, { field => "research_groups", desc => $session->html_phrase( 'ref_support:validate:no_user_research_group', fieldname => $desc ) };
+				push @$problems, { field => "research_groups", desc => $session->html_phrase( 'ref_support:validate:no_user_research_group', rg => $session->make_text( $rg ) ) };
 			}
 		}
 	}
@@ -209,7 +222,7 @@ $c->{plugins}->{"Screen::REF_Support::Report::Current_Staff"}->{params}->{valida
         &ref_support_check_characters( $session, 'ref1_current_staff', $plugin, $objects, \@problems );
 
 	# research group check
-	&ref_support_check_research_groups( $session, $user, \@problems );
+	&ref_support_check_research_groups( $session, $user, $objects, \@problems );
 
 	# hesa check
         my $ds = $user->dataset;
@@ -326,7 +339,7 @@ $c->{plugins}->{"Screen::REF_Support::Report::Former_Staff"}->{params}->{validat
 	if( $user->is_set( "exclude_from_submission" ) && $user->get_value( "exclude_from_submission" ) eq 'TRUE' )
 	{
 		my $desc = $session->html_phrase( "user_fieldname_exclude_from_submission" );
-		push @problems, { field => "exclude_from_submission", desc => $session->html_phrase( 'ref_support:validate:exclude_from_submission', fieldname => $desc ) };
+		push @problems, { field => "exclude_from_submission", desc => $session->html_phrase( 'ref_support:validate:exclude_user_from_submission', fieldname => $desc ) };
 	} 
 
 	return @problems;
@@ -381,14 +394,39 @@ $c->{plugins}->{"Screen::REF_Support::Report::Former_Staff_Contracts"}->{params}
         &ref_support_check_characters( $session, 'ref1_former_staff_contracts', $plugin, $objects, \@problems );
 
 	# hesa check
-        #my $user = $objects->{user};
-        #my $ds = $user->dataset;
-        #my $hesa = $user->value( 'hesa' );
-        #if( defined $hesa && length( $hesa ) != 13  )
-        #{
-        #       my $desc = $session->html_phrase( "user_fieldname_hesa" );
-        #       push @problems, { field => "hesa", desc => $session->html_phrase( 'ref_support:validate:invalid_hesa', fieldname => $desc ) };
-        #}
+        my $user = $objects->{user};
+        my $ds = $user->dataset;
+        my $hesa = $user->value( 'hesa' );
+        if( defined $hesa && length( $hesa ) != 13  )
+        {
+               my $desc = $session->html_phrase( "user_fieldname_hesa" );
+               push @problems, { field => "hesa", desc => $session->html_phrase( 'ref_support:validate:invalid_hesa', fieldname => $desc ) };
+        }
+
+	my $contract = $objects->{ref_support_circ};
+
+	# fte check
+        if( $contract->is_set( "ref_fte" ) )
+        {
+                my $fte = $contract->get_value( "ref_fte" );
+                my $decimal_points = length(($fte =~ /\.(.*)/)[0]);
+                if( $fte > 1.0 )
+                {
+                       push @problems, { field => "ref_fte", desc => $session->html_phrase( 'ref:validate_user:high_fte' ) };
+                }
+                elsif( $fte >= 0.2 && $fte < 0.3 && ( !$contract->is_set( "research_connection" ) && !$contract->is_set( "reason_no_connections" ) ) )
+                {
+                        push @problems, { field => "research_connection", desc => $session->html_phrase( 'ref_support:validate_user:fte_research_connection' ) };
+                }
+                if( $decimal_points > 2 )
+                {
+                       push @problems, { field => "ref_fte", desc => $session->html_phrase( 'ref_support:validate:fte_decimal' ) };
+                }
+        }
+
+	# research group check
+        &ref_support_check_research_groups( $session, $contract, $objects, \@problems );
+
         return @problems;
 };
 
@@ -402,7 +440,7 @@ $c->{'ref'}->{'research_groups'}->{'mappings'} = {
 };
 
 # Research Outputs Fields
-$c->{'ref'}->{'ref2_research_outputs'}->{'fields'} = [qw{ outputIdentifier webOfScienceIdentifier outputType title place publisher volumeTitle volume issue firstPage articleNumber isbn issn doi patentNumber month year url isPhysicalOutput supplementaryInformation numberOfAdditionalAuthors isPendingPublication pendingPublicationReserve isForensicScienceOutput isCriminologyOutput isNonEnglishLanguage englishAbstract isInterdisciplinary proposeDoubleWeighting doubleWeightingStatement doubleWeightingReserve conflictedPanelMembers crossReferToUoa additionalInformation doesIncludeSignificantMaterialBefore2014 doesIncludeResearchProcess doesIncludeFactualInformationAboutSignificance researchGroup openAccessStatus outputAllocation outputSubProfileCategory requiresAuthorContributionStatement isSensitive excludeFromSubmission outputPdfRequired }];
+$c->{'ref'}->{'ref2_research_outputs'}->{'fields'} = [qw{ outputIdentifier webOfScienceIdentifier outputType title place publisher volumeTitle volume issue firstPage articleNumber isbn issn doi patentNumber month year url isPhysicalOutput supplementaryInformation numberOfAdditionalAuthors isPendingPublication pendingPublicationReserve isForensicScienceOutput isCriminologyOutput isNonEnglishLanguage englishAbstract isInterdisciplinary proposeDoubleWeighting doubleWeightingStatement doubleWeightingReserve conflictedPanelMembers crossReferToUoa additionalInformation doesIncludeSignificantMaterialBefore2014 doesIncludeResearchProcess doesIncludeFactualInformationAboutSignificance researchGroup openAccessStatus outputAllocation1 outputAllocation2 outputSubProfileCategory requiresAuthorContributionStatement isSensitive excludeFromSubmission outputPdfRequired }];
 
 $c->{'ref'}->{'ref2_research_outputs'}->{'mappings'} = {
 	"outputIdentifier" => "ref_support_selection.selectionid",
@@ -444,7 +482,8 @@ $c->{'ref'}->{'ref2_research_outputs'}->{'mappings'} = {
 	"doesIncludeFactualInformationAboutSignificance" => "ref_support_selection.does_include_fact",
 	"researchGroup" => "ref_support_selection.research_group",
 	"openAccessStatus" => "ref_support_selection.open_access_status",
-	"outputAllocation" => "ref_support_selection.output_allocation",
+	"outputAllocation1" => "ref_support_selection.output_allocation",
+	"outputAllocation2" => "ref_support_selection.output_allocation_2",
 	"outputSubProfileCategory" => "ref_support_selection.output_sub_profile_cat",
 	"requiresAuthorContributionStatement" => "ref_support_selection.author_statement",
 	"isSensitive" => "ref_support_selection.sensitive",
@@ -476,7 +515,8 @@ $c->{'ref_support'}->{'ref2_research_outputs_fields_length'} = {
 	doubleWeightingReserve => 24,
 	conflictedPanelMembers => 512,
 	additionalInformation => 7500,
-	outputAllocation => 128,
+	outputAllocation1 => 128,
+	outputAllocation2 => 128,
 	outputSubProfileCategory => 128,	
 };
          
@@ -486,6 +526,8 @@ sub ref2021_month
         my( $plugin, $objects ) = @_;
 
         my $eprint = $objects->{eprint};
+
+	return undef if !$eprint->is_set( "date" );
 
 	my( $year, $month, $day ) = split(/-/, $eprint->value( "date" ) );
 	return $month if defined $month;
@@ -500,8 +542,133 @@ $c->{plugins}->{"Screen::REF_Support::Report::Research_Outputs"}->{params}->{val
         my $session = $plugin->{session};
         my @problems;
 
+	my $selection = $objects->{ref_support_selection};
+	my $uoa = $selection->current_uoa;
+	my( $hefce_uoa_id, $is_multiple ) = $plugin->parse_uoa( $uoa );
+
         # character length checks...
         &ref_support_check_characters( $session, 'ref2_research_outputs', $plugin, $objects, \@problems );
+
+	# year and month checks
+	my $user = $objects->{user};
+	my $eprint = $objects->{eprint};
+	my( $year, $month, $day ) = split(/-/, $eprint->value( "date" ) ) if $eprint->is_set( "date" );	
+	
+	# check we have a valid year
+	if( EPrints::Utils::is_set( $year ) && ( $year < 2014 || $year > 2020 ) )
+	{
+		push @problems, { field => "year", desc => $session->html_phrase( 'ref_support:validate:invalid_year' ) };
+	}
+
+	# we need a month for former staff (end date before 2020-07-31)
+	if( !EPrints::Utils::is_set( $month ) && $user->is_set( "ref_end_date" ) ) # check to see if a month is actually required and we have the info to perform the check
+	{
+		my $end_date = $user->get_value( "ref_end_date" );
+		my $end_tp;		
+		if( $end_date =~ /^(\d{4})/ ) # we have a year...
+		{
+			$end_tp = Time::Piece->strptime( "$end_date-01-01", "%Y-%m-%d" )
+		}
+		elsif( $end_date =~ /^(\d{4})\-\d{2}$/ ) # month and year
+		{
+			$end_tp = Time::Piece->strptime( "$end_date", "%Y-%m" )
+		}
+		elsif( $end_date =~ /^(\d{4})\-(\d{2})\-(\d{2})$/ )
+		{
+			$end_tp = Time::Piece->strptime( "$end_date", "%Y-%m-%d" )
+		}
+
+		# now compare our end date with the census date
+		if( EPrints::Utils::is_set( $end_tp ) )
+		{
+			my $census_tp = Time::Piece->strptime( "2020-07-31", "%Y-%m-%d" );
+			if( $end_tp < $census_tp ) # a month is necessary 
+			{
+				push @problems, { field => "month", desc => $session->html_phrase( 'ref_support:validate:month_required' ) };
+			}
+		}	
+	}
+
+	# isNonEnglishLanguage and englishAbstract
+	if( $selection->is_set( "non_english" ) && $selection->get_value( "non_english" ) eq 'TRUE' )
+	{
+		if( !$selection->is_set( "abstract" ) )
+		{
+			push @problems, { field => "abstract", desc => $session->html_phrase( 'ref_support:validate:english_abstract_required' ) };
+		}
+	}
+
+	# researchGroup
+	if( $selection->is_set( "research_group" ) )
+	{
+		my $rg = $selection->get_value( "research_group" );
+		if( $rg !~ m/^[a-zA-Z0-9]$/ )
+                {
+                	push @problems, { field => "research_groups", desc => $session->html_phrase( 'ref_support:validate:user_research_group_code', rg => $session->make_text( $rg ) ) };
+                }
+
+                # check an RG record exists for the UoA
+                my $research_groups = EPrints::DataObj::REF_Support_Research_Group::search_by_uoa_and_code( $session, $uoa, $rg );
+                if( $research_groups->count == 0 )
+		{
+                	push @problems, { field => "research_groups", desc => $session->html_phrase( 'ref_support:validate:no_user_research_group', rg => $session->make_text( $rg ) ) };
+		}
+	}
+	
+	# additionalInformation
+	if( $selection->is_set( "details" ) )
+	{
+		my $word_limit = 0;
+		if( $selection->is_set( "does_include_sig" ) && $selection->get_value( "does_include_sig" ) eq 'TRUE' )
+		{
+			$word_limit = $word_limit + 100;
+		}
+		if( $selection->is_set( "does_include_res" ) && $selection->get_value( "does_include_res" ) eq 'TRUE' )
+		{
+			$word_limit = $word_limit + 300;
+		}
+		if( $selection->is_set( "does_include_fact" ) && $selection->get_value( "does_include_fact" ) eq 'TRUE' && ( $uoa eq "ref2021_b11" || $uoa eq "ref2021_b12" ) )
+		{
+			$word_limit = $word_limit + 100;
+		}
+
+		my @words = split /\s+/, $selection->get_value( "details" );
+                if( @words > $word_limit )
+                {
+			my $desc = $session->html_phrase( "ref_support_selection_fieldname_details" );
+                        push @problems, { field => "details", desc => $session->html_phrase( "ref:validate:word_limit", field => $desc, length => $session->make_text( scalar @words ), limit => $session->make_text( $word_limit ) ) };
+		}
+	}
+
+	# doesIncludeFactualInformationAboutSignificance 
+	if( $selection->is_set( "does_include_fact" ) && $selection->get_value( "does_include_fact" ) eq 'TRUE' && ( $uoa ne "ref2021_b11" && $uoa ne "ref2021_b12" ) )
+	{
+		my $desc = $session->html_phrase( "ref_support_selection_fieldname_does_include_fact" );
+		push @problems, { field => "does_include_fact", desc => $session->html_phrase( 'ref_support:validate:does_include_fact_flag', fieldname => $desc, uoa => $session->make_text( $hefce_uoa_id ) ) };
+	}
+
+	# outputAllocation1
+	my @output_allocation_1_requirements = ( 7, 10, 11, 12, 26, 27, 28, 29, 33, 34 );
+
+	if( ( grep { $hefce_uoa_id eq $_ } @output_allocation_1_requirements ) && !$selection->is_set( "output_allocation" ) )
+	{ 
+		push @problems, { field => "output_allocation", desc => $session->html_phrase( 'ref_support:validate:output_allocation_1_required', uoa => $session->make_text( $hefce_uoa_id ) ) };
+	}
+
+	# outputAllocation2
+	my @output_allocation_2_requirements = ( 26 );
+	if( ( grep { $hefce_uoa_id eq $_ } @output_allocation_2_requirements ) && !$selection->is_set( "output_allocation_2" ) )
+	{ 
+		push @problems, { field => "output_allocation_2", desc => $session->html_phrase( 'ref_support:validate:output_allocation_2_required', uoa => $session->make_text( $hefce_uoa_id ) ) };
+	}
+
+
+	# exclude check (should users where this is set not even feature or should the UoA Champion unset this user's UoA field?)
+        if( $selection->is_set( "exclude_from_submission" ) && $selection->get_value( "exclude_from_submission" ) eq 'TRUE' )
+        {
+                my $desc = $session->html_phrase( "ref_support_selection_fieldname_exclude_from_submission" );
+                push @problems, { field => "exclude_from_submission", desc => $session->html_phrase( 'ref_support:validate:exclude_selection_from_submission', fieldname => $desc ) };
+        }
 
 	return @problems;
 };

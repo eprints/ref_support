@@ -186,6 +186,13 @@ sub render
 	$form->appendChild( $self->workflow->render );
 	$form->appendChild( $self->render_buttons );
 	
+	$form->appendChild( $self->make_javascript( <<"EOJ" ) );
+Event.observe(window, 'load', function() {
+	additionalInfoWordCount();
+});
+EOJ
+
+
 	return $form;
 }
 

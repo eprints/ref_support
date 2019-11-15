@@ -566,8 +566,11 @@ $c->add_dataset_field( 'ref_support_selection', {
 			],
 		}, reuse => 1 );
 
-# outputAllocation
+# outputAllocation1
 $c->add_dataset_field( 'ref_support_selection', { name => 'output_allocation', type => 'text' }, reuse => 1 );
+
+# outputAllocation2
+$c->add_dataset_field( 'ref_support_selection', { name => 'output_allocation_2', type => 'text' }, reuse => 1 );
 
 # outputSubProfileCategory
 $c->add_dataset_field( 'ref_support_selection', { name => 'output_sub_profile_cat', type => 'text' }, reuse => 1 );

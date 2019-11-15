@@ -31,6 +31,7 @@
       <field ref="is_criminology"/>
       <field ref="open_access_status"/>
       <field ref="output_allocation"/>
+      <field ref="output_allocation_2"/>
       <field ref="output_sub_profile_cat"/>
       <field ref="author_statement"/>
       <field ref="author_statement_text"/>
