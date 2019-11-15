@@ -180,7 +180,7 @@ div.ep_ref_report_problems
 
 a.ep_ref_report_problems_link, span.ep_ref_report_problems_link, div.ep_ref_report_problems > p
 {
-	background: url(images/warning-small.png) no-repeat;
+	background: url(images/ref-support-warning-small.png) no-repeat;
 	padding-left: 20px;
 	padding-right: 5px;
 	padding-top: 0px;
@@ -188,7 +188,7 @@ a.ep_ref_report_problems_link, span.ep_ref_report_problems_link, div.ep_ref_repo
 }
 
 div.ep_ref_report_user_problems {
-	background: url(images/warning-small.png) no-repeat;
+	background: url(images/ref-support-warning-small.png) no-repeat;
 	padding-left: 25px;
 	padding-right: 5px;
 	padding-top: 0px;
