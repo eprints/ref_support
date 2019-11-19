@@ -13,14 +13,14 @@ sub new
 
 	$self->{name} = "REF Support - Excel";
 	$self->{accept} = [ 'report/ref4' ];
-	$self->{suffix} = ".xls";
-	$self->{mimetype} = 'application/vnd.ms-excel';
+	$self->{suffix} = ".xlsx";
+	$self->{mimetype} = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
-	my $rc = EPrints::Utils::require_if_exists('Spreadsheet::WriteExcel');
+	my $rc = EPrints::Utils::require_if_exists('Excel::Writer::XLSX');
 	unless ($rc)
 	{
 		$self->{advertise} = $self->{enable} = 0;
-		$self->{error} = 'Unable to load required module Spreadsheet::WriteExcel';
+		$self->{error} = 'Unable to load required module Excel::Writer::XLSX';
 	}
 	
 	$self->{advertise} = $self->{enable} = 1;
@@ -40,7 +40,7 @@ sub output_list
 	my $predefined_workbook = 0;
 	my $workbook;
 
-	if( defined $opts{fh} && ref $opts{fh} eq "Spreadsheet::WriteExcel" )
+	if( defined $opts{fh} && ref $opts{fh} eq "Excel::Writer::XLSX" )
         {
                 $predefined_workbook = 1; # flag the fact we have been given a workbook to work with
                 $workbook = $opts{fh};
@@ -48,16 +48,16 @@ sub output_list
 	elsif (defined $opts{fh})
 	{
 		binmode($opts{fh});
-		$workbook = Spreadsheet::WriteExcel->new(\*{$opts{fh}});
+		$workbook = Excel::Writer::XLSX->new(\*{$opts{fh}});
 		die("Unable to create spreadsheet: $!")unless defined $workbook;
 	}
 	else
 	{
-		$workbook = Spreadsheet::WriteExcel->new($FH);
+		$workbook = Excel::Writer::XLSX->new($FH);
 		die("Unable to create spreadsheet: $!")unless defined $workbook;
 	}
 
-	$workbook->set_properties( utf8 => 1 );
+	#$workbook->set_properties( utf8 => 1 );
 
 	# headers / field list
 	my $ref4a = [ 'UKPRN', 'UnitOfAssessment', 'MultipleSubmission', 'Year', 'DegreesAwarded' ];

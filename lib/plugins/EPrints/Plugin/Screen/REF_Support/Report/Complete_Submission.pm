@@ -20,7 +20,7 @@ sub export
 		my $plugin = $self->{session}->plugin( "Export::REF_Support::REF_XML" );
 		$self->xml_export( $export_plugin, $plugin );
 	}
-	elsif( $export_plugin->{mimetype} eq "application/vnd.ms-excel" )
+	elsif( $export_plugin->{mimetype} eq "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" )
 	{
 		$self->excel_export( $export_plugin );
 	}
@@ -49,8 +49,8 @@ sub excel_export
 	#my $report_output;
         #open my $fh, '>', \$report_output or die "Can't open variable: $!";
         $plugin->initialise_fh( \*STDOUT );
-	my $workbook = Spreadsheet::WriteExcel->new( \*STDOUT );
-	$workbook->set_properties( utf8 => 1 );
+	my $workbook = Excel::Writer::XLSX->new( \*STDOUT );
+	#$workbook->set_properties( utf8 => 1 );
 
 	foreach my $report( keys %reports )
         {

@@ -12,15 +12,15 @@ sub new
 	my $self = $class->SUPER::new( %opts );
 
 	$self->{name} = "REF Support - Excel";
-	$self->{suffix} = ".xls";
-	$self->{mimetype} = 'application/vnd.ms-excel';
+	$self->{suffix} = ".xlsx";
+	$self->{mimetype} = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 	$self->{is_hierarchical} = 0;
 
-	my $rc = EPrints::Utils::require_if_exists('Spreadsheet::WriteExcel');
+	my $rc = EPrints::Utils::require_if_exists('Excel::Writer::XLSX');
 	unless ($rc)
 	{
 		$self->{advertise} = $self->{enable} = 0;
-		$self->{error} = 'Unable to load required module Spreadsheet::WriteExcel';
+		$self->{error} = 'Unable to load required module Excel::Writer::XLSX';
 	}
 	
 	$self->{advertise} = $self->{enable} = 1;
@@ -39,26 +39,25 @@ sub output_list
 
 	my $predefined_workbook = 0;
 	my $workbook;
-	
-	if( defined $opts{fh} && ref $opts{fh} eq "Spreadsheet::WriteExcel" )
+	if( defined $opts{fh} && ref $opts{fh} eq "Excel::Writer::XLSX" )
 	{
+		binmode(\*STDOUT);
 		$predefined_workbook = 1; # flag the fact we have been given a workbook to work with
 		$workbook = $opts{fh};
 	}
 	elsif( defined $opts{fh} )
 	{
 		binmode($opts{fh});
-		$workbook = Spreadsheet::WriteExcel->new(\*{$opts{fh}});
+		$workbook = Excel::Writer::XLSX->new(\*{$opts{fh}});
 		die("Unable to create spreadsheet: $!")unless defined $workbook;
 	}
 	else
 	{
-		$workbook = Spreadsheet::WriteExcel->new($FH);
+		$workbook = Excel::Writer::XLSX->new($FH);
 		die("Unable to create spreadsheet: $!")unless defined $workbook;
 	}
 
-	$workbook->set_properties( utf8 => 1 ) unless $predefined_workbook;
-
+	#$workbook->set_properties( utf8 => 1 ) unless $predefined_workbook;
 	my $session = $plugin->{session};
 
 	my $worksheet = $workbook->add_worksheet( $session->phrase( 'ref/report/excel:'.$plugin->get_report ) );
@@ -115,7 +114,6 @@ sub output_list
 	} );
 
 	$workbook->close unless $predefined_workbook;
-
 	if( $predefined_workbook )
 	{
 		# we were given a workbook (almost certainly from the complete report process) so we should return it
