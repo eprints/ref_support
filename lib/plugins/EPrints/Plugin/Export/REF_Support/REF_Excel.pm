@@ -253,10 +253,10 @@ sub escape_value
 	return "" unless( defined EPrints::Utils::is_set( $value ) );
 
 	# if value is a pure number, then add ="$value" so that Excel stops the auto-formatting (it'd turn 123456 into 1.23e+6)
-	if( $value =~ /^\d+$/ )
-	{
-		return "=\"$value\"";
-	}
+	#if( $value =~ /^\d+$/ )
+	#{
+	#	return "=\"$value\"";
+	#}
 
 	return $value;
 }
