@@ -128,35 +128,43 @@ sub xml_export
 
 	# now we have all the reports, create a master report merging them all together
 	# we'll use the research groups report to get us started
+	
 	my $master_dom = XML::LibXML->load_xml(string => $export_reports->{research_groups});
+
+	my $master_xpc = XML::LibXML::XPathContext->new( $master_dom );
+        $master_xpc->registerNs('xmlns', 'http://www.ref.ac.uk/schemas/ref2021data');
 
 	# for each report extract the contents for each submission
 	foreach my $report( keys %reports )
 	{
 		next if $report eq "research_groups"; # we're using this report as our starting point, so no need to extract anything from it
-
 		my $dom = XML::LibXML->load_xml(string => $export_reports->{$report});
 
 		# get tag for the content we'll want to extract
 		$plugin->{report} = $report;
 		my( $main_tag, $secondary_tag, $tertiary_tag ) = $plugin->tags;
-		foreach my $uoa ( $dom->findnodes( '//unitOfAssessment' ) )
+
+		my $dom_xpc = XML::LibXML::XPathContext->new( $dom );
+		$dom_xpc->registerNs('xmlns', 'http://www.ref.ac.uk/schemas/ref2021data');
+
+		foreach my $uoa ( $dom_xpc->findnodes( '//xmlns:unitOfAssessment' ) )
 		{
 			# get the uoa id (used to place this section in the correct section for the master document) and the submission element
 			my $uoa_id = $uoa->textContent;
 			my $submission = $uoa->parentNode;
 
+			my $submission_xpc = XML::LibXML::XPathContext->new( $submission );
+	                $submission_xpc->registerNs('xmlns', 'http://www.ref.ac.uk/schemas/ref2021data');		
+
 			# now retrive the content we after from the submission
-			my $main = @{$submission->findnodes( $main_tag )}[0];
-			
+			my $main = @{$submission_xpc->findnodes( 'xmlns:'.$main_tag )}[0];
 			# finally, append this to the correct unit of assessment in the master document
 			my $seen = 0;
-			foreach my $master_uoa( $master_dom->findnodes( '//unitOfAssessment' ) )
+			foreach my $master_uoa( $master_xpc->findnodes( '//xmlns:unitOfAssessment' ) )
 			{
 				if( $master_uoa->textContent eq $uoa_id )
 				{
 					my $master_submission = $master_uoa->parentNode;
-
 					if( $report eq "ref1_current_staff" || $report eq "ref1_former_staff" ) # these sections need to go in their own staff section
 					{
 						my $staff = @{$master_submission->findnodes( 'staff' )}[0];
@@ -176,7 +184,7 @@ sub xml_export
 			}
 			if( !$seen )
 			{
-				my $submissions = @{$master_dom->findnodes( "//submissions" )}[0];
+				my $submissions = @{$master_xpc->findnodes( "//xmlns:submissions" )}[0];
 				$submissions->appendChild( $submission );
 			}
 		}

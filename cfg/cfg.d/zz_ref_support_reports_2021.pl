@@ -307,11 +307,15 @@ sub ref2021_contracts
 	my $results;
 	$contracts->map( sub {
 		my( undef, undef, $contract ) = @_;	
-
 		# this is currently a hacky solution for an XML export only...
 		$results = $results."<contract>".$export_plugin->output_dataobj( $contract )."</contract>"; 
 	} );
-        
+ 
+	# reinitialise the export plugin for future former staff records that need exporting
+	$export_plugin->{ref_fields} = undef;
+	$export_plugin->{ref_fields_order} = undef;
+        $export_plugin->{report} = 'ref1_former_staff';
+    
 	# return the results
 	return ( $results, $no_escape );
 }

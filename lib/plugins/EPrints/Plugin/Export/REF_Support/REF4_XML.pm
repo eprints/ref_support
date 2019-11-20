@@ -35,7 +35,7 @@ sub output_list
 
 print $fh <<HEADER;
 <?xml version="1.0" encoding="utf-8"?>
-<refData>
+<ref2021Data xmlns="http://www.ref.ac.uk/schemas/ref2021data">
 	<institution>$institution</institution>
 	<submissions>
 HEADER
@@ -174,7 +174,7 @@ CLOSING
 	}
 		print $fh <<FOOTER;
     </submissions>
-</refData>
+</ref2021Data>
 FOOTER
 }
 
