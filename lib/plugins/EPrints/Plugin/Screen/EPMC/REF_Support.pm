@@ -1,5 +1,6 @@
 package EPrints::Plugin::Screen::EPMC::REF_Support;
 
+use EPrints::Plugin::Screen::EPMC; 
 @ISA = ( 'EPrints::Plugin::Screen::EPMC' );
 
 use strict;
