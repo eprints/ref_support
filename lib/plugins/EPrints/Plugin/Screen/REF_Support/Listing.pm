@@ -71,7 +71,7 @@ sub from
 	my( $self ) = @_;
 
 	my $action = $self->{processor}->{action};
-	$action = $self->{session}->config( 'ref', 'default_search' ) || '' if( !defined $action );
+	$action = $self->{session}->config( 'ref_support', 'default_search' ) || '' if( !defined $action );
 
 	$self->search_from( $action );
 	$action = $self->{processor}->{action};
@@ -300,12 +300,12 @@ sub search_filters
 	{
 		if( $action =~ /^search_authored/ )
 		{
-			# enable this by setting $c->{"ref"}->{search_authored}->{by_id} = 1
-			if( $self->{session}->config( 'ref', 'search_authored', 'by_id' ) )
+			# enable this by setting $c->{"ref_support"}->{search_authored}->{by_id} = 1
+			if( $self->{session}->config( 'ref_support', 'search_authored', 'by_id' ) )
 			{
 				# perhaps we need to use custom fields to do the matching between user "id" and eprint "ids"
 				# the default is to match a user's email to the creators_id field
-				my $fields = $self->{session}->config( 'ref', 'search_authored', 'by_id_fields' ) || {};
+				my $fields = $self->{session}->config( 'ref_support', 'search_authored', 'by_id_fields' ) || {};
 				my $user_field = $fields->{user_field} || 'email';
 				my $eprint_field = $fields->{eprint_field} || 'creators_id';
 				my $author_id = $self->{processor}->{role}->get_value( $user_field ) || 'UNSPECIFIED';
@@ -345,7 +345,7 @@ sub search_filters
 	}
 
 	# and filter on the datasets:
-	my $datasets = $self->{session}->config( 'ref', 'listing_search_datasets' ) || 'archive';
+	my $datasets = $self->{session}->config( 'ref_support', 'listing_search_datasets' ) || 'archive';
 	push @filters,  { meta_fields => [ 'eprint_status' ], value=> $datasets, match => 'IN', merge => 'ANY' };
 
 	return @filters;

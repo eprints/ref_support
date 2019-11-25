@@ -89,11 +89,11 @@ $c->{datasets}->{user}->{search}->{simple}->{meta_fields} = [ "name", "username"
 
 
 # Un-comment the line below to search publications by author id ( == user.email or == role.email ) rather than by author name
-# $c->{'ref'}->{search_authored}->{by_id} = 1;
+# $c->{'ref_support'}->{search_authored}->{by_id} = 1;
 
 # by default the above option will map user.email to eprint.creators_id. But perhaps you'd like to use some other fields, in which case un-comment
 # the following:
-# $c->{'ref'}->{search_authored}->{by_id_fields} = {
+# $c->{'ref_support'}->{search_authored}->{by_id_fields} = {
 #	user_field => userid,
 #	eprint_field => creators_browse_id,
 # };
@@ -102,12 +102,12 @@ $c->{datasets}->{user}->{search}->{simple}->{meta_fields} = [ "name", "username"
 # Sets the datasets to search on the REF::Listing screen. By default, it will only search "archive".
 # If you want to search archive + buffer, change this to 'archive buffer'
 # If you want to search archive + buffer + inbox, change this to 'archive buffer inbox'
-$c->{'ref'}->{listing_search_datasets} = 'archive';
+$c->{'ref_support'}->{listing_search_datasets} = 'archive';
 
 # Default search to run on the REF::Listing page (un-comment the one you want):
-$c->{'ref'}->{default_search} = 'search_authored';	# items that the user has co-authored
-#$c->{'ref'}->{default_search} = 'search_deposited';	# items that the user has deposited
-#$c->{'ref'}->{default_search} = '';			# will show an empty search form
+$c->{'ref_support'}->{default_search} = 'search_authored';	# items that the user has co-authored
+#$c->{'ref_support'}->{default_search} = 'search_deposited';	# items that the user has deposited
+#$c->{'ref_support'}->{default_search} = '';			# will show an empty search form
 
 # Flags for assessor rating and assessor rating visibility
 # Un-comment the line below to show the assessor_rating field
