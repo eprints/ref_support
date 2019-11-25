@@ -62,6 +62,38 @@ sub get_selections
         });
 
         my $selections = $self->{session}->dataset( "ref_support_selection" )->list( \@ids );
+	
+	# now sort the selections to ensure any chosen as a reserve are listed before the item that has them listed as a reserve
+	my @sorted_ids;
+	$selections->map(sub {
+                (undef, undef, my $selection ) = @_;
+
+		if( $selection->is_set( "double_reserve" ) )
+		{
+			my $reserve_id = $selection->get_value( "double_reserve" );
+			if( !grep { $reserve_id eq $_ } @sorted_ids )
+			{
+				push @sorted_ids, $reserve_id;
+			}
+		}
+
+		if( $selection->is_set( "pending_publication" ) )
+		{
+			my $reserve_id = $selection->get_value( "pending_publication" );
+			if( !grep { $reserve_id eq $_ } @sorted_ids )
+			{
+				push @sorted_ids, $reserve_id;
+			}
+		}
+
+		if( !grep { $selection->id eq $_ } @sorted_ids )
+		{
+			push @sorted_ids, $selection->id;
+		}		
+	} );
+
+        $selections = $self->{session}->dataset( "ref_support_selection" )->list( \@sorted_ids );
+
 	return $selections;
 }
 
