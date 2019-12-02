@@ -70,7 +70,7 @@ $c->{datasets}->{ref_support_rg} = {
         class => "EPrints::DataObj::REF_Support_Research_Group",
         sqlname => "ref_support_rg",
         name => "ref_support_rg",
-        columns => [qw( rgid )],
+        columns => [qw( rgid name code )],
         index => 1,
         import => 1,
 };

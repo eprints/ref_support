@@ -13,40 +13,16 @@ sub ref_support_check_characters
 {
         my( $session, $report, $plugin, $objects, $problems ) = @_;
 
-	my $ds;
 	my $fields_length = $session->config( 'ref_support', $report.'_fields_length' ) || {};
 
 	my $field_mappings = $session->config( 'ref', $report, 'mappings' );
 
         foreach my $key ( sort keys %{$fields_length} )
         {
-                #get the value...              
-		my $value;
-		my $ep_fieldname;
+		my( $ds, $ep_fieldname, $value ) = ref_support_get_value( $session, $plugin, $objects, $field_mappings, $key );
 
-		my $ep_field = $field_mappings->{$key};
-		if( ref( $ep_field ) eq 'CODE' )
-		{
-			eval
-			{
-                        	$value = &$ep_field( $plugin, $objects );
-			};
-		}
-		elsif( $ep_field =~ /^([a-z_]+)\.([a-z_]+)$/ )  # using an object field to extract data from
-                {
-			# get the dataset
-			my $ds_id = $1;
-			$ds = $session->dataset( $ds_id ); 
-
-			# get the fieldname...
-			$ep_fieldname = $2;
-			
-			# get the value if a valid thing to ask for
-			if( defined $ds && $ds->has_field( $ep_fieldname ) )
-			{
-				$value = $objects->{$ds_id}->value( $ep_fieldname );
-			}
-		}
+		# For fields that do not exist in the data objects, use the REF key instead.
+		$ep_fieldname = $key if ( !defined( $ds ));
 	
 		if( EPrints::Utils::is_set( $value ) )
 		{
@@ -55,12 +31,49 @@ sub ref_support_check_characters
 
 			if( $curlen > $maxlen )
                         {
-				my $desc = ( $ds->has_field( $key ) ) ? $session->html_phrase( "eprint_fieldname_$key" ) : $session->make_text( $key );
-				push @$problems, { field => $ep_fieldname, desc => $session->html_phrase( 'ref_support:validate:char_limit', fieldname => $desc, maxlen => $session->make_text( $maxlen ) ) }; 
+				push @$problems, { field => $ep_fieldname, desc => $session->html_phrase( 'ref_support:validate:char_limit', fieldname => $session->make_text( $key ), maxlen => $session->make_text( $maxlen ) ) }; 
                         }
 		}		
         }
 }
+
+sub ref_support_get_value
+{
+        my( $session, $plugin, $objects, $mapping, $key ) = @_;
+
+        #get the value...              
+        my $ds;
+	my $value;
+	my $ep_fieldname;
+
+	my $ep_field = $mapping->{$key};
+
+	if( ref( $ep_field ) eq 'CODE' )
+	{
+		eval
+		{
+                	$value = &$ep_field( $plugin, $objects );
+		};
+	}
+	elsif( $ep_field =~ /^([a-z_]+)\.([a-z_]+)$/ )  # using an object field to extract data from
+        {
+		# get the dataset
+		my $ds_id = $1;
+		$ds = $session->dataset( $ds_id ); 
+
+		# get the fieldname...
+		$ep_fieldname = $2;
+		
+		# get the value if a valid thing to ask for
+		if( defined $ds && $ds->has_field( $ep_fieldname ) )
+		{
+			$value = $objects->{$ds_id}->value( $ep_fieldname );
+		}
+	}
+
+	return ( $ds, $ep_fieldname, $value );
+}
+
 
 # generic function for checking a research groups field, ensuring the research groups exist and there are no more than 4
 sub ref_support_check_research_groups
@@ -539,12 +552,112 @@ sub ref2021_month
 	return undef;
 }
 
+$c->{ref_support}->{ref2_research_outputs_required_fields} = {
+
+	"title" => [ qw( A B C D E F G H I J K L M N O P Q R S T U V ) ],
+	"place" => [ qw( L P I M S ) ],
+	"publisher" => [ qw( A B C G N O T U ) ],
+	"volumeTitle" => [ qw( C R D E ) ],
+
+	"articleNumber" => sub
+	{
+		my( $session, $eprint, $selection ) = @_;
+
+		# "Article number" - D (if first page is not provided)
+
+		my $potential_problem = { field => 'unused', desc => $session->html_phrase( 'ref_support:validate:required_field:articleNumber' ) };
+
+		my $selection_type = $selection->get_value("type");
+
+		if( $selection_type eq 'D' )
+		{
+			return $potential_problem unless( $eprint->is_set( 'pagerange' ) );
+		}
+
+		return 0;
+	},
+
+	"firstPage" => sub
+	{
+		my( $session, $eprint, $selection ) = @_;
+
+		# "First page" - D (if article number is not provided), E
+
+		my $selection_type = $selection->get_value("type");
+
+		if( $selection_type eq 'D' )
+		{
+			return 0 if( $eprint->exists_and_set( 'article_number' ) );
+			return 0 if( $selection->value( 'article_id' ) );
+			return { field => 'unused', desc => $session->html_phrase( 'ref_support:validate:required_field:firstPage' ) };
+		}
+
+		if ( $selection_type eq 'E')
+		{
+			return { field => 'unused', desc => $session->html_phrase( 'ref_support:validate:required_field', fieldname => $session->make_text( 'firstPage' )) };
+		}
+
+		return 0;
+	},
+
+	"volume" => [ qw( D ) ],
+	"isbn" => [ qw( A B C ) ],
+	"issn" => [ qw( D ) ],
+	"patentNumber" => [ qw ( F ) ],
+	"year" => [ qw( A B C D E F G H I J K L M N O P Q R S T U V ) ],
+
+	"month" => sub {
+
+		my( $session, $eprint, $selection, $user ) = @_;
+
+		my( $year, $month, $day ) = split(/-/, $eprint->value( "date" ) ) if $eprint->is_set( "date" );	
+	
+		# we need a month for former staff (end date before 2020-07-31)
+		if( !EPrints::Utils::is_set( $month ) && $user->is_set( "ref_end_date" ) ) # check to see if a month is actually required and we have the info to perform the check
+		{
+			my $end_date = $user->get_value( "ref_end_date" );
+			my $end_tp;		
+			if( $end_date =~ /^(\d{4})/ ) # we have a year...
+			{
+				$end_tp = Time::Piece->strptime( "$end_date-01-01", "%Y-%m-%d" )
+			}
+			elsif( $end_date =~ /^(\d{4})\-\d{2}$/ ) # month and year
+			{
+				$end_tp = Time::Piece->strptime( "$end_date", "%Y-%m" )
+			}
+			elsif( $end_date =~ /^(\d{4})\-(\d{2})\-(\d{2})$/ )
+			{
+				$end_tp = Time::Piece->strptime( "$end_date", "%Y-%m-%d" )
+			}
+	
+			# now compare our end date with the census date
+			if( EPrints::Utils::is_set( $end_tp ) )
+			{
+				my $census_tp = Time::Piece->strptime( "2020-07-31", "%Y-%m-%d" );
+				if( $end_tp < $census_tp ) # a month is necessary 
+				{
+					return { field => 'unused', desc => $session->html_phrase( 'ref_support:validate:required_field:month' ) };
+				}
+			}	
+		}
+
+		return 0;
+	},
+
+	"url" => [ qw( H ) ],
+	"isPhysicalOutput" => [ qw( A B C E F G H I J K L M N O P Q R S T U V ) ],
+};
+
+
 # Research Outputs Validation
 $c->{plugins}->{"Screen::REF_Support::Report::Research_Outputs"}->{params}->{validate_selection} = sub {
 	my( $plugin, $objects ) = @_;
 
         my $session = $plugin->{session};
         my @problems;
+
+	my $user = $objects->{user};
+	my $eprint = $objects->{eprint};
 
 	my $selection = $objects->{ref_support_selection};
 	my $uoa = $selection->current_uoa;
@@ -553,44 +666,44 @@ $c->{plugins}->{"Screen::REF_Support::Report::Research_Outputs"}->{params}->{val
         # character length checks...
         &ref_support_check_characters( $session, 'ref2_research_outputs', $plugin, $objects, \@problems );
 
+	# required fields checks
+	my $selection_type = $selection->get_value("type");
+
+	my $required_fields = $session->config( 'ref_support', 'ref2_research_outputs_required_fields' ) || {};
+	my $field_mappings = $session->config( 'ref', 'ref2_research_outputs', 'mappings' );
+
+        foreach my $key ( keys %{$required_fields} )
+	{
+		my $conditions = $required_fields->{$key};
+		my $potential_problem = undef;
+
+		if( ref( $conditions ) eq 'CODE' )
+		{
+			$potential_problem = &$conditions( $session, $eprint, $selection, $user );
+		}
+		elsif( grep { $_ eq $selection_type } @{$conditions} )
+		{
+			$potential_problem = { field => 'unused', desc => $session->html_phrase( 'ref_support:validate:required_field', fieldname => $session->make_text( $key )) };
+		}
+
+		if( $potential_problem )
+		{
+			my( $ds, $ep_fieldname, $value ) = ref_support_get_value( $session, $plugin, $objects, $field_mappings, $key );
+			
+			if( !EPrints::Utils::is_set( $value ) )
+			{
+				push @problems, $potential_problem;
+			}		
+		}
+	}
+
 	# year and month checks
-	my $user = $objects->{user};
-	my $eprint = $objects->{eprint};
 	my( $year, $month, $day ) = split(/-/, $eprint->value( "date" ) ) if $eprint->is_set( "date" );	
 	
 	# check we have a valid year
 	if( EPrints::Utils::is_set( $year ) && ( $year < 2014 || $year > 2020 ) )
 	{
 		push @problems, { field => "year", desc => $session->html_phrase( 'ref_support:validate:invalid_year' ) };
-	}
-
-	# we need a month for former staff (end date before 2020-07-31)
-	if( !EPrints::Utils::is_set( $month ) && $user->is_set( "ref_end_date" ) ) # check to see if a month is actually required and we have the info to perform the check
-	{
-		my $end_date = $user->get_value( "ref_end_date" );
-		my $end_tp;		
-		if( $end_date =~ /^(\d{4})/ ) # we have a year...
-		{
-			$end_tp = Time::Piece->strptime( "$end_date-01-01", "%Y-%m-%d" )
-		}
-		elsif( $end_date =~ /^(\d{4})\-\d{2}$/ ) # month and year
-		{
-			$end_tp = Time::Piece->strptime( "$end_date", "%Y-%m" )
-		}
-		elsif( $end_date =~ /^(\d{4})\-(\d{2})\-(\d{2})$/ )
-		{
-			$end_tp = Time::Piece->strptime( "$end_date", "%Y-%m-%d" )
-		}
-
-		# now compare our end date with the census date
-		if( EPrints::Utils::is_set( $end_tp ) )
-		{
-			my $census_tp = Time::Piece->strptime( "2020-07-31", "%Y-%m-%d" );
-			if( $end_tp < $census_tp ) # a month is necessary 
-			{
-				push @problems, { field => "month", desc => $session->html_phrase( 'ref_support:validate:month_required' ) };
-			}
-		}	
 	}
 
 	# isNonEnglishLanguage and englishAbstract

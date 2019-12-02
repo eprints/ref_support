@@ -156,6 +156,85 @@ $c->{set_ref_support_selection_automatic_fields} = sub {
 			# see zz_ref_report.pl for $c->{ref}->{map_eprint_type}
 			$selection->set_value( 'type', $session->call( [ 'ref', 'map_eprint_type' ], $eprint ) );
 		}
+
+		unless( $selection->is_set( 'open_access_status' ) )
+		{
+			if( $session->can_call( "hefce_oa", "run_test_OUT_OF_SCOPE" ) )
+			{
+				if( $session->call( [ "hefce_oa", "run_test_OUT_OF_SCOPE" ], $session, $eprint ) )
+				{
+					$selection->set_value( 'open_access_status', 'OutOfScope' );
+				}
+			}
+		}
+
+		unless( $selection->is_set( 'open_access_status' ) )
+		{
+			if( $eprint->dataset->has_field( 'hoa_ex_dep' ) )
+			{
+				if( $eprint->is_set( 'hoa_ex_dep' ) )
+				{
+					$selection->set_value( 'open_access_status', 'DepositException' );
+				}
+			}
+		}
+
+		unless( $selection->is_set( 'open_access_status' ) )
+		{
+			if( $eprint->dataset->has_field( 'hoa_ex_acc' ) )
+			{
+				if( $eprint->is_set( 'hoa_ex_acc' ) )
+				{
+					$selection->set_value( 'open_access_status', 'AccessException' );
+				}
+			}
+		}
+
+		unless( $selection->is_set( 'open_access_status' ) )
+		{
+			if( $eprint->dataset->has_field( 'hoa_ex_tec' ) )
+			{
+				if( $eprint->is_set( 'hoa_ex_tec' ) )
+				{
+					$selection->set_value( 'open_access_status', 'TechnicalException' );
+				}
+			}
+		}
+
+		unless( $selection->is_set( 'open_access_status' ) )
+		{
+			if( $eprint->dataset->has_field( 'hoa_ex_fur' ) )
+			{
+				if( $eprint->is_set( 'hoa_ex_fur' ) )
+				{
+					if( $eprint->get_value( 'hoa_ex_fur' ) eq 'a' )
+					{
+						$selection->set_value( 'open_access_status', 'OtherException' );
+					}
+
+					if( $eprint->get_value( 'hoa_ex_fur' ) eq 'b' )
+					{
+						$selection->set_value( 'open_access_status', 'ExceptionWithin3MonthsOfPublication' );
+					}
+				}
+			}
+		}
+
+		unless( $selection->is_set( 'open_access_status' ) )
+		{
+			if( $session->can_call( "hefce_oa", "run_test_COMPLIANT" ) )
+			{
+				if( $session->call( [ "hefce_oa", "run_test_COMPLIANT" ], $session, $eprint ) )
+				{
+					$selection->set_value( 'open_access_status', 'Compliant' );
+				}
+			}
+		}
+
+		unless( $selection->is_set( 'open_access_status' ) )
+		{
+			$selection->set_value( 'open_access_status', 'NotCompliant' );
+		}
 	}
 };
 
