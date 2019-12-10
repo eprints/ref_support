@@ -158,6 +158,18 @@ $c->{set_ref_support_selection_automatic_fields} = sub {
 		}
 
 		unless( $selection->is_set( 'open_access_status' ) )
+                {
+                        if( EPrints::Utils::is_set( $session->config( "hefce_oa", "item_types" ) ) )
+                        {
+                                my @item_types = @{$session->config( 'hefce_oa', 'item_types' )};
+                                if( !grep { $eprint->get_value( "type" ) eq $_ } @item_types )
+                                {
+                                        $selection->set_value( 'open_access_status', 'OutOfScope' );
+                                }
+                        }
+                }
+
+		unless( $selection->is_set( 'open_access_status' ) )
 		{
 			if( $session->can_call( "hefce_oa", "run_test_OUT_OF_SCOPE" ) )
 			{
