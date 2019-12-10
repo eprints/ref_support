@@ -224,7 +224,7 @@ $c->{set_ref_support_selection_automatic_fields} = sub {
 		{
 			if( $session->can_call( "hefce_oa", "run_test_COMPLIANT" ) )
 			{
-				if( $session->call( [ "hefce_oa", "run_test_COMPLIANT" ], $session, $eprint ) )
+				if( $session->call( [ "hefce_oa", "run_test_COMPLIANT" ], $session, $eprint, $eprint->get_value( 'hoa_compliant' ) ) )
 				{
 					$selection->set_value( 'open_access_status', 'Compliant' );
 				}
