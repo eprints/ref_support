@@ -154,12 +154,12 @@ OPENING
 				my $value = $incomes_kind->{$uoa}->{$source}->{$year} or next;
 				if( !$done_any )
 				{
-					push @incomes_kind, "<source>$source</source>";
+					push @incomes_kind, "<income>\n<source>$source</source>";
 					$done_any++;
 				}
 				push @incomes_kind, "<Income".$year.">$value</Income".$year.">";
 			}
-			push @incomes, "\n</income>\n" if( $done_any );
+			push @incomes_kind, "\n</income>\n" if( $done_any );
 		}
 		if( scalar( @incomes_kind ) )
 		{
