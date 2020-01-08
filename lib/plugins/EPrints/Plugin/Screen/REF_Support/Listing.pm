@@ -879,12 +879,12 @@ sub get_controls_before
 sub get_ref_cc_compliance
 {
 	my( $self, $repo, $eprint ) = @_;
-		
+
 	my $compliance = -1;
 
 	if( $eprint->get_dataset->has_field( "hoa_compliant" ) )
 	{
-		#check we are the relevant item typea
+		# check we are the relevant item type
 		my $type = $eprint->value( "type" );
 		my $compliant_type = 0;
 		foreach my $t (@{$repo->config( "hefce_oa", "item_types" )})
@@ -897,26 +897,25 @@ sub get_ref_cc_compliance
 		if( $compliant_type )
 		{
 			my $flag = $eprint->value( "hoa_compliant" );
-			$compliance = 0; #not compliant
+			$compliance = 0; # not compliant
 			if ( $flag & HefceOA::Const::COMPLIANT )
-		        {	
-        		        $compliance = 1; #compliant
-		        }
+			{
+				$compliance = 1; # compliant
+			}
 			elsif( $flag & HefceOA::Const::DEP &&
 				$flag & HefceOA::Const::DIS &&
 				$flag & HefceOA::Const::ACC_EMBARGO &&
-        	                $repo->call( ["hefce_oa", "could_become_ACC_TIMING_compliant"], $repo, $eprint ) )
+				$repo->call( ["hefce_oa", "could_become_ACC_TIMING_compliant"], $repo, $eprint ) )
 			{
-				$compliance = 2; #future compliance
-               		}
+				$compliance = 2; # future compliance
+			}
 
-			if( $eprint->is_set( "hoa_date_acc" ) )
+			if( $repo->can_call( "hefce_oa", "run_test_OUT_OF_SCOPE" ) )
 			{
-				my $acc = Time::Piece->strptime( $eprint->value( "hoa_date_acc" ), "%Y-%m-%d" );
-	                	my $APR16 = Time::Piece->strptime( "2016-04-01", "%Y-%m-%d " );
-	        	        if( $acc < $APR16 )
-        	        	{
-					$compliance = 3; #compliance not relevant
+				my $out_of_scope = $repo->call( [ "hefce_oa", "run_test_OUT_OF_SCOPE" ], $repo, $eprint );
+				if( $out_of_scope )
+				{
+					$compliance = 3; # compliance not relevant
 				}
 			}
 		}
