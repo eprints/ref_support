@@ -70,7 +70,7 @@ push @{$c->{user_roles}->{admin}}, qw{
 # You may have a custom method that checks who can see the Listing and Overview screens
 # The commented-out example below forbids anyone who doesn't have the ref/select role
 # from seeeing their own selections (e.g. if they've been made on their behalf)
-#$c->{ref_can_user_view_listing} = sub {
+#$c->{ref_support_can_user_view_listing} = sub {
 #
 #	my( $session ) = @_;
 #

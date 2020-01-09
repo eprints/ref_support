@@ -28,9 +28,9 @@ sub can_be_viewed
 	return 0 if !defined $self->current_benchmark;
 
         # sf2 - allow local over-ride of whether a user can view the listing page
-        if( $self->{session}->can_call( 'ref_can_user_view_listing' ) )
+        if( $self->{session}->can_call( 'ref_support_can_user_view_listing' ) )
         {
-                my $rc = $self->{session}->call( 'ref_can_user_view_listing', $self->{session} ) || 0;
+                my $rc = $self->{session}->call( 'ref_support_can_user_view_listing', $self->{session} ) || 0;
                 return $rc;
         }
 
@@ -43,9 +43,9 @@ sub can_select
 	my( $self ) = @_;
 
 	# sf2 - allow local over-ride of whether a user can select
-	if( $self->{session}->can_call( 'ref_can_user_select' ) )
+	if( $self->{session}->can_call( 'ref_support_can_user_select' ) )
 	{
-		my $rc = $self->{session}->call( 'ref_can_user_select', $self->{session}, $self->{processor}->{role} ) || 0;
+		my $rc = $self->{session}->call( 'ref_support_can_user_select', $self->{session}, $self->{processor}->{role} ) || 0;
 		return $rc;
 	}
 	# conditions:
