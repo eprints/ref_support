@@ -1,11 +1,12 @@
 <?xml version='1.0' encoding='utf-8'?>
-<epm xmlns='http://eprints.org/ep2/data/2.0' id='/id/epm/ref_support'>
+<epm xmlns='http://eprints.org/ep2/data/2.0' id='http://localhost:8080/id/epm/ref_support'>
   <epmid>ref_support</epmid>
-  <uri>/id/epm/ref_support</uri>
+  <uri>http://localhost:8080/id/epm/ref_support</uri>
   <documents>
     <document>
       <files>
         <file>
+          <datasetid>document</datasetid>
           <filename>citations/eprint/ref_cc.xml</filename>
           <mime_type>application/xml</mime_type>
           <hash>df06b221a502fd4bbf2abca6128f45fb</hash>
@@ -13,6 +14,7 @@
           <filesize>665</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>citations/ref_support_benchmark/default.xml</filename>
           <mime_type>application/xml</mime_type>
           <hash>7d11fbe700fc13c1a5c9efa60844c050</hash>
@@ -20,6 +22,23 @@
           <filesize>242</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
+          <filename>citations/ref_support_circ/default.xml</filename>
+          <mime_type>application/xml</mime_type>
+          <hash>ee52f7ab651166087fc29f652cf34459</hash>
+          <hash_type>MD5</hash_type>
+          <filesize>323</filesize>
+        </file>
+        <file>
+          <datasetid>document</datasetid>
+          <filename>citations/ref_support_circ/ref1_former_staff_contracts.xml</filename>
+          <mime_type>application/xml</mime_type>
+          <hash>82202f0e398a2a8ad4e89168cc91da29</hash>
+          <hash_type>MD5</hash_type>
+          <filesize>2357</filesize>
+        </file>
+        <file>
+          <datasetid>document</datasetid>
           <filename>citations/ref_support_circ/ref1a.xml</filename>
           <mime_type>application/xml</mime_type>
           <hash>b0e0f5962fbe0d8109e066348865700f</hash>
@@ -27,6 +46,7 @@
           <filesize>2927</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>citations/ref_support_circ/ref1b.xml</filename>
           <mime_type>application/xml</mime_type>
           <hash>e2d1997235777d4db6cf60eb8ec2b414</hash>
@@ -34,6 +54,7 @@
           <filesize>1122</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>citations/ref_support_circ/ref1c.xml</filename>
           <mime_type>application/xml</mime_type>
           <hash>64bf3b3326c95f6e892855219becf324</hash>
@@ -41,6 +62,7 @@
           <filesize>778</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>citations/ref_support_environment/brief.xml</filename>
           <mime_type>application/xml</mime_type>
           <hash>bde77bfbf854a9c07b6fe56a9652db3c</hash>
@@ -48,6 +70,7 @@
           <filesize>241</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>citations/ref_support_environment/default.xml</filename>
           <mime_type>application/xml</mime_type>
           <hash>4c522ef2c00ce65e468c4cc68fc2205a</hash>
@@ -55,6 +78,23 @@
           <filesize>337</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
+          <filename>citations/ref_support_rg/brief.xml</filename>
+          <mime_type>application/xml</mime_type>
+          <hash>d4c96c4c2530eb4507d4b0e6f9f36de2</hash>
+          <hash_type>MD5</hash_type>
+          <filesize>268</filesize>
+        </file>
+        <file>
+          <datasetid>document</datasetid>
+          <filename>citations/ref_support_rg/default.xml</filename>
+          <mime_type>application/xml</mime_type>
+          <hash>f13c01134d757912294a3a99adb9b3a9</hash>
+          <hash_type>MD5</hash_type>
+          <filesize>296</filesize>
+        </file>
+        <file>
+          <datasetid>document</datasetid>
           <filename>citations/ref_support_selection/action.xml</filename>
           <mime_type>application/xml</mime_type>
           <hash>770a3b5185c18320b802971ee551716d</hash>
@@ -62,13 +102,15 @@
           <filesize>674</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>citations/ref_support_selection/brief.xml</filename>
           <mime_type>application/xml</mime_type>
-          <hash>bde2449ea311925dbc798037f6c02c49</hash>
+          <hash>95c82139d14726a2b2b1f586f1528e10</hash>
           <hash_type>MD5</hash_type>
-          <filesize>380</filesize>
+          <filesize>392</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>citations/ref_support_selection/default.xml</filename>
           <mime_type>application/xml</mime_type>
           <hash>3e65616fcc0a3966834991acb6cc771b</hash>
@@ -76,6 +118,7 @@
           <filesize>423</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>citations/ref_support_selection/ref_cc_action.xml</filename>
           <mime_type>application/xml</mime_type>
           <hash>c69263999ac66ccc9c5266228b343912</hash>
@@ -83,6 +126,7 @@
           <filesize>1171</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>citations/ref_support_selection/report.xml</filename>
           <mime_type>application/xml</mime_type>
           <hash>6bfc85e500c8713aafbaaafccb91526d</hash>
@@ -90,6 +134,15 @@
           <filesize>540</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
+          <filename>citations/ref_support_selection/staff_output_link.xml</filename>
+          <mime_type>application/xml</mime_type>
+          <hash>814aa9f6081a47aa5f628adb4b722d4f</hash>
+          <hash_type>MD5</hash_type>
+          <filesize>644</filesize>
+        </file>
+        <file>
+          <datasetid>document</datasetid>
           <filename>citations/user/ref_support.xml</filename>
           <mime_type>application/xml</mime_type>
           <hash>f1c335127d7dd2f427db2233f91d2ad9</hash>
@@ -97,6 +150,31 @@
           <filesize>389</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
+          <filename>citations/user/ref_support_current_staff.xml</filename>
+          <mime_type>application/xml</mime_type>
+          <hash>e60d06cf4f50bbf50ea9897cbf17b423</hash>
+          <hash_type>MD5</hash_type>
+          <filesize>3809</filesize>
+        </file>
+        <file>
+          <datasetid>document</datasetid>
+          <filename>citations/user/ref_support_former_staff.xml</filename>
+          <mime_type>application/xml</mime_type>
+          <hash>45e6690f915330a59dff66885e757af0</hash>
+          <hash_type>MD5</hash_type>
+          <filesize>986</filesize>
+        </file>
+        <file>
+          <datasetid>document</datasetid>
+          <filename>citations/user/ref_support_former_staff_contract.xml</filename>
+          <mime_type>application/xml</mime_type>
+          <hash>1ff28eba6b868737fd24fc529bf6086e</hash>
+          <hash_type>MD5</hash_type>
+          <filesize>1330</filesize>
+        </file>
+        <file>
+          <datasetid>document</datasetid>
           <filename>citations/user/ref_support_listing_page.xml</filename>
           <mime_type>application/xml</mime_type>
           <hash>70351b9ea5cb3be8560f2ad472e4decd</hash>
@@ -104,27 +182,31 @@
           <filesize>582</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>citations/user/ref_support_ref1a.xml</filename>
           <mime_type>application/xml</mime_type>
-          <hash>ee6279cfb63354a8039fd643ab8ae5eb</hash>
+          <hash>01064a6712ebf81f35aee459648c28c1</hash>
           <hash_type>MD5</hash_type>
-          <filesize>1483</filesize>
+          <filesize>2139</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>epm/ref_support/cfg/cfg.d/z_ref_support_parameters.pl</filename>
           <mime_type>text/plain</mime_type>
-          <hash>9a4b894ac7263dda0ef1e753501be0fd</hash>
+          <hash>a327c3b8351dc2c0adfb662ec53c2420</hash>
           <hash_type>MD5</hash_type>
           <filesize>724</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>epm/ref_support/cfg/cfg.d/zz_ref_support.pl</filename>
           <mime_type>text/plain</mime_type>
-          <hash>4250d3567b67266204c984ff9209762f</hash>
+          <hash>11ba8b3bc98bd270cf30b91157bbcc94</hash>
           <hash_type>MD5</hash_type>
-          <filesize>22877</filesize>
+          <filesize>30979</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>epm/ref_support/cfg/cfg.d/zz_ref_support_benchmark.pl</filename>
           <mime_type>text/plain</mime_type>
           <hash>a5eaca2d8c9dc1e924a52363df006e87</hash>
@@ -132,27 +214,47 @@
           <filesize>6372</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>epm/ref_support/cfg/cfg.d/zz_ref_support_circ.pl</filename>
           <mime_type>text/plain</mime_type>
-          <hash>ec69cd8c2d9d897f6071fc3cc2049c19</hash>
+          <hash>729147ac556cb5ba868feabc03b385d8</hash>
           <hash_type>MD5</hash_type>
-          <filesize>6090</filesize>
+          <filesize>7037</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>epm/ref_support/cfg/cfg.d/zz_ref_support_environment.pl</filename>
           <mime_type>text/plain</mime_type>
-          <hash>6f383a7658f23afabd5cdf80305ebbc7</hash>
+          <hash>5e9273529ebe79798a5f88cd9b0cb900</hash>
           <hash_type>MD5</hash_type>
-          <filesize>5011</filesize>
+          <filesize>5012</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>epm/ref_support/cfg/cfg.d/zz_ref_support_reports.pl</filename>
           <mime_type>text/plain</mime_type>
-          <hash>7fa79649443d517d45261982a3f27541</hash>
+          <hash>8f722a3ed35a571f1ac42eb05a851e07</hash>
           <hash_type>MD5</hash_type>
-          <filesize>25279</filesize>
+          <filesize>25432</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
+          <filename>epm/ref_support/cfg/cfg.d/zz_ref_support_reports_2021.pl</filename>
+          <mime_type>text/plain</mime_type>
+          <hash>0e5856bb6afa5ca026dce457fc9ba621</hash>
+          <hash_type>MD5</hash_type>
+          <filesize>31071</filesize>
+        </file>
+        <file>
+          <datasetid>document</datasetid>
+          <filename>epm/ref_support/cfg/cfg.d/zz_ref_support_research_group.pl</filename>
+          <mime_type>text/plain</mime_type>
+          <hash>07b3dd271edb1c005adfa89e3ce362a9</hash>
+          <hash_type>MD5</hash_type>
+          <filesize>2813</filesize>
+        </file>
+        <file>
+          <datasetid>document</datasetid>
           <filename>epm/ref_support/cfg/ref_support_uoa</filename>
           <mime_type>text/plain</mime_type>
           <hash>2b2d59422588de77aec0da195cb0eb0c</hash>
@@ -160,6 +262,7 @@
           <filesize>2413</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>epm/ref_support/cgi/users/ajax/ref_support_copy_progress</filename>
           <mime_type>text/plain</mime_type>
           <hash>949b3fa3c29468f024ea7c4e2c45aea8</hash>
@@ -167,13 +270,15 @@
           <filesize>851</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>lang/en/phrases/ref_support.xml</filename>
           <mime_type>application/xml</mime_type>
-          <hash>33ea82e59aa48b90fa71be8408d625dd</hash>
+          <hash>33f54902046fc8a6d7de3333e99b2e5f</hash>
           <hash_type>MD5</hash_type>
-          <filesize>48028</filesize>
+          <filesize>67045</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>lang/en/static/ref_support/index.xpage</filename>
           <mime_type>application/xml</mime_type>
           <hash>f41844d70b81ff237ccb910f7102aaf8</hash>
@@ -181,62 +286,79 @@
           <filesize>5278</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Export/REF_Support.pm</filename>
           <mime_type>text/plain</mime_type>
-          <hash>bfb43881f0b3a4d1f94865a3e6465c9a</hash>
+          <hash>3d504f9efb721962f3a0d71038026411</hash>
           <hash_type>MD5</hash_type>
-          <filesize>5516</filesize>
+          <filesize>6897</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Export/REF_Support/REF4_Excel.pm</filename>
           <mime_type>text/plain</mime_type>
-          <hash>5acc09832c646a662911922576308a7c</hash>
+          <hash>11b1d5bd4c342ae89ee94f5fdcffe0dc</hash>
           <hash_type>MD5</hash_type>
-          <filesize>5570</filesize>
+          <filesize>5956</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Export/REF_Support/REF4_XML.pm</filename>
           <mime_type>text/plain</mime_type>
-          <hash>9b18d2ff542602e5d23337749be8682a</hash>
+          <hash>eb8199a0134bef850356d571508b809e</hash>
           <hash_type>MD5</hash_type>
-          <filesize>4444</filesize>
+          <filesize>4562</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Export/REF_Support/REF_CSV.pm</filename>
           <mime_type>text/plain</mime_type>
-          <hash>2e2e90d84347b45de821902851d4cfeb</hash>
+          <hash>7dea147b9a63ca052632643aed432ec5</hash>
           <hash_type>MD5</hash_type>
-          <filesize>4260</filesize>
+          <filesize>5221</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Export/REF_Support/REF_Excel.pm</filename>
           <mime_type>text/plain</mime_type>
-          <hash>9f7a410624a9712000c52108cd8de7c5</hash>
+          <hash>129ed911197fee3df88fdbf9b8ab6e17</hash>
           <hash_type>MD5</hash_type>
-          <filesize>5004</filesize>
+          <filesize>6301</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
+          <filename>plugins/EPrints/Plugin/Export/REF_Support/REF_JSON.pm</filename>
+          <mime_type>text/plain</mime_type>
+          <hash>08c33fbda197de0242dfdf9dc43f99bb</hash>
+          <hash_type>MD5</hash_type>
+          <filesize>611</filesize>
+        </file>
+        <file>
+          <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Export/REF_Support/REF_XML.pm</filename>
           <mime_type>text/plain</mime_type>
-          <hash>a6430b14470163954d9c703d8dd10ca7</hash>
+          <hash>8ce5d74096bb08e81283c195b18af992</hash>
           <hash_type>MD5</hash_type>
-          <filesize>5014</filesize>
+          <filesize>7286</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Screen/EPMC/REF_Support.pm</filename>
           <mime_type>text/plain</mime_type>
-          <hash>0daf523ba495ee88e63d28359513aac6</hash>
+          <hash>0a7fc06f5940d67d884d961115156db4</hash>
           <hash_type>MD5</hash_type>
-          <filesize>2445</filesize>
+          <filesize>3172</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Screen/REF_Support.pm</filename>
           <mime_type>text/plain</mime_type>
-          <hash>5ed73ea7045c1091e8073b731800e1e0</hash>
+          <hash>7e7fb8aea5003b246d65ca6903e82280</hash>
           <hash_type>MD5</hash_type>
-          <filesize>17258</filesize>
+          <filesize>17928</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Screen/REF_Support/Benchmark/Copy.pm</filename>
           <mime_type>text/plain</mime_type>
           <hash>48a8938e06728fd24ae9f9b6b5ac6b64</hash>
@@ -244,6 +366,7 @@
           <filesize>6976</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Screen/REF_Support/Benchmark/Destroy.pm</filename>
           <mime_type>text/plain</mime_type>
           <hash>422aa6ac1d07b4ef69d539cfca82e389</hash>
@@ -251,6 +374,7 @@
           <filesize>3498</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Screen/REF_Support/Benchmark/Edit.pm</filename>
           <mime_type>text/plain</mime_type>
           <hash>deb668b5896d3d5806ba290fdd185837</hash>
@@ -258,6 +382,7 @@
           <filesize>842</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Screen/REF_Support/Benchmark/LinkListing.pm</filename>
           <mime_type>text/plain</mime_type>
           <hash>a55f68738ff84f1b5226a568727d5b44</hash>
@@ -265,6 +390,7 @@
           <filesize>1122</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Screen/REF_Support/Benchmark/New.pm</filename>
           <mime_type>text/plain</mime_type>
           <hash>887daee6d477e0630fa3a192a82edbed</hash>
@@ -272,6 +398,7 @@
           <filesize>3638</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Screen/REF_Support/Benchmark/Select.pm</filename>
           <mime_type>text/plain</mime_type>
           <hash>2f82bbd7fd7c0765faea8506dea8b466</hash>
@@ -279,20 +406,63 @@
           <filesize>4427</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
+          <filename>plugins/EPrints/Plugin/Screen/REF_Support/Circ.pm</filename>
+          <mime_type>text/plain</mime_type>
+          <hash>f529956e0d26fd1e78fc39dd986c4a3c</hash>
+          <hash_type>MD5</hash_type>
+          <filesize>1903</filesize>
+        </file>
+        <file>
+          <datasetid>document</datasetid>
+          <filename>plugins/EPrints/Plugin/Screen/REF_Support/Circ/Destroy.pm</filename>
+          <mime_type>text/plain</mime_type>
+          <hash>a5cb7a3be48c08b9927f46db66b8166c</hash>
+          <hash_type>MD5</hash_type>
+          <filesize>2768</filesize>
+        </file>
+        <file>
+          <datasetid>document</datasetid>
+          <filename>plugins/EPrints/Plugin/Screen/REF_Support/Circ/Edit.pm</filename>
+          <mime_type>text/plain</mime_type>
+          <hash>238283b0a64b95fac213e47b9f4172bb</hash>
+          <hash_type>MD5</hash_type>
+          <filesize>1736</filesize>
+        </file>
+        <file>
+          <datasetid>document</datasetid>
+          <filename>plugins/EPrints/Plugin/Screen/REF_Support/Circ/New.pm</filename>
+          <mime_type>text/plain</mime_type>
+          <hash>5f181932ff820b9bdad086e3b6aff6fc</hash>
+          <hash_type>MD5</hash_type>
+          <filesize>2584</filesize>
+        </file>
+        <file>
+          <datasetid>document</datasetid>
+          <filename>plugins/EPrints/Plugin/Screen/REF_Support/Circ/View.pm</filename>
+          <mime_type>text/plain</mime_type>
+          <hash>08a2444ba389de71382d8db5b77123f4</hash>
+          <hash_type>MD5</hash_type>
+          <filesize>2003</filesize>
+        </file>
+        <file>
+          <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Screen/REF_Support/Edit.pm</filename>
           <mime_type>text/plain</mime_type>
-          <hash>1bf5ede69f1dffa064b131767d46305a</hash>
+          <hash>cf29ff99c55fa8bb2cf85172a0148784</hash>
           <hash_type>MD5</hash_type>
-          <filesize>6274</filesize>
+          <filesize>6661</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Screen/REF_Support/Listing.pm</filename>
           <mime_type>text/plain</mime_type>
-          <hash>862796ef371ed5d6bfc9ee9aedc7210d</hash>
+          <hash>715e39a56fbb61ba02762701723a502b</hash>
           <hash_type>MD5</hash_type>
-          <filesize>25431</filesize>
+          <filesize>25330</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Screen/REF_Support/Overview.pm</filename>
           <mime_type>text/plain</mime_type>
           <hash>2f9c9f04e8de33b988dec39609ecd935</hash>
@@ -300,6 +470,7 @@
           <filesize>12130</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Screen/REF_Support/REF4/Edit.pm</filename>
           <mime_type>text/plain</mime_type>
           <hash>b8c6448367d9169f186579012c801b8a</hash>
@@ -307,6 +478,7 @@
           <filesize>1279</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Screen/REF_Support/REF4/Listing.pm</filename>
           <mime_type>text/plain</mime_type>
           <hash>07f626d61c55e84d8aa34489af8b7275</hash>
@@ -314,20 +486,55 @@
           <filesize>7002</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Screen/REF_Support/Report.pm</filename>
           <mime_type>text/plain</mime_type>
-          <hash>4c811265622e7b936d4017e866642428</hash>
+          <hash>d59d6d2f699e484113ad547b3d62b14d</hash>
           <hash_type>MD5</hash_type>
-          <filesize>10368</filesize>
+          <filesize>10544</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
+          <filename>plugins/EPrints/Plugin/Screen/REF_Support/Report/Complete_Submission.pm</filename>
+          <mime_type>text/plain</mime_type>
+          <hash>197c0ed392a20ff61c9400ca813a7a1b</hash>
+          <hash_type>MD5</hash_type>
+          <filesize>16953</filesize>
+        </file>
+        <file>
+          <datasetid>document</datasetid>
+          <filename>plugins/EPrints/Plugin/Screen/REF_Support/Report/Current_Staff.pm</filename>
+          <mime_type>text/plain</mime_type>
+          <hash>7d8becceefb8fe60c46f2d5c0dc2f789</hash>
+          <hash_type>MD5</hash_type>
+          <filesize>6615</filesize>
+        </file>
+        <file>
+          <datasetid>document</datasetid>
+          <filename>plugins/EPrints/Plugin/Screen/REF_Support/Report/Former_Staff.pm</filename>
+          <mime_type>text/plain</mime_type>
+          <hash>81b4bbc09d649883c47e0112a8cc8b26</hash>
+          <hash_type>MD5</hash_type>
+          <filesize>6095</filesize>
+        </file>
+        <file>
+          <datasetid>document</datasetid>
+          <filename>plugins/EPrints/Plugin/Screen/REF_Support/Report/Former_Staff_Contracts.pm</filename>
+          <mime_type>text/plain</mime_type>
+          <hash>9aba9da30d23e72aa14dc0c61a0c3fbe</hash>
+          <hash_type>MD5</hash_type>
+          <filesize>5453</filesize>
+        </file>
+        <file>
+          <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Screen/REF_Support/Report/Listing.pm</filename>
           <mime_type>text/plain</mime_type>
-          <hash>89eeb416e121f966e0aa91b62f399d78</hash>
+          <hash>3ac89cb0157d982cd47fa58fa45fffda</hash>
           <hash_type>MD5</hash_type>
-          <filesize>6915</filesize>
+          <filesize>6923</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Screen/REF_Support/Report/REF1a.pm</filename>
           <mime_type>text/plain</mime_type>
           <hash>c89130b457173c46720a08dcedaa1f94</hash>
@@ -335,6 +542,7 @@
           <filesize>5329</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Screen/REF_Support/Report/REF1b.pm</filename>
           <mime_type>text/plain</mime_type>
           <hash>b2c6c92add67aa7b2cd5d4e38231f364</hash>
@@ -342,6 +550,7 @@
           <filesize>5197</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Screen/REF_Support/Report/REF1c.pm</filename>
           <mime_type>text/plain</mime_type>
           <hash>ff91825f2b60bd007ed6f2b9f775b5d9</hash>
@@ -349,6 +558,7 @@
           <filesize>6527</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Screen/REF_Support/Report/REF2.pm</filename>
           <mime_type>text/plain</mime_type>
           <hash>b8923354ab98d0f69b32c4b072b2f16c</hash>
@@ -356,13 +566,63 @@
           <filesize>7397</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Screen/REF_Support/Report/REF4.pm</filename>
           <mime_type>text/plain</mime_type>
-          <hash>22cbfafdef0cbfd18c2b03282ea11138</hash>
+          <hash>605db730d81535002eaa863d441fcf00</hash>
           <hash_type>MD5</hash_type>
-          <filesize>6370</filesize>
+          <filesize>6536</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
+          <filename>plugins/EPrints/Plugin/Screen/REF_Support/Report/Research_Groups.pm</filename>
+          <mime_type>text/plain</mime_type>
+          <hash>9f50612c5d99a98ea40aad8341541e02</hash>
+          <hash_type>MD5</hash_type>
+          <filesize>5180</filesize>
+        </file>
+        <file>
+          <datasetid>document</datasetid>
+          <filename>plugins/EPrints/Plugin/Screen/REF_Support/Report/Research_Outputs.pm</filename>
+          <mime_type>text/plain</mime_type>
+          <hash>e0ece7a98d14f093249dc50998ffe092</hash>
+          <hash_type>MD5</hash_type>
+          <filesize>9079</filesize>
+        </file>
+        <file>
+          <datasetid>document</datasetid>
+          <filename>plugins/EPrints/Plugin/Screen/REF_Support/Report/Staff_Outputs.pm</filename>
+          <mime_type>text/plain</mime_type>
+          <hash>21557dafddbead9e943ba9c4dc47935e</hash>
+          <hash_type>MD5</hash_type>
+          <filesize>7785</filesize>
+        </file>
+        <file>
+          <datasetid>document</datasetid>
+          <filename>plugins/EPrints/Plugin/Screen/REF_Support/Research_Group/Destroy.pm</filename>
+          <mime_type>text/plain</mime_type>
+          <hash>9d58ded274b8d390cf49ed328eff7966</hash>
+          <hash_type>MD5</hash_type>
+          <filesize>2992</filesize>
+        </file>
+        <file>
+          <datasetid>document</datasetid>
+          <filename>plugins/EPrints/Plugin/Screen/REF_Support/Research_Group/Edit.pm</filename>
+          <mime_type>text/plain</mime_type>
+          <hash>a9d3b0ea57b0a3a46eaa84ddf9077b77</hash>
+          <hash_type>MD5</hash_type>
+          <filesize>845</filesize>
+        </file>
+        <file>
+          <datasetid>document</datasetid>
+          <filename>plugins/EPrints/Plugin/Screen/REF_Support/Research_Group/New.pm</filename>
+          <mime_type>text/plain</mime_type>
+          <hash>60de43cde108e0f02b557fb16a6ce027</hash>
+          <hash_type>MD5</hash_type>
+          <filesize>2523</filesize>
+        </file>
+        <file>
+          <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Screen/REF_Support/User/Edit.pm</filename>
           <mime_type>text/plain</mime_type>
           <hash>f7ba457c3bd55fc65900dedef9a626e3</hash>
@@ -370,20 +630,23 @@
           <filesize>4409</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Screen/REF_Support/User/EditCirc.pm</filename>
           <mime_type>text/plain</mime_type>
-          <hash>d38f250f2feddac3ad64e163a33898c1</hash>
+          <hash>9d4b9d5c9210e05be9efffc50a0bd181</hash>
           <hash_type>MD5</hash_type>
-          <filesize>5521</filesize>
+          <filesize>5582</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Screen/REF_Support/User/EditCircLink.pm</filename>
           <mime_type>text/plain</mime_type>
-          <hash>8078bbbd1ffbf1f54ec04c50938474e0</hash>
+          <hash>d7d4cd2d44edd316e113cf954b6cbf5b</hash>
           <hash_type>MD5</hash_type>
-          <filesize>3937</filesize>
+          <filesize>3999</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Screen/REF_Support/User/EditCircLinkBack.pm</filename>
           <mime_type>text/plain</mime_type>
           <hash>3093622b895744760935521f965cee16</hash>
@@ -391,6 +654,7 @@
           <filesize>2077</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Screen/REF_Support/User/EditUoA.pm</filename>
           <mime_type>text/plain</mime_type>
           <hash>ad3560b46fca505595c895db4d8c9d59</hash>
@@ -398,6 +662,15 @@
           <filesize>1938</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
+          <filename>plugins/EPrints/Plugin/Screen/REF_Support/User/ManageContracts.pm</filename>
+          <mime_type>text/plain</mime_type>
+          <hash>dbf8c3cd6aa91c632032644438730402</hash>
+          <hash_type>MD5</hash_type>
+          <filesize>7582</filesize>
+        </file>
+        <file>
+          <datasetid>document</datasetid>
           <filename>static/images/compliant.png</filename>
           <mime_type>image/png</mime_type>
           <hash>2b1b72bf4a8c817c0feab7d83f0675d3</hash>
@@ -405,6 +678,7 @@
           <filesize>298</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>static/images/epm/ref_support.png</filename>
           <mime_type>image/png</mime_type>
           <hash>609c6f1ceb9d725e21546beb9d3d1da2</hash>
@@ -412,6 +686,7 @@
           <filesize>8393</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>static/images/future.png</filename>
           <mime_type>image/png</mime_type>
           <hash>c2c40efde63aeece11fbcb5aa8402d53</hash>
@@ -419,6 +694,7 @@
           <filesize>281</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>static/images/not-compliant.png</filename>
           <mime_type>image/png</mime_type>
           <hash>060a76fefc011d3831813847d8e33848</hash>
@@ -426,6 +702,7 @@
           <filesize>272</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>static/images/pre-compliance.png</filename>
           <mime_type>image/png</mime_type>
           <hash>c3e45d74d3f9ed25102b17eaa6fa8af1</hash>
@@ -433,20 +710,23 @@
           <filesize>278</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>static/javascript/auto/ref_support_ajax.js</filename>
           <mime_type>text/plain</mime_type>
-          <hash>3fc35c7c0ea31cd829486d64067a5b25</hash>
+          <hash>6043d91fe7f747b78b519eaa5d365ae4</hash>
           <hash_type>MD5</hash_type>
-          <filesize>9722</filesize>
+          <filesize>12795</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>static/style/auto/ref_support.css</filename>
           <mime_type>text/x-asm</mime_type>
-          <hash>3b4888441a6b43cde0be253ff2c6e428</hash>
+          <hash>e6fdef78aa5503b40f1d1a870ea382c9</hash>
           <hash_type>MD5</hash_type>
-          <filesize>3764</filesize>
+          <filesize>4053</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>static/style/images/ref-support-warning-small.png</filename>
           <mime_type>image/png</mime_type>
           <hash>e4dd51f46566ed3ceacdc900bf2fdf01</hash>
@@ -454,6 +734,7 @@
           <filesize>701</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>workflows/ref_support_benchmark/default.xml</filename>
           <mime_type>application/xml</mime_type>
           <hash>fa8a31bc2dd97e57505a55f568509cd4</hash>
@@ -461,13 +742,15 @@
           <filesize>392</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>workflows/ref_support_circ/default.xml</filename>
           <mime_type>application/xml</mime_type>
-          <hash>fcd9148adf848c6eeb35e113e412a52c</hash>
+          <hash>46141c5fc812042a606a17e9dd337e49</hash>
           <hash_type>MD5</hash_type>
-          <filesize>972</filesize>
+          <filesize>772</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>workflows/ref_support_circ/ref1c.xml</filename>
           <mime_type>application/xml</mime_type>
           <hash>b54b760992826a0b8e48fa561b9f7091</hash>
@@ -475,6 +758,7 @@
           <filesize>1161</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>workflows/ref_support_env/default.xml</filename>
           <mime_type>application/xml</mime_type>
           <hash>656fa70187bad5b362783adefaf9917e</hash>
@@ -482,20 +766,31 @@
           <filesize>873</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
+          <filename>workflows/ref_support_rg/default.xml</filename>
+          <mime_type>application/xml</mime_type>
+          <hash>d10ebd9fb14be9be30f2a401033667e2</hash>
+          <hash_type>MD5</hash_type>
+          <filesize>417</filesize>
+        </file>
+        <file>
+          <datasetid>document</datasetid>
           <filename>workflows/ref_support_selection/default.xml</filename>
           <mime_type>application/xml</mime_type>
-          <hash>82713bff4bc7b7abc66b4013fd9f8503</hash>
+          <hash>4c40a8d8c479b1d2a4656829f9c50ce6</hash>
           <hash_type>MD5</hash_type>
-          <filesize>1536</filesize>
+          <filesize>2383</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>workflows/user/ref_support.xml</filename>
           <mime_type>application/xml</mime_type>
-          <hash>a9867c0295786fd35eb8c9c8c349b9ce</hash>
+          <hash>3ee82cfc91ed3f29fc1f478352d40ab8</hash>
           <hash_type>MD5</hash_type>
-          <filesize>670</filesize>
+          <filesize>1178</filesize>
         </file>
         <file>
+          <datasetid>document</datasetid>
           <filename>workflows/user/ref_support_uoa_champion.xml</filename>
           <mime_type>application/xml</mime_type>
           <hash>9016672a14321915f74c6c023780d96d</hash>
@@ -511,6 +806,7 @@
     <document>
       <files>
         <file>
+          <datasetid>document</datasetid>
           <filename>static/images/epm/ref_support.png</filename>
           <mime_type>image/png</mime_type>
           <hash>609c6f1ceb9d725e21546beb9d3d1da2</hash>
@@ -523,7 +819,7 @@
       <content>coverimage</content>
     </document>
   </documents>
-  <version>1.6</version>
+  <version>2.0.2</version>
   <controller>EPMC::REF_Support</controller>
   <creators>
     <item>
@@ -532,6 +828,13 @@
         <given>Will</given>
       </name>
       <id>rwf1v07@soton.ac.uk</id>
+    </item>
+    <item>
+      <name>
+        <family>Cruickshank</family>
+        <given>Don</given>
+      </name>
+      <id>dgc@ecs.soton.ac.uk</id>
     </item>
     <item>
       <name>
@@ -548,7 +851,7 @@
       <id>tdb2@ecs.soton.ac.uk</id>
     </item>
   </creators>
-  <datestamp>2017-10-18 15:03:07</datestamp>
+  <datestamp>2020-02-06 13:55:24</datestamp>
   <title>REF Support</title>
   <description>The REF Support plugin has been designed to introduce a number of features to your EPrints repository to support your REF2021 submission. With this plugin installed, you will be able to use your EPrints repository to collate your REF1 and REF2 data to contribute to your REF2021 submission.
 
