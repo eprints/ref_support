@@ -289,9 +289,9 @@
           <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Export/REF_Support.pm</filename>
           <mime_type>text/plain</mime_type>
-          <hash>3d504f9efb721962f3a0d71038026411</hash>
+          <hash>b715fbc46be71f0654b7e12184f97439</hash>
           <hash_type>MD5</hash_type>
-          <filesize>6897</filesize>
+          <filesize>6946</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
@@ -819,7 +819,7 @@
       <content>coverimage</content>
     </document>
   </documents>
-  <version>2.0.2</version>
+  <version>2.0.3</version>
   <controller>EPMC::REF_Support</controller>
   <creators>
     <item>
