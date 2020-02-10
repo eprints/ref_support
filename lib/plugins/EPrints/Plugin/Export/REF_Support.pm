@@ -55,24 +55,23 @@ sub parse_uoa
         my ( $hefce_uoa_id, $is_multiple );
 
 	# multiple submission: on EPrints, those UoAs are encoded with an extra 'b' ('bis') at the end e.g. ref20nn_a1b for A1
-        if( $uoa_id =~ /^ref20[0-9]{2}_(\w)(\d+)(b?)$/ )
+        if( $uoa_id =~ /^ref20[0-9]{2}_(\w)(\d+)([a-zA-Z]?)$/ )
         {
                 $hefce_uoa_id = $2;
                 # $is_multiple = EPrints::Utils::is_set( $3 );
 		if( EPrints::Utils::is_set( $3 ) )
 		{
-			$is_multiple = 'B';
+			$is_multiple = uc $3;
 		}
 		# it might still be a multiple submission ('A')
-		if( !defined $is_multiple )
-		{
-			if( defined $plugin->{session}->dataset( 'subject' )->dataobj( $uoa_id."b" ) )
-			{
-				$is_multiple = 'A';
-			}
-		}
+        #if( !defined $is_multiple )
+        #{
+        #	if( defined $plugin->{session}->dataset( 'subject' )->dataobj( $uoa_id."b" ) )
+        #	{
+        #		$is_multiple = 'A';
+        #	}
+        #}
         }
-        
         return( $hefce_uoa_id, $is_multiple );
 }
 
