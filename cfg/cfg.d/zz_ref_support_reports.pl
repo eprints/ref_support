@@ -834,10 +834,10 @@ sub ref2_support_cross_ref
 
 	my $uoa_id = $ref_support_selection->value( 'xref' ) or return;
 	my $uoa_prefix = $session->config( 'ref_support', 'uoa_prefix' );
-        if( $uoa_id =~ /^\Q$uoa_prefix(\w)(\d+)(b?)$/ )
-        {               
-		return $2;
-        }
+    if( $uoa_id =~ /^\Q$uoa_prefix\E(\w)(\d+)([a-zA-Z]?)$/ )
+    {               
+        return $2;
+    }
 
 	return undef;
 }

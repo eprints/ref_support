@@ -270,7 +270,7 @@ sub output_dataobj
 
 			next;
 		}
-		elsif( $ep_field =~ /^([a-z_]+)\.([a-z_]+)$/ )	# using an object field to extract data from
+		elsif( $ep_field =~ /^([a-z_]+)\.([a-z_\d]+)$/ )	# using an object field to extract data from
 		{
 			my( $ds_id, $ep_fieldname ) = ( $1, $2 );
 			my $ds = $valid_ds->{$ds_id};

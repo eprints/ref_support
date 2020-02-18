@@ -218,7 +218,7 @@ sub output_dataobj
 
 			next;
 		}
-		elsif( $ep_field !~ /^([a-z_]+)\.([a-z_]+)$/ )
+		elsif( $ep_field !~ /^([a-z_]+)\.([a-z_\d]+)$/ )
 		{
 			# wrong format :-/
 			push @rows, "";
