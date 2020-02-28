@@ -781,11 +781,37 @@ $c->{plugins}->{"Screen::REF_Support::Report::Research_Outputs"}->{params}->{val
 
 
 	# exclude check (should users where this is set not even feature or should the UoA Champion unset this user's UoA field?)
-        if( $selection->is_set( "exclude_from_submission" ) && $selection->get_value( "exclude_from_submission" ) eq 'TRUE' )
+    if( $selection->is_set( "exclude_from_submission" ) && $selection->get_value( "exclude_from_submission" ) eq 'TRUE' )
+    {
+        my $desc = $session->html_phrase( "ref_support_selection_fieldname_exclude_from_submission" );
+        push @problems, { field => "exclude_from_submission", desc => $session->html_phrase( 'ref_support:validate:exclude_selection_from_submission', fieldname => $desc ) };
+    }
+
+    # double_reserve check
+    if( $selection->is_set( 'double_reserve' ) )
+    {
+        # can't have chosen a reserved output if the current selection is not double-weighted
+        if( !$selection->is_set( 'weight' ) || $selection->get_value( 'weight' ) ne 'double' )
         {
-                my $desc = $session->html_phrase( "ref_support_selection_fieldname_exclude_from_submission" );
-                push @problems, { field => "exclude_from_submission", desc => $session->html_phrase( 'ref_support:validate:exclude_selection_from_submission', fieldname => $desc ) };
+            push @problems, { field => "double_reserve", desc => $session->html_phrase( "ref_support:validate:wrong_reserve" ) };
         }
+
+        # a selection can't be double-weighted and a reserved for itself
+        if( $selection->get_value( 'double_reserve' ) eq $selection->get_id )
+        {
+            push @problems, { field => "double_reserve", desc => $session->html_phrase( "ref_support:validate:self_reserve" ) };
+        }
+    }
+    else
+    {
+        # if the output is double weighted then it must reference a reserved output
+        if( $selection->is_set( 'weight' ) && $selection->value( 'weight' ) eq 'double' )
+        {
+            push @problems, { field => "weight", desc => $session->html_phrase( "ref_support:validate:missing_field",
+                    fieldname => $session->html_phrase( 'ref_support_selection_fieldname_reserve' )
+            ) };
+        }
+    }
 
 	return @problems;
 };
