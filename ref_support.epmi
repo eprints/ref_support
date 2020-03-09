@@ -321,9 +321,9 @@
           <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Export/REF_Support/REF_Excel.pm</filename>
           <mime_type>text/plain</mime_type>
-          <hash>57c45eee18f6dee1fbd03e795bd4317d</hash>
+          <hash>fb22c04fb7b8ce31546f83b90a8776fe</hash>
           <hash_type>MD5</hash_type>
-          <filesize>6303</filesize>
+          <filesize>6317</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>

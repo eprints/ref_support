@@ -93,7 +93,7 @@ sub output_list
 	my $col_id = 0;
 	foreach my $col (@cols)
 	{
-		$worksheet->write( 0, $col_id++, $col );
+		$worksheet->write_string( 0, $col_id++, $col );
 	}
 	
 	my $row_id = 1;
@@ -108,7 +108,7 @@ sub output_list
 		my $col_id = 0;
 		foreach my $col ( @$cols )
 		{
-			$worksheet->write( $row_id, $col_id++, $col );
+			$worksheet->write_string( $row_id, $col_id++, $col );
 		}
 		$row_id++;
 	} );
