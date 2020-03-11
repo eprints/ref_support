@@ -838,7 +838,7 @@ No users found in your UoA.</epp:phrase>
  <epp:phrase id="compliant_icon"><img title="Compliant" class="compliance-icon" src="{$config{rel_path}}/images/compliant.png"/></epp:phrase>
  <epp:phrase id="not_compliant_icon"><img title="Not Compliant" class="compliance-icon" src="{$config{rel_path}}/images/not-compliant.png"/></epp:phrase>
  <epp:phrase id="future_compliance_icon"><img title="Compliant pending open access" class="compliance-icon" src="{$config{rel_path}}/images/future.png"/></epp:phrase>
- <epp:phrase id="pre_compliance_icon"><img title="Pre-Compliance requirement" class="compliance-icon" src="{$config{rel_path}}/images/pre-compliance.png"/></epp:phrase>
+ <epp:phrase id="pre_compliance_icon"><img title="Out of scope" class="compliance-icon" src="{$config{rel_path}}/images/pre-compliance.png"/></epp:phrase>
 
  <epp:phrase id="Plugin/Screen/REF_Support/Overview:no_benchmark">No benchmark defined. Before you can use the REF Support plugin, you must first create a benchmark.</epp:phrase> 
  <epp:phrase id="Plugin/Screen/REF_Support/Overview:no_uoa">No valid Units of Assessment.</epp:phrase>
