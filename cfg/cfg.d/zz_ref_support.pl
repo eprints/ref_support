@@ -147,6 +147,16 @@ $c->{set_ref_support_selection_automatic_fields} = sub {
 	# Re-sync the EPrint title while we're here
 	my $eprint = $session->dataset( 'eprint' )->dataobj( $selection->value( 'eprint_id' ) );
 
+    # Ensure all boolean fields are set if they haven't already been set by default
+    my $boolean_fields = [qw{ pending non_english interdis sensitive does_include_sig does_include_res does_include_fact exclude_from_submission is_criminology is_forensic is_physical_output author_statement pdf_required }];
+    foreach my $f ( @{$boolean_fields} )
+    {
+        unless( $selection->is_set( $f ) )
+        {
+            $selection->set_value( $f, "FALSE" );
+        }
+    }
+
 	if( defined $eprint )
 	{
 		$selection->set_value( 'eprint_title', $eprint->value( 'title' ) );
