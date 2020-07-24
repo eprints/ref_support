@@ -4464,9 +4464,9 @@ YWx1ZVwiIjsKCX0KCglyZXR1cm4gJHZhbHVlOwp9CgoKMTsK
           <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Export/REF_Support/REF_Excel.pm</filename>
           <mime_type>text/plain</mime_type>
-          <hash>fb22c04fb7b8ce31546f83b90a8776fe</hash>
+          <hash>6bfe3a6e0ea996cf971f1bed1948bad5</hash>
           <hash_type>MD5</hash_type>
-          <filesize>6317</filesize>
+          <filesize>6309</filesize>
           <data encoding='base64'>cGFja2FnZSBFUHJpbnRzOjpQbHVnaW46OkV4cG9ydDo6UkVGX1N1cHBvcnQ6OlJFRl9FeGNlbDsK
 CnVzZSBFUHJpbnRzOjpQbHVnaW46OkV4cG9ydDo6UkVGX1N1cHBvcnQ7CkBJU0EgPSAoICJFUHJp
 bnRzOjpQbHVnaW46OkV4cG9ydDo6UkVGX1N1cHBvcnQiICk7Cgp1c2Ugc3RyaWN0OwoKc3ViIG5l
@@ -4573,11 +4573,11 @@ X2lkfS0+dmFsdWUoICRlcF9maWVsZG5hbWUgKTsKCQkkZG9uZV9hbnkrKyBpZiggRVByaW50czo6
 VXRpbHM6OmlzX3NldCggJHZhbHVlICkgKTsKCQlwdXNoIEByb3dzLCAkcGx1Z2luLT5lc2NhcGVf
 dmFsdWUoICR2YWx1ZSApOwoJfQoKCXJldHVybiBbXSB1bmxlc3MoICRkb25lX2FueSApOwoKCXJl
 dHVybiBcQHJvd3M7Cn0KCnN1YiBlc2NhcGVfdmFsdWUKewoJbXkoICRwbHVnaW4sICR2YWx1ZSAp
-ID0gQF87CgoJcmV0dXJuICIiIHVubGVzcyggZGVmaW5lZCBFUHJpbnRzOjpVdGlsczo6aXNfc2V0
-KCAkdmFsdWUgKSApOwoKCSMgaWYgdmFsdWUgaXMgYSBwdXJlIG51bWJlciwgdGhlbiBhZGQgPSIk
-dmFsdWUiIHNvIHRoYXQgRXhjZWwgc3RvcHMgdGhlIGF1dG8tZm9ybWF0dGluZyAoaXQnZCB0dXJu
-IDEyMzQ1NiBpbnRvIDEuMjNlKzYpCgkjaWYoICR2YWx1ZSA9fiAvXlxkKyQvICkKCSN7CgkjCXJl
-dHVybiAiPVwiJHZhbHVlXCIiOwoJI30KCglyZXR1cm4gJHZhbHVlOwp9CgoxOwo=
+ID0gQF87CgoJcmV0dXJuICIiIHVubGVzcyggRVByaW50czo6VXRpbHM6OmlzX3NldCggJHZhbHVl
+ICkgKTsKCgkjIGlmIHZhbHVlIGlzIGEgcHVyZSBudW1iZXIsIHRoZW4gYWRkID0iJHZhbHVlIiBz
+byB0aGF0IEV4Y2VsIHN0b3BzIHRoZSBhdXRvLWZvcm1hdHRpbmcgKGl0J2QgdHVybiAxMjM0NTYg
+aW50byAxLjIzZSs2KQoJI2lmKCAkdmFsdWUgPX4gL15cZCskLyApCgkjewoJIwlyZXR1cm4gIj1c
+IiR2YWx1ZVwiIjsKCSN9CgoJcmV0dXJuICR2YWx1ZTsKfQoKMTsK
 </data>
         </file>
         <file>
@@ -10142,7 +10142,7 @@ IDwvY29tcG9uZW50PgogIDwvc3RhZ2U+Cjwvd29ya2Zsb3c+Cg==
         </file>
       </files>
       <mime_type>application/xml</mime_type>
-      <format>other</format>
+      <format>text/xml</format>
       <main>workflows/user/ref_support_uoa_champion.xml</main>
       <content>install</content>
     </document>
@@ -10311,7 +10311,7 @@ UV0AAAAASUVORK5CYII=
       <content>coverimage</content>
     </document>
   </documents>
-  <version>2.0.6</version>
+  <version>2.0.7</version>
   <controller>EPMC::REF_Support</controller>
   <creators>
     <item>

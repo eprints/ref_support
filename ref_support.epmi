@@ -321,9 +321,9 @@
           <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Export/REF_Support/REF_Excel.pm</filename>
           <mime_type>text/plain</mime_type>
-          <hash>fb22c04fb7b8ce31546f83b90a8776fe</hash>
+          <hash>6bfe3a6e0ea996cf971f1bed1948bad5</hash>
           <hash_type>MD5</hash_type>
-          <filesize>6317</filesize>
+          <filesize>6309</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
@@ -799,7 +799,7 @@
         </file>
       </files>
       <mime_type>application/xml</mime_type>
-      <format>other</format>
+      <format>text/xml</format>
       <main>workflows/user/ref_support_uoa_champion.xml</main>
       <content>install</content>
     </document>
@@ -819,7 +819,7 @@
       <content>coverimage</content>
     </document>
   </documents>
-  <version>2.0.6</version>
+  <version>2.0.7</version>
   <controller>EPMC::REF_Support</controller>
   <creators>
     <item>
