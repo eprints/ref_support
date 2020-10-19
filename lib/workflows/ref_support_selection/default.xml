@@ -41,7 +41,13 @@
     </component>
 
     <component type="Field::Multi">
-      <title>Pending Publication</title>
+      <title>COVID-19</title>
+      <field ref="covid_19"/>
+      <field ref="covid_statement"/>
+    </component>
+
+    <component type="Field::Multi">
+      <title>Pending Publication [DEPRECATED]</title>
       <field ref="pending_publication"/>
     </component>
 

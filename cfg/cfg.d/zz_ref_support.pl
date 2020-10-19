@@ -148,7 +148,7 @@ $c->{set_ref_support_selection_automatic_fields} = sub {
 	my $eprint = $session->dataset( 'eprint' )->dataobj( $selection->value( 'eprint_id' ) );
 
     # Ensure all boolean fields are set if they haven't already been set by default
-    my $boolean_fields = [qw{ pending non_english interdis sensitive does_include_sig does_include_res does_include_fact exclude_from_submission is_criminology is_forensic is_physical_output author_statement pdf_required }];
+    my $boolean_fields = [qw{ pending non_english interdis sensitive does_include_sig does_include_res does_include_fact exclude_from_submission is_criminology is_forensic is_physical_output author_statement pdf_required covid_19 }];
     foreach my $f ( @{$boolean_fields} )
     {
         unless( $selection->is_set( $f ) )
@@ -700,6 +700,11 @@ $c->add_dataset_field( 'ref_support_selection', { name => "does_include_fact", t
 # isAdditionalAttributedStaffMember
 $c->add_dataset_field( 'ref_support_selection', { name => "is_additional_staff", type => "boolean" }, reuse => 1 );
 
+# isDelayedByCovid19
+$c->add_dataset_field( 'ref_support_selection', { name => 'covid_19', type => 'boolean' }, reuse => 1 );
+
+# covid19Statement
+$c->add_dataset_field( 'ref_support_selection', { name => 'covid_statement', type => 'longtext' }, reuse => 1 );
 
 # REF Search Configuration (as used by REF::Listing)
 
@@ -811,7 +816,7 @@ $c->add_dataset_field( 'user', {
 	name => 'reason_no_connections',
 	type => 'set',
 	multiple => 1,
-	options => [ 'CaringResponsibilities', 'PersonalCircumstances', 'ReducedHours', 'NormalDisciplinePractice' ],
+	options => [ 'CaringResponsibilities', 'PersonalCircumstances', 'ApproachingRetirement', 'DisciplinePractice' ],
 }, reuse => 1 );
 
 # researchGroup

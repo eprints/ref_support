@@ -336,6 +336,7 @@ sub render_benchmarks
 		values => $benchmarks,
 		labels => \%labels,
 		default => $benchmark->id,
+        'aria-label' => "Select benchmark",
 	) );
 	$select->setAttribute( "onchange" => <<'EOJ' );
 $($('benchmarks')['_action_change_benchmark']).click();
@@ -456,7 +457,7 @@ sub ajax_roles
 
 #	$_ = $session->xhtml->to_text_dump( $_ ) for values %labels;
 
-	my $lookup = $frag->appendChild( $session->make_element( 'input', id=>"role_lookup", type => "text", placeholder => "Find user", oninput => "lookupRole(this.value)" ) );
+	my $lookup = $frag->appendChild( $session->make_element( 'input', id=>"role_lookup", type => "text", placeholder => "Find user", oninput => "lookupRole(this.value)", 'aria-label' => "Search users" ) );
 
 	my $select = $frag->appendChild( $session->render_option_list(
 		name => 'role',
@@ -464,6 +465,7 @@ sub ajax_roles
 		labels => \%labels,
 		height => 9,
 		default => $role->id,
+        'aria-label' => "Select user",
 	) );
 	my $index = 0;
 	foreach my $userid (@roles)

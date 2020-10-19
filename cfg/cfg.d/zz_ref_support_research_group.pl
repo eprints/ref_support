@@ -57,7 +57,7 @@ sub search_by_uoa_and_code
         return $session->dataset( 'ref_support_rg' )->search(
                 filters => [
                         { meta_fields => [qw( uoa )], value => $uoa, match => "EX", },
-			{ meta_fields => [qw( code )], value => $code, match => "EX", },
+                        { meta_fields => [qw( code )], value => $code, match => "EX", },
                 ],
         );
 }
@@ -87,7 +87,7 @@ unshift @{$c->{fields}->{ref_support_rg}}, (
                         maxlength=>1, required=>1 },
 
                 { name=>"name", type=>"text",
-			maxlength=>64, required=>1 },
+                        maxlength=>128, required=>1 },
 );
 
 push @{$c->{user_roles}->{admin}}, qw{

@@ -28,10 +28,10 @@ table.roles, table.roles th, table.roles td{
 
 <p>Champions may run REF1 or REF2 reports at any time for their Unit/s of Assessment for the current or previous benchmark.</p>
 
-<div class="ep_msg_other"><div class="ep_msg_other_content"><table style="padding:5px"><tr><td>
-<img alt="Warning" src="/style/images/warning.png" /></td><td>
+<div class="ep_msg_other"><div class="ep_msg_other_content"><div style="border-spacing:5px; display:table"><div style="display:table-row"><div style="display:table-cell; vertical-align:middle;">
+<img alt="Warning" src="/style/images/warning.png" /></div><div style="display:table-cell">
 <p>To select Unit of Assessment Champions a user must first be assigned the <strong>ref/select_champions</strong> role.</p>
-</td></tr></table></div></div>
+</div></div></div></div></div>
 
 <h3>REF1 Profile Information</h3>
 <p>Staff identified as taking part in your REF submission will have an enhanced profile, where REF1 data can be provided. This information will be used to generate the REF1 report.</p>
@@ -43,10 +43,10 @@ table.roles, table.roles th, table.roles td{
 <h3>Identify REF2 Outputs</h3>
 <p>Staff identified as taking part in your REF submission will be able to select their research outputs to be submitted to their assigned assessment panel. Additional REF2 data can be provided against each selection, including a self-rating and additional information for the panel to consider.</p>
 
-<div class="ep_msg_other"><div class="ep_msg_other_content"><table style="padding:5px"><tr><td>
-<img alt="Warning" src="/style/images/warning.png" /></td><td>
+<div class="ep_msg_other"><div class="ep_msg_other_content"><div style="border-spacing:5px; display:table"><div style="display:table-row"><div style="display:table-cell; vertical-align:middle;">
+<img alt="Warning" src="/style/images/warning.png" /></div><div style="display:table-cell">
 <p>In order to make a selection, a user must first be assigned the <strong>ref/select</strong> role.</p>
-</td></tr></table></div></div>
+</div></div></div></div></div>
 
 <h2>Getting Started</h2>
 <p>Once the REF Support plugin is installed on your EPrints Repository, you must complete the following set-up tasks in order to utilise the REF Support features.</p>

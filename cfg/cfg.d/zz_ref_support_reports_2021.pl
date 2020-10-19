@@ -121,17 +121,18 @@ sub ref_support_check_research_groups
 }
 
 # Current Staff Fields
-$c->{'ref'}->{'ref1_current_staff'}->{'fields'} = [qw{ hesaStaffIdentifier staffIdentifier surname initials dateOfBirth orcid contractFTE researchConnection isEarlyCareerResearcher isOnFixedTermContract contractStartDate contractEndDate isOnSecondment secondmentStartDate secondmentEndDate isOnUnpaidLeave unpaidLeaveStartDate unpaidLeaveEndDate researchGroups }];
+$c->{'ref'}->{'ref1_current_staff'}->{'fields'} = [qw{ hesaStaffIdentifier staffIdentifier surname initials dateOfBirth orcid contractedFTE researchConnection reasonsForNoConnectionStatement isEarlyCareerResearcher isOnFixedTermContract contractStartDate contractEndDate isOnSecondment secondmentStartDate secondmentEndDate isOnUnpaidLeave unpaidLeaveStartDate unpaidLeaveEndDate researchGroups }];
 
 $c->{'ref'}->{'ref1_current_staff'}->{'mappings'} = {
-	hesaStaffIdentifier => "user.hesa",
+        hesaStaffIdentifier => "user.hesa",
         staffIdentifier => "user.staff_id",
         surname => \&ref1a_support_surname,
         initials => \&ref1a_support_initials,
         dateOfBirth => "user.dob",
-	orcid => \&ref2021_orcid,
-        contractFTE => "user.ref_fte",
-	researchConnection => "user.research_connection",
+        orcid => \&ref2021_orcid,
+        contractedFTE => "user.ref_fte",
+        researchConnection => "user.research_connection",
+        reasonsForNoConnectionStatement => "user.reason_no_connections",
         isEarlyCareerResearcher => "user.is_ecr",
         isOnFixedTermContract => "user.is_fixed_term",
         contractStartDate => "user.fixed_term_start",
@@ -142,7 +143,7 @@ $c->{'ref'}->{'ref1_current_staff'}->{'mappings'} = {
         isOnUnpaidLeave => "user.is_unpaid_leave",
         unpaidLeaveStartDate => "user.unpaid_leave_start",
         unpaidLeaveEndDate => "user.unpaid_leave_end",
-	researchGroups => \&ref2021_research_groups,
+        researchGroups => \&ref2021_research_groups,
         # + ResearchGroup[1|2|3|4]
 };      
 
@@ -151,37 +152,36 @@ $c->{'ref_support'}->{'ref1_current_staff_fields_length'} = {
         staffIdentifier => 24,
         surname => 64,
         initials => 12,
-	researchConnection => 7500,
+        researchConnection => 7500,
 };
 
 sub ref2021_orcid
 {
-        my( $plugin, $objects ) = @_;
+    my( $plugin, $objects ) = @_;
 
-        my $user = $objects->{user} or return;
+    my $user = $objects->{user} or return;
 
-	my $ds = $user->dataset;
-	
-	if( $ds->has_field( 'orcid' ) )
-	{
-		my $orcid = $user->value( 'orcid' );
+    my $ds = $user->dataset;
 
-		# regexp to match various ways an orcid could be stored, e.g.
-		# Full URL: http://orcid.org/0000-1234-1234-123X
-		# Full URL: https://orcid.org/0000-1234-1234-123X
-		# Namespaced: orcid.org/0000-1234-1234-123X
-		# or		: orcid:0000-1234-1234-123X
-		# or value	: 0000-1234-1234-123X
-		# or even	: 000012341234123X
-		# 
-		# Borrowed from https://github.com/eprints/orcid_support/commit/4fa9c37e1de7ca7570703ddf4539c055e8a0008d (credit: John Salter)
-		if( defined $orcid && $orcid =~ m/^(?:\s*(?:https?:\/\/)?orcid(?:\.org\/|:))?(\d{4}\-?\d{4}\-?\d{4}\-?\d{3}(?:\d|X))(?:\s*)$/ )
-		{
-			return $1;
-		}
-	}
+    if( $ds->has_field( 'orcid' ) )
+    {
+        my $orcid = $user->value( 'orcid' );
 
-	return undef;
+        # regexp to match various ways an orcid could be stored, e.g.
+        # Full URL: http://orcid.org/0000-1234-1234-123X
+        # Full URL: https://orcid.org/0000-1234-1234-123X
+        # Namespaced: orcid.org/0000-1234-1234-123X
+        # or: orcid:0000-1234-1234-123X
+        # or value: 0000-1234-1234-123X
+        # or even: 000012341234123X
+        # 
+        # Borrowed from https://github.com/eprints/orcid_support/commit/4fa9c37e1de7ca7570703ddf4539c055e8a0008d (credit: John Salter)
+        if( defined $orcid && $orcid =~ m/^(?:\s*(?:https?:\/\/)?orcid(?:\.org\/|:))?(\d{4}\-?\d{4}\-?\d{4}\-?\d{3}(?:\d|X))(?:\s*)$/ )
+        {
+            return $1;
+        }
+    }
+    return undef;
 };
 
 sub ref2021_research_groups
@@ -363,22 +363,23 @@ $c->{plugins}->{"Screen::REF_Support::Report::Former_Staff"}->{params}->{validat
 };
 
 # Former Staff Contracts Fields
-$c->{'ref'}->{'ref1_former_staff_contracts'}->{'fields'} = [qw{ staffIdentifier hesaStaffIdentifier contractFTE researchConnection reasonForNoConnectionStatement startDate endDate isOnSecondment secondmentStartDate secondmentEndDate isOnUnpaidLeave unpaidLeaveStartDate unpaidLeaveEndDate researchGroups }];
+$c->{'ref'}->{'ref1_former_staff_contracts'}->{'fields'} = [qw{ staffIdentifier hesaStaffIdentifier contractedFTE researchConnection reasonsForNoConnectionStatement startDate endDate isOnSecondment secondmentStartDate secondmentEndDate isOnUnpaidLeave unpaidLeaveStartDate unpaidLeaveEndDate researchGroups }];
 
 $c->{'ref'}->{'ref1_former_staff_contracts'}->{'mappings'} = {
-	staffIdentifier => \&ref2021_contract_staff_identifier,
-	hesaStaffIdentifier => "user.hesa",
-        contractFTE => "ref_support_circ.ref_fte",
-	researchConnection => "ref_support_circ.research_connection",
-	startDate => "ref_support_circ.fixed_term_start",
-	endDate => "ref_support_circ.fixed_term_end",
-        isOnSecondment => "ref_support_circ.is_secondment",
-        secondmentStartDate => "ref_support_circ.secondment_start",
-        secondmentEndDate => "ref_support_circ.secondment_end",
-        isOnUnpaidLeave => "ref_support_circ.is_unpaid_leave",
-        unpaidLeaveStartDate => "ref_support_circ.unpaid_leave_start",
-        unpaidLeaveEndDate => "ref_support_circ.unpaid_leave_end",
-	researchGroups => \&ref2021_research_groups,
+    staffIdentifier => \&ref2021_contract_staff_identifier,
+    hesaStaffIdentifier => "user.hesa",
+    contractedFTE => "ref_support_circ.ref_fte",
+    researchConnection => "ref_support_circ.research_connection",
+    reasonsForNoConnectionStatement => "ref_support_circ.reason_no_connections",
+    startDate => "ref_support_circ.fixed_term_start",
+    endDate => "ref_support_circ.fixed_term_end",
+    isOnSecondment => "ref_support_circ.is_secondment",
+    secondmentStartDate => "ref_support_circ.secondment_start",
+    secondmentEndDate => "ref_support_circ.secondment_end",
+    isOnUnpaidLeave => "ref_support_circ.is_unpaid_leave",
+    unpaidLeaveStartDate => "ref_support_circ.unpaid_leave_start",
+    unpaidLeaveEndDate => "ref_support_circ.unpaid_leave_end",
+    researchGroups => \&ref2021_research_groups,
 };      
 
 # character limits
@@ -452,12 +453,12 @@ $c->{plugins}->{"Screen::REF_Support::Report::Former_Staff_Contracts"}->{params}
 $c->{'ref'}->{'research_groups'}->{'fields'} = [qw{ code name }];
 
 $c->{'ref'}->{'research_groups'}->{'mappings'} = {
-        code => "ref_support_rg.code",
-	name => "ref_support_rg.name",
+    code => "ref_support_rg.code",
+    name => "ref_support_rg.name",
 };
 
 # Research Outputs Fields
-$c->{'ref'}->{'ref2_research_outputs'}->{'fields'} = [qw{ outputIdentifier webOfScienceIdentifier outputType title place publisher volumeTitle volume issue firstPage articleNumber isbn issn doi patentNumber month year url isPhysicalOutput supplementaryInformation numberOfAdditionalAuthors isPendingPublication pendingPublicationReserve isForensicScienceOutput isCriminologyOutput isNonEnglishLanguage englishAbstract isInterdisciplinary proposeDoubleWeighting doubleWeightingStatement doubleWeightingReserve conflictedPanelMembers crossReferToUoa additionalInformation doesIncludeSignificantMaterialBefore2014 doesIncludeResearchProcess doesIncludeFactualInformationAboutSignificance researchGroup openAccessStatus outputAllocation1 outputAllocation2 outputSubProfileCategory requiresAuthorContributionStatement isSensitive excludeFromSubmission outputPdfRequired }];
+$c->{'ref'}->{'ref2_research_outputs'}->{'fields'} = [qw{ outputIdentifier webOfScienceIdentifier outputType title place publisher volumeTitle volume issue firstPage articleNumber isbn issn doi patentNumber month year url isPhysicalOutput supplementaryInformation numberOfAdditionalAuthors isForensicScienceOutput isCriminologyOutput isNonEnglishLanguage englishAbstract isInterdisciplinary proposeDoubleWeighting doubleWeightingStatement doubleWeightingReserve conflictedPanelMembers crossReferToUoa additionalInformation isDelayedByCovid19 covid19Statement doesIncludeSignificantMaterialBefore2014 doesIncludeResearchProcess doesIncludeFactualInformationAboutSignificance researchGroup openAccessStatus outputAllocation1 outputAllocation2 outputSubProfileCategory requiresAuthorContributionStatement isSensitive excludeFromSubmission outputPdfRequired }];
 
 $c->{'ref'}->{'ref2_research_outputs'}->{'mappings'} = {
 	"outputIdentifier" => "ref_support_selection.selectionid",
@@ -481,8 +482,8 @@ $c->{'ref'}->{'ref2_research_outputs'}->{'mappings'} = {
 	"isPhysicalOutput" => "ref_support_selection.is_physical_output",
 	"supplementaryInformation" => "ref_support_selection.supplementary_information_doi",
 	"numberOfAdditionalAuthors" => \&ref2_support_additionalAuthors,
-	"isPendingPublication" => "ref_support_selection.pending",
-	"pendingPublicationReserve" => "ref_support_selection.pending_publication",
+    #"isPendingPublication" => "ref_support_selection.pending",
+    #"pendingPublicationReserve" => "ref_support_selection.pending_publication",
 	"isForensicScienceOutput" => "ref_support_selection.is_forensic",
 	"isCriminologyOutput" => "ref_support_selection.is_criminology",
 	"isNonEnglishLanguage" => "ref_support_selection.non_english",
@@ -494,6 +495,8 @@ $c->{'ref'}->{'ref2_research_outputs'}->{'mappings'} = {
 	"conflictedPanelMembers" => "ref_support_selection.conflicted_members",
 	"crossReferToUoa" => \&ref2_support_cross_ref,
 	"additionalInformation" => "ref_support_selection.details",
+	"isDelayedByCovid19" => "ref_support_selection.covid_19",
+	"covid19Statement" => "ref_support_selection.covid_statement",
 	"doesIncludeSignificantMaterialBefore2014" => "ref_support_selection.does_include_sig",
 	"doesIncludeResearchProcess" => "ref_support_selection.does_include_res",
 	"doesIncludeFactualInformationAboutSignificance" => "ref_support_selection.does_include_fact",
@@ -511,7 +514,7 @@ $c->{'ref'}->{'ref2_research_outputs'}->{'mappings'} = {
 # character limits
 $c->{'ref_support'}->{'ref2_research_outputs_fields_length'} = {
 	outputIdentifier => 24,
-	webOfScienceIdentifier => 15,
+	webOfScienceIdentifier => 20,
 	title => 7500,
 	place => 256,
 	publisher => 256,
@@ -532,6 +535,7 @@ $c->{'ref_support'}->{'ref2_research_outputs_fields_length'} = {
 	doubleWeightingReserve => 24,
 	conflictedPanelMembers => 512,
 	additionalInformation => 7500,
+	covid19Statement => 7500,
 	outputAllocation1 => 128,
 	outputAllocation2 => 128,
 	outputSubProfileCategory => 128,	
