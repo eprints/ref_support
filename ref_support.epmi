@@ -193,17 +193,17 @@
           <datasetid>document</datasetid>
           <filename>epm/ref_support/cfg/cfg.d/z_ref_support_parameters.pl</filename>
           <mime_type>text/plain</mime_type>
-          <hash>a327c3b8351dc2c0adfb662ec53c2420</hash>
+          <hash>6f0a374cb972361ec40c2f344ccdd9be</hash>
           <hash_type>MD5</hash_type>
-          <filesize>724</filesize>
+          <filesize>729</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
           <filename>epm/ref_support/cfg/cfg.d/zz_ref_support.pl</filename>
           <mime_type>text/plain</mime_type>
-          <hash>dc6b387875b099632d0291c19c5d2d81</hash>
+          <hash>1a7b9a20f86bc7b840a05cd384568a8c</hash>
           <hash_type>MD5</hash_type>
-          <filesize>31455</filesize>
+          <filesize>31726</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
@@ -241,17 +241,17 @@
           <datasetid>document</datasetid>
           <filename>epm/ref_support/cfg/cfg.d/zz_ref_support_reports_2021.pl</filename>
           <mime_type>text/plain</mime_type>
-          <hash>68e67f1fdd45139d1c57acd763bc8916</hash>
+          <hash>0c6e43bbd168810ec2cc3ddab9880ad6</hash>
           <hash_type>MD5</hash_type>
-          <filesize>32222</filesize>
+          <filesize>32676</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
           <filename>epm/ref_support/cfg/cfg.d/zz_ref_support_research_group.pl</filename>
           <mime_type>text/plain</mime_type>
-          <hash>07b3dd271edb1c005adfa89e3ce362a9</hash>
+          <hash>28eee12717054ce8d5766b3d8b912b49</hash>
           <hash_type>MD5</hash_type>
-          <filesize>2813</filesize>
+          <filesize>2856</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
@@ -273,17 +273,17 @@
           <datasetid>document</datasetid>
           <filename>lang/en/phrases/ref_support.xml</filename>
           <mime_type>application/xml</mime_type>
-          <hash>308e849e7e6139478ea035e283bd74ee</hash>
+          <hash>cdbcceacf30c85d339d4e82472fe7356</hash>
           <hash_type>MD5</hash_type>
-          <filesize>67992</filesize>
+          <filesize>68678</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
           <filename>lang/en/static/ref_support/index.xpage</filename>
           <mime_type>application/xml</mime_type>
-          <hash>f41844d70b81ff237ccb910f7102aaf8</hash>
+          <hash>e2017221214187195b0f8544e68ed6d5</hash>
           <hash_type>MD5</hash_type>
-          <filesize>5278</filesize>
+          <filesize>5534</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
@@ -353,9 +353,9 @@
           <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Screen/REF_Support.pm</filename>
           <mime_type>text/plain</mime_type>
-          <hash>7e7fb8aea5003b246d65ca6903e82280</hash>
+          <hash>92a5db23ee70617b36e9324797cb999f</hash>
           <hash_type>MD5</hash_type>
-          <filesize>17928</filesize>
+          <filesize>18043</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
@@ -777,9 +777,9 @@
           <datasetid>document</datasetid>
           <filename>workflows/ref_support_selection/default.xml</filename>
           <mime_type>application/xml</mime_type>
-          <hash>4c40a8d8c479b1d2a4656829f9c50ce6</hash>
+          <hash>86165516ba17e9512a7914920e742c2d</hash>
           <hash_type>MD5</hash_type>
-          <filesize>2383</filesize>
+          <filesize>2547</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
@@ -799,7 +799,7 @@
         </file>
       </files>
       <mime_type>application/xml</mime_type>
-      <format>text/xml</format>
+      <format>other</format>
       <main>workflows/user/ref_support_uoa_champion.xml</main>
       <content>install</content>
     </document>
@@ -819,7 +819,7 @@
       <content>coverimage</content>
     </document>
   </documents>
-  <version>2.0.7</version>
+  <version>2.1</version>
   <controller>EPMC::REF_Support</controller>
   <creators>
     <item>
