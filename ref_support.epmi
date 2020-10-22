@@ -201,9 +201,9 @@
           <datasetid>document</datasetid>
           <filename>epm/ref_support/cfg/cfg.d/zz_ref_support.pl</filename>
           <mime_type>text/plain</mime_type>
-          <hash>1a7b9a20f86bc7b840a05cd384568a8c</hash>
+          <hash>5e117607507d48f424b7f305aba400a5</hash>
           <hash_type>MD5</hash_type>
-          <filesize>31726</filesize>
+          <filesize>32912</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
@@ -241,9 +241,9 @@
           <datasetid>document</datasetid>
           <filename>epm/ref_support/cfg/cfg.d/zz_ref_support_reports_2021.pl</filename>
           <mime_type>text/plain</mime_type>
-          <hash>0c6e43bbd168810ec2cc3ddab9880ad6</hash>
+          <hash>bbf9ef2de3fd4e5346000d84d8362788</hash>
           <hash_type>MD5</hash_type>
-          <filesize>32676</filesize>
+          <filesize>33884</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
@@ -457,9 +457,9 @@
           <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Screen/REF_Support/Listing.pm</filename>
           <mime_type>text/plain</mime_type>
-          <hash>715e39a56fbb61ba02762701723a502b</hash>
+          <hash>8708747c2d25f0db35f11e35fe8d9d33</hash>
           <hash_type>MD5</hash_type>
-          <filesize>25330</filesize>
+          <filesize>25531</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
@@ -819,7 +819,7 @@
       <content>coverimage</content>
     </document>
   </documents>
-  <version>2.1</version>
+  <version>2.1.1</version>
   <controller>EPMC::REF_Support</controller>
   <creators>
     <item>

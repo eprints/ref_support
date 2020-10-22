@@ -910,12 +910,19 @@ sub get_ref_cc_compliance
 				$compliance = 2; # future compliance
 			}
 
-			if( $repo->can_call( "hefce_oa", "run_test_OUT_OF_SCOPE" ) )
+			if( $repo->can_call( "hefce_oa", "OUT_OF_SCOPE_reason" ) )
 			{
-				my $out_of_scope = $repo->call( [ "hefce_oa", "run_test_OUT_OF_SCOPE" ], $repo, $eprint );
+				my $out_of_scope = $repo->call( [ "hefce_oa", "OUT_OF_SCOPE_reason" ], $repo, $eprint );
 				if( $out_of_scope )
 				{
-					$compliance = 3; # compliance not relevant
+                    if( $out_of_scope eq "gold" )
+                    {
+	    				$compliance = 1; # compliant
+                    }
+                    else
+                    {
+	    				$compliance = 3; # compliance not relevant
+                    }
 				}
 			}
 		}

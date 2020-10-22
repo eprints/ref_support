@@ -474,7 +474,7 @@ $c->{'ref'}->{'ref2_research_outputs'}->{'mappings'} = {
 	"articleNumber" => \&ref2_support_article_number,
 	"isbn" => "eprint.isbn",
 	"issn" => "eprint.issn",
-	"doi" => "eprint.id_number",
+	"doi" => \&ref2021_doi,
 	"patentNumber" => \&ref2_support_patentNumber,
 	"month" => \&ref2021_month,
 	"year" => \&ref2_support_year,
@@ -538,22 +538,58 @@ $c->{'ref_support'}->{'ref2_research_outputs_fields_length'} = {
 	covid19Statement => 7500,
 	outputAllocation1 => 128,
 	outputAllocation2 => 128,
-	outputSubProfileCategory => 128,	
+	outputSubProfileCategory => 128,
 };
-         
+
+# lifted straight from UKETD plugin (again), which is based on render_possible_doi
+sub ref2021_doi
+{
+    my( $plugin, $objects ) = @_;
+
+    my $eprint = $objects->{eprint};
+    my $session = $plugin->{session};
+
+    #start with an assumption
+    my $doi_field = "id_number";
+    if( EPrints::Utils::is_set( $session->get_conf( "hefce_oa","eprintdoifield" ) ) )
+    {
+        #a) have we defined the doi_field within the hefce_oa conf?
+        $doi_field = $session->get_conf( "hefce_oa", "eprintdoifield" );
+    }
+    elsif( EPrints::Utils::is_set( $session->get_conf( "datacitedoi", "eprintdoifield" ) ) )
+    {
+        #b) have we already defined the doi_field within the dataitedoi plugin?
+        $doi_field = $session->get_conf("datacitedoi","eprintdoifield");
+    }
+
+    return undef if !$eprint->is_set( $doi_field );
+
+    my $doi = $eprint->value( $doi_field );
+    if( $doi =~ m!^
+         (?:https?://(?:dx\.)?doi\.org/)?  # add this again later anyway
+         (?:doi:?\s*)?                   # don't need any namespace stuff
+         (10(\.[^./]+)+/.+)              # the actual DOI => $1
+     !ix )
+     {
+         # just use the last part - the actual DOI.
+         return $1;
+     }
+
+    return undef;
+}
 
 sub ref2021_month
 {
-        my( $plugin, $objects ) = @_;
+    my( $plugin, $objects ) = @_;
 
-        my $eprint = $objects->{eprint};
+    my $eprint = $objects->{eprint};
 
-	return undef if !$eprint->is_set( "date" );
+    return undef if !$eprint->is_set( "date" );
 
-	my( $year, $month, $day ) = split(/-/, $eprint->value( "date" ) );
-	return $month if defined $month;
+    my( $year, $month, $day ) = split(/-/, $eprint->value( "date" ) );
+    return $month if defined $month;
 
-	return undef;
+    return undef;
 }
 
 $c->{ref_support}->{ref2_research_outputs_required_fields} = {

@@ -140,12 +140,11 @@ $c->add_dataset_trigger( "user", EPrints::Const::EP_TRIGGER_AFTER_COMMIT, sub {
 
 # called when a ref_support_selection object is committed
 $c->{set_ref_support_selection_automatic_fields} = sub {
-	my( $selection ) = @_;
+    my( $selection ) = @_;
 
 	my $session = $selection->get_session;
 
-	# Re-sync the EPrint title while we're here
-	my $eprint = $session->dataset( 'eprint' )->dataobj( $selection->value( 'eprint_id' ) );
+    my $eprint = $session->dataset( 'eprint' )->dataobj( $selection->value( 'eprint_id' ) );
 
     # Ensure all boolean fields are set if they haven't already been set by default
     my $boolean_fields = [qw{ pending non_english interdis sensitive does_include_sig does_include_res does_include_fact exclude_from_submission is_criminology is_forensic is_physical_output author_statement pdf_required covid_19 }];
@@ -157,107 +156,129 @@ $c->{set_ref_support_selection_automatic_fields} = sub {
         }
     }
 
-	if( defined $eprint )
-	{
-		$selection->set_value( 'eprint_title', $eprint->value( 'title' ) );
+    if( defined $eprint )
+    {
+        # update the title
+        $selection->set_value( 'eprint_title', $eprint->value( 'title' ) );
 
-		unless( $selection->is_set( 'type' ) )
-		{
-			# see zz_ref_report.pl for $c->{ref}->{map_eprint_type}
-			$selection->set_value( 'type', $session->call( [ 'ref', 'map_eprint_type' ], $eprint ) );
-		}
+        # update the type
+        unless( $selection->is_set( 'type' ) )
+        {
+            # see zz_ref_report.pl for $c->{ref}->{map_eprint_type}
+            $selection->set_value( 'type', $session->call( [ 'ref', 'map_eprint_type' ], $eprint ) );
+        }
 
-		unless( $selection->is_set( 'open_access_status' ) )
+        # update the open_access_status
+        my $oa_status_set = 0;
+        unless( $oa_status_set )
+        {
+            if( EPrints::Utils::is_set( $session->config( "hefce_oa", "item_types" ) ) )
+            {
+                my @item_types = @{$session->config( 'hefce_oa', 'item_types' )};
+                if( !grep { $eprint->get_value( "type" ) eq $_ } @item_types )
                 {
-                        if( EPrints::Utils::is_set( $session->config( "hefce_oa", "item_types" ) ) )
-                        {
-                                my @item_types = @{$session->config( 'hefce_oa', 'item_types' )};
-                                if( !grep { $eprint->get_value( "type" ) eq $_ } @item_types )
-                                {
-                                        $selection->set_value( 'open_access_status', 'OutOfScope' );
-                                }
-                        }
+                    $selection->set_value( 'open_access_status', 'OutOfScope' );
+                    $oa_status_set = 1;
                 }
+            }
+        }
 
-		unless( $selection->is_set( 'open_access_status' ) )
-		{
-			if( $session->can_call( "hefce_oa", "run_test_OUT_OF_SCOPE" ) )
-			{
-				if( $session->call( [ "hefce_oa", "run_test_OUT_OF_SCOPE" ], $session, $eprint ) )
-				{
-					$selection->set_value( 'open_access_status', 'OutOfScope' );
-				}
-			}
-		}
+        unless( $oa_status_set )
+        {
+            if( $session->can_call( "hefce_oa", "OUT_OF_SCOPE_reason" ) )
+            {
+                my $reason = $session->call( [ "hefce_oa", "OUT_OF_SCOPE_reason" ], $session, $eprint );
+                if( $reason )
+                {
+                    if( $reason eq "gold" )
+                    {
+                        $selection->set_value( 'open_access_status', 'Compliant' );
+                        $oa_status_set = 1;
+                    }
+                    else
+                    {
+                        $selection->set_value( 'open_access_status', 'OutOfScope' );
+                        $oa_status_set = 1;
+                    }
+                }
+            }
+        }
 
-		unless( $selection->is_set( 'open_access_status' ) )
-		{
-			if( $eprint->dataset->has_field( 'hoa_ex_dep' ) )
-			{
-				if( $eprint->is_set( 'hoa_ex_dep' ) )
-				{
-					$selection->set_value( 'open_access_status', 'DepositException' );
-				}
-			}
-		}
+        unless( $oa_status_set )
+        {
+            if( $eprint->dataset->has_field( 'hoa_ex_dep' ) )
+            {
+                if( $eprint->is_set( 'hoa_ex_dep' ) )
+                {
+                    $selection->set_value( 'open_access_status', 'DepositException' );
+                    $oa_status_set = 1;
+                }
+            }
+        }
 
-		unless( $selection->is_set( 'open_access_status' ) )
-		{
-			if( $eprint->dataset->has_field( 'hoa_ex_acc' ) )
-			{
-				if( $eprint->is_set( 'hoa_ex_acc' ) )
-				{
-					$selection->set_value( 'open_access_status', 'AccessException' );
-				}
-			}
-		}
+        unless( $oa_status_set )
+        {
+            if( $eprint->dataset->has_field( 'hoa_ex_acc' ) )
+            {
+                if( $eprint->is_set( 'hoa_ex_acc' ) )
+                {
+                    $selection->set_value( 'open_access_status', 'AccessException' );
+                    $oa_status_set = 1;
+                }
+            }
+        }
 
-		unless( $selection->is_set( 'open_access_status' ) )
-		{
-			if( $eprint->dataset->has_field( 'hoa_ex_tec' ) )
-			{
-				if( $eprint->is_set( 'hoa_ex_tec' ) )
-				{
-					$selection->set_value( 'open_access_status', 'TechnicalException' );
-				}
-			}
-		}
+        unless( $oa_status_set )
+        {
+            if( $eprint->dataset->has_field( 'hoa_ex_tec' ) )
+            {
+                if( $eprint->is_set( 'hoa_ex_tec' ) )
+                {
+                    $selection->set_value( 'open_access_status', 'TechnicalException' );
+                    $oa_status_set = 1;
+                }
+            }
+        }
 
-		unless( $selection->is_set( 'open_access_status' ) )
-		{
-			if( $eprint->dataset->has_field( 'hoa_ex_fur' ) )
-			{
-				if( $eprint->is_set( 'hoa_ex_fur' ) )
-				{
-					if( $eprint->get_value( 'hoa_ex_fur' ) eq 'a' )
-					{
-						$selection->set_value( 'open_access_status', 'OtherException' );
-					}
+        unless( $oa_status_set )
+        {
+            if( $eprint->dataset->has_field( 'hoa_ex_fur' ) )
+            {
+                if( $eprint->is_set( 'hoa_ex_fur' ) )
+                {
+                    if( $eprint->get_value( 'hoa_ex_fur' ) eq 'a' )
+                    {
+                        $selection->set_value( 'open_access_status', 'OtherException' );
+                        $oa_status_set = 1;
+                    }
 
-					if( $eprint->get_value( 'hoa_ex_fur' ) eq 'b' )
-					{
-						$selection->set_value( 'open_access_status', 'ExceptionWithin3MonthsOfPublication' );
-					}
-				}
-			}
-		}
+                    if( $eprint->get_value( 'hoa_ex_fur' ) eq 'b' )
+                    {   
+                        $selection->set_value( 'open_access_status', 'ExceptionWithin3MonthsOfPublication' );
+                        $oa_status_set = 1;
+                    }
+                }
+            }
+        }
 
-		unless( $selection->is_set( 'open_access_status' ) )
-		{
-			if( $session->can_call( "hefce_oa", "run_test_COMPLIANT" ) )
-			{
-				if( $session->call( [ "hefce_oa", "run_test_COMPLIANT" ], $session, $eprint, $eprint->get_value( 'hoa_compliant' ) ) )
-				{
-					$selection->set_value( 'open_access_status', 'Compliant' );
-				}
-			}
-		}
+        unless( $oa_status_set )
+        {
+            if( $session->can_call( "hefce_oa", "run_test_COMPLIANT" ) )
+            {
+                if( $session->call( [ "hefce_oa", "run_test_COMPLIANT" ], $session, $eprint, $eprint->get_value( 'hoa_compliant' ) ) )
+                {
+                    $selection->set_value( 'open_access_status', 'Compliant' );
+                    $oa_status_set = 1;
+                }
+            }
+        }
 
-		unless( $selection->is_set( 'open_access_status' ) )
-		{
-			$selection->set_value( 'open_access_status', 'NotCompliant' );
-		}
-	}
+        unless( $oa_status_set )
+        {
+            $selection->set_value( 'open_access_status', 'NotCompliant' );
+            $oa_status_set = 1;
+        }
+    }
 };
 
 # If the title of an EPrint changes, we need to update the REF Selection objects
