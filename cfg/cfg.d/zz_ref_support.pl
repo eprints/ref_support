@@ -170,6 +170,18 @@ $c->{set_ref_support_selection_automatic_fields} = sub {
 
         # update the open_access_status
         my $oa_status_set = 0;
+
+        # openAccessStatus "Must not be supplied for outputTypes that aren't D or E"
+        # From: https://ref.ac.uk/media/1456/submissions-system-validation-documentation-for-ref2021-oct2020.pdf 
+
+        my $output_type = $selection->get_value( 'type' );
+
+        if( ( $output_type ne 'D' ) && ( $output_type ne 'E' ) )
+        {
+            $selection->set_value( 'open_access_status', undef );
+            $oa_status_set = 1;
+        }
+
         unless( $oa_status_set )
         {
             if( EPrints::Utils::is_set( $session->config( "hefce_oa", "item_types" ) ) )
