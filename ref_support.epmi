@@ -201,9 +201,9 @@
           <datasetid>document</datasetid>
           <filename>epm/ref_support/cfg/cfg.d/zz_ref_support.pl</filename>
           <mime_type>text/plain</mime_type>
-          <hash>5e117607507d48f424b7f305aba400a5</hash>
+          <hash>2252ad31146ba3d667c89dce8b454d8c</hash>
           <hash_type>MD5</hash_type>
-          <filesize>32912</filesize>
+          <filesize>33357</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
@@ -819,7 +819,7 @@
       <content>coverimage</content>
     </document>
   </documents>
-  <version>2.1.1</version>
+  <version>2.1.2</version>
   <controller>EPMC::REF_Support</controller>
   <creators>
     <item>
