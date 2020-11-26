@@ -54,6 +54,12 @@ sub users
 
 	return $self->{session}->dataset( "user" )->list( [] ) unless( defined $benchmark && defined $default_benchmark );
 
+	my $report = $self->{processor}->{report};
+	if( defined $report && ( $report eq "ref1_current_staff" || $report eq "ref1_former_staff" ) ) # for these reports we want all current staff or former staff - we can't differentiate based on the benchmark selected
+	{
+		return $self->users_by_uoa();
+	}
+
 	if( $benchmark->get_id == $default_benchmark->get_id )
 	{
 		# will return all the users affiliated to a UoA (well for the UoAs selected for that report)

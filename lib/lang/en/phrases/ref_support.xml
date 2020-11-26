@@ -55,6 +55,8 @@
 <epp:phrase id="user_fieldopt_reason_no_connections_PersonalCircumstances">Personal Circumstances</epp:phrase>
 <epp:phrase id="user_fieldopt_reason_no_connections_ReducedHours">Reduced Hours</epp:phrase>
 <epp:phrase id="user_fieldopt_reason_no_connections_NormalDisciplinePractice">Normal Discipline Practice</epp:phrase>
+<epp:phrase id="user_fieldopt_reason_no_connections_ApproachingRetirement">Approaching Retirement</epp:phrase>
+<epp:phrase id="user_fieldopt_reason_no_connections_DisciplinePractice">Normal Discipline Practice</epp:phrase>
 
 <epp:phrase id="user_fieldname_research_groups">Research Group</epp:phrase>
 <epp:phrase id="user_fieldhelp_research_groups">Please select up to 4 research groups.</epp:phrase>
