@@ -8,6 +8,10 @@ $c->{plugins}{"Screen::REF_Support::Report::Staff_Outputs"}{params}{disable} = 0
 
 $c->{ref_2021_reports} = [qw{ complete_submission research_groups ref1_current_staff ref1_former_staff ref1_former_staff_contracts ref2_research_outputs ref2_staff_outputs }];
 
+# define which reports we'd like to include in the complete report (useful if you don't want to include REF4)
+$c->{ref_2021_complete_reports}->{excel} = [qw{ research_groups ref1_current_staff ref1_former_staff ref1_former_staff_contracts ref2_research_outputs ref2_staff_outputs ref4 }];
+$c->{ref_2021_complete_reports}->{xml} = [qw{ research_groups ref1_current_staff ref1_former_staff ref2_research_outputs ref2_staff_outputs ref4 }];
+
 # generic function for checking the character lengths of the fields for a given report have not exceeded a maximum limit
 sub ref_support_check_characters
 {
@@ -125,7 +129,7 @@ $c->{'ref'}->{'ref1_current_staff'}->{'fields'} = [qw{ hesaStaffIdentifier staff
 
 $c->{'ref'}->{'ref1_current_staff'}->{'mappings'} = {
         hesaStaffIdentifier => "user.hesa",
-        staffIdentifier => "user.staff_id",
+        staffIdentifier => \&ref2021_staff_id,
         surname => \&ref1a_support_surname,
         initials => \&ref1a_support_initials,
         dateOfBirth => "user.dob",
@@ -133,7 +137,7 @@ $c->{'ref'}->{'ref1_current_staff'}->{'mappings'} = {
         contractedFTE => "user.ref_fte",
         researchConnection => "user.research_connection",
         reasonsForNoConnectionStatement => "user.reason_no_connections",
-        isEarlyCareerResearcher => "user.is_ecr",
+        isEarlyCareerResearcher => \&ref2021_is_ecr,
         isOnFixedTermContract => "user.is_fixed_term",
         contractStartDate => "user.fixed_term_start",
         contractEndDate => "user.fixed_term_end",
@@ -153,6 +157,20 @@ $c->{'ref_support'}->{'ref1_current_staff_fields_length'} = {
         surname => 64,
         initials => 12,
         researchConnection => 7500,
+};
+
+# only provide if we don't have a HESA 
+sub ref2021_staff_id
+{
+    my( $plugin, $objects ) = @_;
+
+    my $user = $objects->{user} or return;
+
+    if( !$user->is_set( "hesa" ) && $user->is_set( "staff_id" ) )
+    {
+        return $user->get_value( "staff_id" );
+    }
+    return undef;
 };
 
 sub ref2021_orcid
@@ -183,6 +201,21 @@ sub ref2021_orcid
     }
     return undef;
 };
+
+# only provide if we don't have a HESA 
+sub ref2021_is_ecr
+{
+    my( $plugin, $objects ) = @_;
+
+    my $user = $objects->{user} or return;
+
+    if( !$user->is_set( "hesa" ) && $user->is_set( "is_ecr" ) )
+    {
+        return $user->get_value( "is_ecr" );
+    }
+    return undef;
+};
+
 
 sub ref2021_research_groups
 {
@@ -277,23 +310,43 @@ $c->{plugins}->{"Screen::REF_Support::Report::Current_Staff"}->{params}->{valida
 # Former Staff Fields
 $c->{'ref'}->{'ref1_former_staff'}->{'fields'} = [qw{ staffIdentifier surname initials dateOfBirth orcid excludeFromSubmission contracts }];
 
+$c->{'ref'}->{'ref1_former_staff'}->{'hierarchical_fields'} = [qw{ contracts }];
+
 $c->{'ref'}->{'ref1_former_staff'}->{'mappings'} = {
-	hesaStaffIdentifier => "user.hesa",
-        staffIdentifier => "user.staff_id",
-        surname => \&ref1a_support_surname,
-        initials => \&ref1a_support_initials,
-        dateOfBirth => "user.dob",
-	orcid => \&ref2021_orcid,
-	excludeFromSubmission => "user.exclude_from_submission",
-	contracts => \&ref2021_contracts,
+    staffIdentifier => \&ref2021_former_staff_staff_id,
+    surname => \&ref1a_support_surname,
+    initials => \&ref1a_support_initials,
+    dateOfBirth => "user.dob",
+    orcid => \&ref2021_orcid,
+    excludeFromSubmission => "user.exclude_from_submission",
+    contracts => \&ref2021_contracts,
 };      
 
 # character limits
 $c->{'ref_support'}->{'ref1_former_staff_fields_length'} = {
-        staffIdentifier => 24,
-	surname => 64,
-	initials => 12,
+    staffIdentifier => 24,
+    surname => 64,
+    initials => 12,
 };
+
+# former staff should use HESAs where available, or staff ID where not (but only has the one column for these, unlike current staff where this is split over two columns
+sub ref2021_fomer_staff_staff_id
+{
+    my( $plugin, $objects ) = @_;
+
+    my $user = $objects->{user} or return;
+
+    if( $user->is_set( "hesa" ) ) # we have a preference for HESA where available
+    {
+        return $user->get_value( "hesa" );
+    }
+    elsif( $user->is_set( "staff_id" ) ) # otherwise use the staff_id
+    {
+        return $user->get_value( "staff_id" );
+    }
+    return undef;
+};
+
 
 sub ref2021_contracts
 {
@@ -390,15 +443,23 @@ $c->{'ref_support'}->{'ref1_former_staff_contracts_fields_length'} = {
 
 sub ref2021_contract_staff_identifier
 {
-	my( $plugin, $objects ) = @_;
-	
-	# we only need to include this in flat exports...
-	if( !$plugin->{is_hierarchical} )
-	{
-		my $user = $objects->{user};
-		return $user->get_value( "staff_id" );
-	}
-	return undef;
+    my( $plugin, $objects ) = @_;
+    
+    # we only need to include this in flat exports...
+    if( !$plugin->{is_hierarchical} )
+    {
+        my $user = $objects->{user};
+
+        if( $user->is_set( "hesa" ) ) # to successfully match up with former staff table, we have a preference for HESA where available
+        {
+            return $user->get_value( "hesa" );
+        }
+        elsif( $user->is_set( "staff_id" ) ) # otherwise use the staff_id
+        {
+            return $user->get_value( "staff_id" );
+        }
+    }
+    return undef;
 }
 
 # Former Staff Contracts Validation
@@ -860,18 +921,18 @@ $c->{plugins}->{"Screen::REF_Support::Report::Research_Outputs"}->{params}->{val
 $c->{'ref'}->{'ref2_staff_outputs'}->{'fields'} = [qw{ hesaStaffIdentifier staffIdentifier outputIdentifier authorContributionStatement isAdditionalAttributedStaffMember }];
 
 $c->{'ref'}->{'ref2_staff_outputs'}->{'mappings'} = {
-        "hesaStaffIdentifier" => "user.hesa",
-        "staffIdentifier" => "user.staff_id",
-        "outputIdentifier" => "ref_support_selection.selectionid",
-        "authorContributionStatement" => "ref_support_selection.author_statement_text",
-	"isAdditionalAttributedStaffMember" => "ref_support_selection.is_additional_staff",
+    "hesaStaffIdentifier" => "user.hesa",
+    "staffIdentifier" => \&ref2021_staff_id,
+    "outputIdentifier" => "ref_support_selection.selectionid",
+    "authorContributionStatement" => "ref_support_selection.author_statement_text",
+    "isAdditionalAttributedStaffMember" => "ref_support_selection.is_additional_staff",
 };
 
 # character limits
 $c->{'ref_support'}->{'ref2_staff_outputs_fields_length'} = {
-        staffIdentifier => 13,
-	outputIdentifier => 13,
-	authorContributionStatement => 7500,
+    staffIdentifier => 13,
+    outputIdentifier => 13,
+    authorContributionStatement => 7500,
 };
 
 # Link between staff and outputs validation

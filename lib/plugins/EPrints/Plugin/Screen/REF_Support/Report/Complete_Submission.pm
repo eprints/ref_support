@@ -52,8 +52,11 @@ sub excel_export
 	my $workbook = Excel::Writer::XLSX->new( \*STDOUT );
 	#$workbook->set_properties( utf8 => 1 );
 
-	foreach my $report( keys %reports )
+    # loop through reports in the correct order, only returning the reports we want as defined in the config
+    my @report_keys = @{$session->config( "ref_2021_complete_reports", "excel" )};
+	foreach my $report( @report_keys )
         {
+        print STDERR "report: $report\n";
 		 # produce the report
 		 my $report_plugin = "Screen::REF_Support::Report::" . $reports{$report};
 
@@ -96,7 +99,9 @@ sub xml_export
 
 	my $export_reports = {};
 
-	foreach my $report( keys %reports )
+    # loop through reports in the correct order, only returning the reports we want as defined in the config
+    my @report_keys = @{$session->config( "ref_2021_complete_reports", "xml" )};
+	foreach my $report( @report_keys )
 	{
 		# set up a filehandle
 		my $report_output;

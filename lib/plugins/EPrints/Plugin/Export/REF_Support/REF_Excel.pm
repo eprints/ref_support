@@ -90,10 +90,13 @@ sub output_list
 			action => $action,
 		};
 	}
+    
+    my $hierarchical_fields = $plugin->{session}->config( 'ref', $plugin->get_report, 'hierarchical_fields' );
 	my $col_id = 0;
 	foreach my $col (@cols)
 	{
-		$worksheet->write_string( 0, $col_id++, $col );
+        next if( grep { $col eq $_ } @{$hierarchical_fields} ); # we don't want hierarchical fields in an Excel export
+    	$worksheet->write_string( 0, $col_id++, $col );
 	}
 	
 	my $row_id = 1;
