@@ -330,7 +330,7 @@ $c->{'ref_support'}->{'ref1_former_staff_fields_length'} = {
 };
 
 # former staff should use HESAs where available, or staff ID where not (but only has the one column for these, unlike current staff where this is split over two columns
-sub ref2021_fomer_staff_staff_id
+sub ref2021_former_staff_staff_id
 {
     my( $plugin, $objects ) = @_;
 
