@@ -895,4 +895,24 @@ $c->add_dataset_field( 'user', { name => 'unpaid_leave_start', type => 'date' },
 # unpaidLeaveEndDate
 $c->add_dataset_field( 'user', { name => 'unpaid_leave_end', type => 'date' }, reuse => 1 );
 
+
+# If an eprint's Open Access compliance status has changed, we need to update any REF Selections using this eprint
+$c->add_dataset_trigger( "eprint", EPrints::Const::EP_TRIGGER_AFTER_COMMIT, sub {
+	my( %params ) = @_;
+
+	my $repo = $params{repository};
+	my $eprint = $params{dataobj};
+	my $changed = $params{changed};
+
+	my $benchmark = EPrints::DataObj::REF_Support_Benchmark->default( $repo );
+	return if !defined $benchmark;
+
+    return unless exists $changed->{hoa_compliant};
+    
+	$benchmark->eprint_selections( $eprint )->map(sub {
+		(undef, undef, my $selection) = @_;
+        $selection->commit;
+	});
+});
+
 1;
