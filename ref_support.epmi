@@ -201,9 +201,9 @@
           <datasetid>document</datasetid>
           <filename>epm/ref_support/cfg/cfg.d/zz_ref_support.pl</filename>
           <mime_type>text/plain</mime_type>
-          <hash>2252ad31146ba3d667c89dce8b454d8c</hash>
+          <hash>69fc400e65b0a2ed52bd91c3fe6b7ff0</hash>
           <hash_type>MD5</hash_type>
-          <filesize>33357</filesize>
+          <filesize>33971</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
@@ -799,7 +799,7 @@
         </file>
       </files>
       <mime_type>application/xml</mime_type>
-      <format>text/xml</format>
+      <format>other</format>
       <main>workflows/user/ref_support_uoa_champion.xml</main>
       <content>install</content>
     </document>

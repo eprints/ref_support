@@ -646,9 +646,9 @@ IGZpZWxkCiRjLT57cmVmX3N1cHBvcnR9LT57dXNlX2V4Y2x1ZGV9ID0gMTsK
           <datasetid>document</datasetid>
           <filename>epm/ref_support/cfg/cfg.d/zz_ref_support.pl</filename>
           <mime_type>text/plain</mime_type>
-          <hash>2252ad31146ba3d667c89dce8b454d8c</hash>
+          <hash>69fc400e65b0a2ed52bd91c3fe6b7ff0</hash>
           <hash_type>MD5</hash_type>
-          <filesize>33357</filesize>
+          <filesize>33971</filesize>
           <data encoding='base64'>IwojIEVQcmludHMgU2VydmljZXMgLSBSRUYgUGFja2FnZQojCiMgVmVyc2lvbjogMi4wCiMKCiMg
 QmF6YWFyIENvbmZpZ3VyYXRpb24KJGMtPntwbHVnaW5zfXsiRXhwb3J0OjpSRUZfU3VwcG9ydCJ9
 e3BhcmFtc317ZGlzYWJsZX0gPSAwOwokYy0+e3BsdWdpbnN9eyJFeHBvcnQ6OlJFRl9TdXBwb3J0
@@ -1234,7 +1234,17 @@ ICk7CiMgdW5wYWlkTGVhdmVTdGFydERhdGUKJGMtPmFkZF9kYXRhc2V0X2ZpZWxkKCAndXNlcics
 IHsgbmFtZSA9PiAndW5wYWlkX2xlYXZlX3N0YXJ0JywgdHlwZSA9PiAnZGF0ZScgfSwgcmV1c2Ug
 PT4gMSApOwojIHVucGFpZExlYXZlRW5kRGF0ZQokYy0+YWRkX2RhdGFzZXRfZmllbGQoICd1c2Vy
 JywgeyBuYW1lID0+ICd1bnBhaWRfbGVhdmVfZW5kJywgdHlwZSA9PiAnZGF0ZScgfSwgcmV1c2Ug
-PT4gMSApOwoKMTsK
+PT4gMSApOwoKCiMgSWYgYW4gZXByaW50J3MgT3BlbiBBY2Nlc3MgY29tcGxpYW5jZSBzdGF0dXMg
+aGFzIGNoYW5nZWQsIHdlIG5lZWQgdG8gdXBkYXRlIGFueSBSRUYgU2VsZWN0aW9ucyB1c2luZyB0
+aGlzIGVwcmludAokYy0+YWRkX2RhdGFzZXRfdHJpZ2dlciggImVwcmludCIsIEVQcmludHM6OkNv
+bnN0OjpFUF9UUklHR0VSX0FGVEVSX0NPTU1JVCwgc3ViIHsKCW15KCAlcGFyYW1zICkgPSBAXzsK
+CglteSAkcmVwbyA9ICRwYXJhbXN7cmVwb3NpdG9yeX07CglteSAkZXByaW50ID0gJHBhcmFtc3tk
+YXRhb2JqfTsKCW15ICRjaGFuZ2VkID0gJHBhcmFtc3tjaGFuZ2VkfTsKCglteSAkYmVuY2htYXJr
+ID0gRVByaW50czo6RGF0YU9iajo6UkVGX1N1cHBvcnRfQmVuY2htYXJrLT5kZWZhdWx0KCAkcmVw
+byApOwoJcmV0dXJuIGlmICFkZWZpbmVkICRiZW5jaG1hcms7CgogICAgcmV0dXJuIHVubGVzcyBl
+eGlzdHMgJGNoYW5nZWQtPntob2FfY29tcGxpYW50fTsKICAgIAoJJGJlbmNobWFyay0+ZXByaW50
+X3NlbGVjdGlvbnMoICRlcHJpbnQgKS0+bWFwKHN1YiB7CgkJKHVuZGVmLCB1bmRlZiwgbXkgJHNl
+bGVjdGlvbikgPSBAXzsKICAgICAgICAkc2VsZWN0aW9uLT5jb21taXQ7Cgl9KTsKfSk7CgoxOwo=
 </data>
         </file>
         <file>
@@ -10287,7 +10297,7 @@ IDwvY29tcG9uZW50PgogIDwvc3RhZ2U+Cjwvd29ya2Zsb3c+Cg==
         </file>
       </files>
       <mime_type>application/xml</mime_type>
-      <format>text/xml</format>
+      <format>other</format>
       <main>workflows/user/ref_support_uoa_champion.xml</main>
       <content>install</content>
     </document>
