@@ -56,7 +56,6 @@ sub excel_export
     my @report_keys = @{$session->config( "ref_2021_complete_reports", "excel" )};
 	foreach my $report( @report_keys )
         {
-        print STDERR "report: $report\n";
 		 # produce the report
 		 my $report_plugin = "Screen::REF_Support::Report::" . $reports{$report};
 
@@ -140,7 +139,7 @@ sub xml_export
         $master_xpc->registerNs('xmlns', 'http://www.ref.ac.uk/schemas/ref2021data');
 
 	# for each report extract the contents for each submission
-	foreach my $report( keys %reports )
+	foreach my $report( @report_keys )
 	{
 		next if $report eq "research_groups"; # we're using this report as our starting point, so no need to extract anything from it
 		my $dom = XML::LibXML->load_xml(string => $export_reports->{$report});

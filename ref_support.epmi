@@ -497,9 +497,9 @@
           <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Screen/REF_Support/Report/Complete_Submission.pm</filename>
           <mime_type>text/plain</mime_type>
-          <hash>2f0e8bdb6ed1fa56e4c31545a7d146f8</hash>
+          <hash>1f482e859402114ad9646a27a4aa7d5d</hash>
           <hash_type>MD5</hash_type>
-          <filesize>17375</filesize>
+          <filesize>17332</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
@@ -799,7 +799,7 @@
         </file>
       </files>
       <mime_type>application/xml</mime_type>
-      <format>other</format>
+      <format>text/xml</format>
       <main>workflows/user/ref_support_uoa_champion.xml</main>
       <content>install</content>
     </document>
@@ -819,7 +819,7 @@
       <content>coverimage</content>
     </document>
   </documents>
-  <version>2.1.5</version>
+  <version>2.1.6</version>
   <controller>EPMC::REF_Support</controller>
   <creators>
     <item>
