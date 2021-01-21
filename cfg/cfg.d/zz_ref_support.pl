@@ -713,7 +713,7 @@ $c->add_dataset_field( 'ref_support_selection', { name => 'output_sub_profile_ca
 $c->add_dataset_field( 'ref_support_selection', { name => 'author_statement', type => 'boolean' }, reuse => 1 );
 
 # authorContributionStatement
-$c->add_dataset_field( 'ref_support_selection', { name => 'author_statement_text', type => 'text' }, reuse => 1 );
+$c->add_dataset_field( 'ref_support_selection', { name => 'author_statement_text', type => 'longtext' }, reuse => 1 );
 
 # excludeFromSubmission
 $c->add_dataset_field( 'ref_support_selection', { name => 'exclude_from_submission', type => 'boolean' }, reuse=> 1 );
