@@ -713,7 +713,7 @@ $c->add_dataset_field( 'ref_support_selection', { name => 'output_sub_profile_ca
 $c->add_dataset_field( 'ref_support_selection', { name => 'author_statement', type => 'boolean' }, reuse => 1 );
 
 # authorContributionStatement
-$c->add_dataset_field( 'ref_support_selection', { name => 'author_statement_text', type => 'text' }, reuse => 1 );
+$c->add_dataset_field( 'ref_support_selection', { name => 'author_statement_text', type => 'longtext' }, reuse => 1 );
 
 # excludeFromSubmission
 $c->add_dataset_field( 'ref_support_selection', { name => 'exclude_from_submission', type => 'boolean' }, reuse=> 1 );
@@ -842,7 +842,7 @@ $c->add_dataset_field( 'user', { name => 'ref_is_sensitive', type => 'boolean' }
 
 # Fields added for REF2021 Submissions
 # researchConnection
-$c->add_dataset_field( 'user', { name => 'research_connection', type => 'text' }, reuse => 1 );
+$c->add_dataset_field( 'user', { name => 'research_connection', type => 'longtext' }, reuse => 1 );
 
 # reasonForNoConnectionStatement
 $c->add_dataset_field( 'user', { 
