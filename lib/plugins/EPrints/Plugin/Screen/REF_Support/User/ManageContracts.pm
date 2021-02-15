@@ -226,12 +226,12 @@ sub render_contracts
 
 			my $class = "row_".($info->{row}%2?"b":"a");
 
-			my $tr = $session->make_element( "tr", class=>$class );
+			my $tr = $session->make_element( "div", class=>"ep_table_row $class" );
 
 			my $first = 1;
 			for( @$columns )
 			{
-				my $td = $session->make_element( "td", class=>"ep_columns_cell".($first?" ep_columns_cell_first":"")." ep_columns_cell_$_"  );
+				my $td = $session->make_element( "div", class=>"ep_table_cell ep_columns_cell".($first?" ep_columns_cell_first":"")." ep_columns_cell_$_"  );
 				$first = 0;
 				$tr->appendChild( $td );
 				$td->appendChild( $c->render_value( $_ ) );
@@ -239,7 +239,7 @@ sub render_contracts
 
 			$self->{processor}->{circ} = $c;
 			$self->{processor}->{circid} = $c->id;
-			my $td = $session->make_element( "td", class=>"ep_columns_cell ep_columns_cell_last", align=>"left" );
+			my $td = $session->make_element( "div", class=>"ep_table_cell ep_columns_cell ep_columns_cell_last", align=>"left" );
 			$tr->appendChild( $td );
 			#$td->appendChild( 
 			#	$self->render_action_list_icons( "circ_item_actions", { 'circid' => $self->{processor}->{circid} } ) );
