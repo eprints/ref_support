@@ -233,7 +233,7 @@ unshift @{$c->{fields}->{ref_support_circ}}, (
 		# contractFTE
 		{ name => 'ref_fte', type => 'float' },
 		# researchConnection
-		{ name => 'research_connection', type => 'text' },
+		{ name => 'research_connection', type => 'longtext' },
 		# reasonForNoConnectionStatement
 		{ 
 			name => 'reason_no_connections',
