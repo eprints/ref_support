@@ -201,9 +201,9 @@
           <datasetid>document</datasetid>
           <filename>epm/ref_support/cfg/cfg.d/zz_ref_support.pl</filename>
           <mime_type>text/plain</mime_type>
-          <hash>fec182e4c2d70f3995b0289a6355f75d</hash>
+          <hash>7e99520df45a075c899572a4d2222cd2</hash>
           <hash_type>MD5</hash_type>
-          <filesize>33979</filesize>
+          <filesize>34123</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
@@ -241,9 +241,9 @@
           <datasetid>document</datasetid>
           <filename>epm/ref_support/cfg/cfg.d/zz_ref_support_reports_2021.pl</filename>
           <mime_type>text/plain</mime_type>
-          <hash>5719dd422042761639061b4cb5937b67</hash>
+          <hash>f8936ac91c9c80a5f7c11ff23920088a</hash>
           <hash_type>MD5</hash_type>
-          <filesize>35858</filesize>
+          <filesize>35956</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
@@ -273,9 +273,9 @@
           <datasetid>document</datasetid>
           <filename>lang/en/phrases/ref_support.xml</filename>
           <mime_type>application/xml</mime_type>
-          <hash>3a6e9e8b2652082fa33c8851cf7b5b26</hash>
+          <hash>45e1fed7786c235ef86664d3500a74e0</hash>
           <hash_type>MD5</hash_type>
-          <filesize>68901</filesize>
+          <filesize>69268</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
@@ -777,9 +777,9 @@
           <datasetid>document</datasetid>
           <filename>workflows/ref_support_selection/default.xml</filename>
           <mime_type>application/xml</mime_type>
-          <hash>86165516ba17e9512a7914920e742c2d</hash>
+          <hash>0afbf2bd93fe5c88d39dd19202f279e0</hash>
           <hash_type>MD5</hash_type>
-          <filesize>2547</filesize>
+          <filesize>2584</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
@@ -799,7 +799,7 @@
         </file>
       </files>
       <mime_type>application/xml</mime_type>
-      <format>other</format>
+      <format>text/xml</format>
       <main>workflows/user/ref_support_uoa_champion.xml</main>
       <content>install</content>
     </document>
@@ -819,7 +819,7 @@
       <content>coverimage</content>
     </document>
   </documents>
-  <version>2.1.8</version>
+  <version>2.2</version>
   <controller>EPMC::REF_Support</controller>
   <creators>
     <item>

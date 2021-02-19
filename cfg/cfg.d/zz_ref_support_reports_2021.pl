@@ -519,7 +519,7 @@ $c->{'ref'}->{'research_groups'}->{'mappings'} = {
 };
 
 # Research Outputs Fields
-$c->{'ref'}->{'ref2_research_outputs'}->{'fields'} = [qw{ outputIdentifier webOfScienceIdentifier outputType title place publisher volumeTitle volume issue firstPage articleNumber isbn issn doi patentNumber month year url isPhysicalOutput supplementaryInformation numberOfAdditionalAuthors isForensicScienceOutput isCriminologyOutput isNonEnglishLanguage englishAbstract isInterdisciplinary proposeDoubleWeighting doubleWeightingStatement doubleWeightingReserve conflictedPanelMembers crossReferToUoa additionalInformation isDelayedByCovid19 covid19Statement doesIncludeSignificantMaterialBefore2014 doesIncludeResearchProcess doesIncludeFactualInformationAboutSignificance researchGroup openAccessStatus outputAllocation1 outputAllocation2 outputSubProfileCategory requiresAuthorContributionStatement isSensitive excludeFromSubmission outputPdfRequired }];
+$c->{'ref'}->{'ref2_research_outputs'}->{'fields'} = [qw{ outputIdentifier webOfScienceIdentifier outputType title place publisher volumeTitle volume issue firstPage articleNumber isbn issn doi patentNumber month year url isPhysicalOutput supplementaryInformation numberOfAdditionalAuthors isForensicScienceOutput isCriminologyOutput isNonEnglishLanguage englishAbstract isInterdisciplinary proposeDoubleWeighting doubleWeightingStatement doubleWeightingReserve conflictedPanelMembers crossReferToUoa additionalInformation isDelayedByCovid19 covid19Statement doesIncludeSignificantMaterialBefore2014 doesIncludeResearchProcess doesIncludeFactualInformationAboutSignificance researchGroup openAccessStatus outputAllocation1 outputAllocation2 outputSubProfileCategory requiresAuthorContributionStatement isSensitive excludeFromSubmission outputPdfRequired mediaOfOutput }];
 
 $c->{'ref'}->{'ref2_research_outputs'}->{'mappings'} = {
 	"outputIdentifier" => "ref_support_selection.selectionid",
@@ -570,6 +570,7 @@ $c->{'ref'}->{'ref2_research_outputs'}->{'mappings'} = {
 	"isSensitive" => "ref_support_selection.sensitive",
 	"excludeFromSubmission" => "ref_support_selection.exclude_from_submission",
 	"outputPdfRequired" => "ref_support_selection.pdf_required",
+	"mediaOfOutput" => "ref_support_selection.media_of_output",
 };
 
 # character limits
@@ -600,6 +601,7 @@ $c->{'ref_support'}->{'ref2_research_outputs_fields_length'} = {
 	outputAllocation1 => 128,
 	outputAllocation2 => 128,
 	outputSubProfileCategory => 128,
+	mediaOfOutput => 264,
 };
 
 # lifted straight from UKETD plugin (again), which is based on render_possible_doi

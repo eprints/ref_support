@@ -38,6 +38,7 @@
       <field ref="is_additional_staff"/>
       <field ref="exclude_from_submission"/>
       <!--<field ref="pdf_required"/>-->
+      <field ref="media_of_output"/>
     </component>
 
     <component type="Field::Multi">

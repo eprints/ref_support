@@ -739,6 +739,9 @@ $c->add_dataset_field( 'ref_support_selection', { name => 'covid_19', type => 'b
 # covid19Statement
 $c->add_dataset_field( 'ref_support_selection', { name => 'covid_statement', type => 'longtext' }, reuse => 1 );
 
+# mediaOfOutput
+$c->add_dataset_field( 'ref_support_selection', { name => 'media_of_output', type => 'text', maxlength => 264 }, reuse => 1 );
+
 # REF Search Configuration (as used by REF::Listing)
 
 $c->{search}->{"ref_support"} =
