@@ -136,7 +136,7 @@ $c->{'ref'}->{'ref1_current_staff'}->{'mappings'} = {
         orcid => \&ref2021_orcid,
         contractedFTE => "user.ref_fte",
         researchConnection => "user.research_connection",
-        reasonsForNoConnectionStatement => "user.reason_no_connections",
+        reasonsForNoConnectionStatement => \&ref2021_user_reason_no_connections,
         isEarlyCareerResearcher => \&ref2021_is_ecr,
         isOnFixedTermContract => "user.is_fixed_term",
         contractStartDate => "user.fixed_term_start",
@@ -201,6 +201,21 @@ sub ref2021_orcid
     }
     return undef;
 };
+
+# join the array of options into a string
+sub ref2021_user_reason_no_connections
+{
+    my( $plugin, $objects ) = @_;
+
+    my $user = $objects->{user} or return;
+
+    if( $user->is_set( "reason_no_connections" ) )
+    {
+        return join ',', @{$user->get_value( "reason_no_connections" )};
+    }
+    return undef;
+};
+
 
 # only provide if we don't have a HESA 
 sub ref2021_is_ecr
@@ -423,7 +438,7 @@ $c->{'ref'}->{'ref1_former_staff_contracts'}->{'mappings'} = {
     hesaStaffIdentifier => "user.hesa",
     contractedFTE => "ref_support_circ.ref_fte",
     researchConnection => "ref_support_circ.research_connection",
-    reasonsForNoConnectionStatement => "ref_support_circ.reason_no_connections",
+    reasonsForNoConnectionStatement => \&ref2021_circ_reason_no_connections,
     startDate => "ref_support_circ.fixed_term_start",
     endDate => "ref_support_circ.fixed_term_end",
     isOnSecondment => "ref_support_circ.is_secondment",
@@ -461,6 +476,21 @@ sub ref2021_contract_staff_identifier
     }
     return undef;
 }
+
+# join the array of options into a string
+sub ref2021_circ_reason_no_connections
+{
+    my( $plugin, $objects ) = @_;
+
+    my $circ = $objects->{ref_support_circ} or return;
+
+    if( $circ->is_set( "reason_no_connections" ) )
+    {
+        return join ',', @{$circ->get_value( "reason_no_connections" )};
+    }
+    return undef;
+};
+
 
 # Former Staff Contracts Validation
 $c->{plugins}->{"Screen::REF_Support::Report::Former_Staff_Contracts"}->{params}->{validate_circ} = sub {
