@@ -742,6 +742,9 @@ $c->add_dataset_field( 'ref_support_selection', { name => 'covid_statement', typ
 # mediaOfOutput
 $c->add_dataset_field( 'ref_support_selection', { name => 'media_of_output', type => 'text', maxlength => 264 }, reuse => 1 );
 
+# Brief description of type, as used by T - Other records, and exported via the "publisher" column in the Outputs report
+$c->add_dataset_field( 'ref_support_selection', { name => 'other_desc', type => 'text', maxlength => 256 }, reuse => 1 );
+
 # REF Search Configuration (as used by REF::Listing)
 
 $c->{search}->{"ref_support"} =

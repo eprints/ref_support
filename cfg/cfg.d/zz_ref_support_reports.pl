@@ -689,7 +689,15 @@ sub ref2_support_url
 {
 	my( $plugin, $objects ) = @_;
 
-	return $objects->{eprint}->get_url;
+    my $selection = $objects->{ref_support_selection};
+
+    # we're not allowed to return URLs for items where isPhysicalOutput is true
+    if( $selection->is_set( "is_physical_output" ) && $selection->value( "is_physical_output" ) eq 'TRUE' )
+    {
+        return undef;
+    }
+
+    return $objects->{eprint}->get_url;   
 }
 
 sub ref2_support_outputNumber

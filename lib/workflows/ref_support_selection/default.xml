@@ -39,6 +39,7 @@
       <field ref="exclude_from_submission"/>
       <!--<field ref="pdf_required"/>-->
       <field ref="media_of_output"/>
+      <field ref="other_desc"/>
     </component>
 
     <component type="Field::Multi">

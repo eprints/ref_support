@@ -557,7 +557,7 @@ $c->{'ref'}->{'ref2_research_outputs'}->{'mappings'} = {
 	"outputType" => "ref_support_selection.type",
 	"title" => "eprint.title",
 	"place" => "eprint.event_location",
-	"publisher" => "eprint.publisher",
+	"publisher" => \&ref2021_publisher,
 	"volumeTitle" => \&ref2_support_volumeTitle,
 	"volume" => "eprint.volume",
 	"issue" => "eprint.number",
@@ -633,6 +633,26 @@ $c->{'ref_support'}->{'ref2_research_outputs_fields_length'} = {
 	outputSubProfileCategory => 128,
 	mediaOfOutput => 264,
 };
+
+sub ref2021_publisher
+{
+    my( $plugin, $objects ) = @_;
+
+    my $eprint = $objects->{eprint};
+    my $selection = $objects->{ref_support_selection};
+
+    # for T - Other items, we actually want to provide a brief description of type here
+    if( $selection->is_set( "type" ) && $selection->value( "type" ) eq 'T' )
+    {
+        return $selection->value( "other_desc" ) if $selection->is_set( "other_desc" );   
+    }
+    elsif( $eprint->is_set( "publisher" ) ) # otherwise we just return the regular publisher field
+    {
+        return $eprint->value( "publisher" );
+    }
+    return undef;
+}
+
 
 # lifted straight from UKETD plugin (again), which is based on render_possible_doi
 sub ref2021_doi

@@ -201,9 +201,9 @@
           <datasetid>document</datasetid>
           <filename>epm/ref_support/cfg/cfg.d/zz_ref_support.pl</filename>
           <mime_type>text/plain</mime_type>
-          <hash>7e99520df45a075c899572a4d2222cd2</hash>
+          <hash>c3b555354a231102ad81a3cfed42efe0</hash>
           <hash_type>MD5</hash_type>
-          <filesize>34123</filesize>
+          <filesize>34367</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
@@ -233,17 +233,17 @@
           <datasetid>document</datasetid>
           <filename>epm/ref_support/cfg/cfg.d/zz_ref_support_reports.pl</filename>
           <mime_type>text/plain</mime_type>
-          <hash>b40176108bb9af01f54b35a961b7756d</hash>
+          <hash>46a1782ffc1d9b7e3ca88739f548b1e4</hash>
           <hash_type>MD5</hash_type>
-          <filesize>25435</filesize>
+          <filesize>25720</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
           <filename>epm/ref_support/cfg/cfg.d/zz_ref_support_reports_2021.pl</filename>
           <mime_type>text/plain</mime_type>
-          <hash>d8cdbe77ae94e18accf45162255f7946</hash>
+          <hash>f18b2b196df3f2811bb75fe16b862115</hash>
           <hash_type>MD5</hash_type>
-          <filesize>36614</filesize>
+          <filesize>37214</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
@@ -273,9 +273,9 @@
           <datasetid>document</datasetid>
           <filename>lang/en/phrases/ref_support.xml</filename>
           <mime_type>application/xml</mime_type>
-          <hash>2c87b892e2d8c150511ec604c0885dc5</hash>
+          <hash>fff9e2e11130c5ccb8b356d8edab9334</hash>
           <hash_type>MD5</hash_type>
-          <filesize>69260</filesize>
+          <filesize>69579</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
@@ -777,9 +777,9 @@
           <datasetid>document</datasetid>
           <filename>workflows/ref_support_selection/default.xml</filename>
           <mime_type>application/xml</mime_type>
-          <hash>0afbf2bd93fe5c88d39dd19202f279e0</hash>
+          <hash>472dfe25604aa6c9e93eec2c831a59a2</hash>
           <hash_type>MD5</hash_type>
-          <filesize>2584</filesize>
+          <filesize>2616</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
@@ -819,7 +819,7 @@
       <content>coverimage</content>
     </document>
   </documents>
-  <version>2.2</version>
+  <version>2.3</version>
   <controller>EPMC::REF_Support</controller>
   <creators>
     <item>
