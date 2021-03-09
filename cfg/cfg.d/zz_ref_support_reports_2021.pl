@@ -556,21 +556,21 @@ $c->{'ref'}->{'ref2_research_outputs'}->{'mappings'} = {
 	"webOfScienceIdentifier" => "ref_support_selection.wos_id",
 	"outputType" => "ref_support_selection.type",
 	"title" => "eprint.title",
-	"place" => "eprint.event_location",
+	"place" => \&ref2021_place,
 	"publisher" => \&ref2021_publisher,
 	"volumeTitle" => \&ref2_support_volumeTitle,
-	"volume" => "eprint.volume",
-	"issue" => "eprint.number",
+	"volume" => \&ref2021_volume,
+	"issue" => \&ref2021_issue,
 	"firstPage" => \&ref2_support_firstPage,
 	"articleNumber" => \&ref2_support_article_number,
-	"isbn" => "eprint.isbn",
-	"issn" => "eprint.issn",
+	"isbn" => \&ref2021_isbn,
+	"issn" => \&ref2021_issn,
 	"doi" => \&ref2021_doi,
 	"patentNumber" => \&ref2_support_patentNumber,
 	"month" => \&ref2021_month,
 	"year" => \&ref2_support_year,
 	"url" => \&ref2_support_url,
-	"isPhysicalOutput" => "ref_support_selection.is_physical_output",
+	"isPhysicalOutput" => \&ref2021_is_physical_output,
 	"supplementaryInformation" => "ref_support_selection.supplementary_information_doi",
 	"numberOfAdditionalAuthors" => \&ref2_support_additionalAuthors,
     #"isPendingPublication" => "ref_support_selection.pending",
@@ -592,7 +592,7 @@ $c->{'ref'}->{'ref2_research_outputs'}->{'mappings'} = {
 	"doesIncludeResearchProcess" => "ref_support_selection.does_include_res",
 	"doesIncludeFactualInformationAboutSignificance" => "ref_support_selection.does_include_fact",
 	"researchGroup" => "ref_support_selection.research_group",
-	"openAccessStatus" => "ref_support_selection.open_access_status",
+	"openAccessStatus" => \&ref2021_open_access_status,
 	"outputAllocation1" => "ref_support_selection.output_allocation",
 	"outputAllocation2" => "ref_support_selection.output_allocation_2",
 	"outputSubProfileCategory" => "ref_support_selection.output_sub_profile_cat",
@@ -634,6 +634,24 @@ $c->{'ref_support'}->{'ref2_research_outputs_fields_length'} = {
 	mediaOfOutput => 264,
 };
 
+sub ref2021_place
+{
+    my( $plugin, $objects ) = @_;
+
+    my $eprint = $objects->{eprint};
+    my $selection = $objects->{ref_support_selection};
+
+    my $relevant_types = [ qw( L P I M S ) ];
+
+    # for T - Other items, we actually want to provide a brief description of type here
+    if( $selection->is_set( "type" ) && grep { $selection->value( "type" ) eq $_ } @{$relevant_types} )
+    {
+        return $eprint->value( "event_location" ) if $eprint->is_set( "event_location" );
+    }
+    return undef;
+}
+
+
 sub ref2021_publisher
 {
     my( $plugin, $objects ) = @_;
@@ -641,18 +659,99 @@ sub ref2021_publisher
     my $eprint = $objects->{eprint};
     my $selection = $objects->{ref_support_selection};
 
+    my $relevant_types = [ qw( A B C G N O T U ) ];
+
     # for T - Other items, we actually want to provide a brief description of type here
     if( $selection->is_set( "type" ) && $selection->value( "type" ) eq 'T' )
     {
         return $selection->value( "other_desc" ) if $selection->is_set( "other_desc" );   
     }
-    elsif( $eprint->is_set( "publisher" ) ) # otherwise we just return the regular publisher field
+    elsif( $selection->is_set( "type" ) && grep { $selection->value( "type" ) eq $_ } @{$relevant_types} )
     {
-        return $eprint->value( "publisher" );
+        return $eprint->value( "publisher" ) if $eprint->is_set( "publisher" );
     }
     return undef;
 }
 
+sub ref2021_volume
+{
+    my( $plugin, $objects ) = @_;
+
+    my $eprint = $objects->{eprint};
+    my $selection = $objects->{ref_support_selection};
+
+    my $relevant_types = [ qw( D E ) ];
+
+    if( $selection->is_set( "type" ) && grep { $selection->value( "type" ) eq $_ } @{$relevant_types} )
+    {
+        return $eprint->value( "volume" ) if $eprint->is_set( "volume" );
+    }
+    return undef;
+}
+
+sub ref2021_issue
+{
+    my( $plugin, $objects ) = @_;
+
+    my $eprint = $objects->{eprint};
+    my $selection = $objects->{ref_support_selection};
+
+    my $relevant_types = [ qw( D E ) ];
+
+    if( $selection->is_set( "type" ) && grep { $selection->value( "type" ) eq $_ } @{$relevant_types} )
+    {
+        return $eprint->value( "number" ) if $eprint->is_set( "number" );
+    }
+    return undef;
+}
+
+sub ref2021_isbn
+{
+    my( $plugin, $objects ) = @_;
+
+    my $eprint = $objects->{eprint};
+    my $selection = $objects->{ref_support_selection};
+
+    my $relevant_types = [ qw( A B C R ) ];
+
+    if( $selection->is_set( "type" ) && grep { $selection->value( "type" ) eq $_ } @{$relevant_types} )
+    {
+        return $eprint->value( "isbn" ) if $eprint->is_set( "isbn" );
+    }
+    return undef;
+}
+
+sub ref2021_issn
+{
+    my( $plugin, $objects ) = @_;
+
+    my $eprint = $objects->{eprint};
+    my $selection = $objects->{ref_support_selection};
+
+    my $relevant_types = [ qw( D E ) ];
+
+    if( $selection->is_set( "type" ) && grep { $selection->value( "type" ) eq $_ } @{$relevant_types} )
+    {
+        return $eprint->value( "issn" ) if $eprint->is_set( "issn" );
+    }
+    return undef;
+}
+
+sub ref2021_is_physical_output
+{
+    my( $plugin, $objects ) = @_;
+
+    my $selection = $objects->{ref_support_selection};
+
+    if( $selection->is_set( "is_physical_output" ) )
+    {
+        if( $selection->is_set( "type" ) && $selection->value( "type" ) ne "D" )
+        {
+            return $selection->value( "is_physical_output" );
+        }
+    }
+    return undef;
+}
 
 # lifted straight from UKETD plugin (again), which is based on render_possible_doi
 sub ref2021_doi
@@ -702,6 +801,21 @@ sub ref2021_month
     my( $year, $month, $day ) = split(/-/, $eprint->value( "date" ) );
     return $month if defined $month;
 
+    return undef;
+}
+
+sub ref2021_open_access_status
+{
+    my( $plugin, $objects ) = @_;
+
+    my $eprint = $objects->{eprint};
+    my $selection = $objects->{ref_support_selection};
+
+    if( $selection->is_set( "type" ) && $eprint->is_set( "issn" ) &&
+        ( $selection->value( "type" ) eq "D" || $selection->value( "type" ) eq "E" ) )
+    {
+        return $selection->value( "open_access_status" );   
+    }
     return undef;
 }
 
