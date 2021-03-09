@@ -570,7 +570,7 @@ $c->{'ref'}->{'ref2_research_outputs'}->{'mappings'} = {
 	"month" => \&ref2021_month,
 	"year" => \&ref2_support_year,
 	"url" => \&ref2_support_url,
-	"isPhysicalOutput" => \&ref2021_is_physical_output,
+	"isPhysicalOutput" => "ref_support_selection.is_physical_output",
 	"supplementaryInformation" => "ref_support_selection.supplementary_information_doi",
 	"numberOfAdditionalAuthors" => \&ref2_support_additionalAuthors,
     #"isPendingPublication" => "ref_support_selection.pending",
@@ -643,7 +643,6 @@ sub ref2021_place
 
     my $relevant_types = [ qw( L P I M S ) ];
 
-    # for T - Other items, we actually want to provide a brief description of type here
     if( $selection->is_set( "type" ) && grep { $selection->value( "type" ) eq $_ } @{$relevant_types} )
     {
         return $eprint->value( "event_location" ) if $eprint->is_set( "event_location" );
@@ -733,22 +732,6 @@ sub ref2021_issn
     if( $selection->is_set( "type" ) && grep { $selection->value( "type" ) eq $_ } @{$relevant_types} )
     {
         return $eprint->value( "issn" ) if $eprint->is_set( "issn" );
-    }
-    return undef;
-}
-
-sub ref2021_is_physical_output
-{
-    my( $plugin, $objects ) = @_;
-
-    my $selection = $objects->{ref_support_selection};
-
-    if( $selection->is_set( "is_physical_output" ) )
-    {
-        if( $selection->is_set( "type" ) && $selection->value( "type" ) ne "D" )
-        {
-            return $selection->value( "is_physical_output" );
-        }
     }
     return undef;
 }
