@@ -841,7 +841,7 @@ $c->{ref_support}->{get_pub_date} = sub{
             }
             else
             {
-                return $pub_online_date; # pub online date is early and good
+                return $pub_date; # pub date is good
             }
         }
         else

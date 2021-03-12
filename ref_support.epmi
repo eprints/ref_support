@@ -241,9 +241,9 @@
           <datasetid>document</datasetid>
           <filename>epm/ref_support/cfg/cfg.d/zz_ref_support_reports_2021.pl</filename>
           <mime_type>text/plain</mime_type>
-          <hash>2e4329f24dcc6ecb79382187728b9f9f</hash>
+          <hash>d48a0aec2a666ff1d8773f2dcd735d8b</hash>
           <hash_type>MD5</hash_type>
-          <filesize>39718</filesize>
+          <filesize>43304</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
@@ -819,7 +819,7 @@
       <content>coverimage</content>
     </document>
   </documents>
-  <version>2.4</version>
+  <version>2.5</version>
   <controller>EPMC::REF_Support</controller>
   <creators>
     <item>
