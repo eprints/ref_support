@@ -568,7 +568,7 @@ $c->{'ref'}->{'ref2_research_outputs'}->{'mappings'} = {
 	"doi" => \&ref2021_doi,
 	"patentNumber" => \&ref2_support_patentNumber,
 	"month" => \&ref2021_month,
-	"year" => \&ref2_support_year,
+	"year" => \&ref2021_year,
 	"url" => \&ref2_support_url,
 	"isPhysicalOutput" => "ref_support_selection.is_physical_output",
 	"supplementaryInformation" => "ref_support_selection.supplementary_information_doi",
@@ -773,17 +773,127 @@ sub ref2021_doi
     return undef;
 }
 
+$c->{ref_support}->{get_pub_date} = sub{
+
+    my( $session, $eprint, $selection ) = @_;
+    
+    # get preferred date (borrowed from REF CC!)
+    my( $pub_date, $pub_online_date );
+
+    if( $eprint->is_set( 'date' ) && $eprint->is_set( 'date_type' ) )
+    {
+        if( $eprint->value( 'date_type' ) eq 'published' )
+        {
+            $pub_date = $eprint->value( 'date' );
+        }
+        elsif( $eprint->value( 'date_type' ) eq 'published_online' )
+        {
+            $pub_online_date = $eprint->value( 'date' );
+        }
+    }
+
+    if( $eprint->exists_and_set( 'dates' ) )
+    {
+        my $dates = $eprint->value( 'dates' );
+        if( ref($dates) eq 'ARRAY' ) # check for expected structure
+        {
+            for(@$dates)
+            {
+                next unless ref($_) eq 'HASH';
+                next unless EPrints::Utils::is_set( $_->{date} ) && EPrints::Utils::is_set( defined $_->{date_type} );
+                if( $_->{date_type} eq 'published' )
+                {
+                    $pub_date = $_->{date};
+                }
+                elsif( $_->{date_type} eq 'published_online' )
+                {
+                    $pub_online_date = $_->{date};
+                }
+            }
+        }
+    }
+
+    # if we have two dates we need to decide which to use
+    if( defined $pub_online_date && defined $pub_date )
+    {
+        # first convert them to Time Piece dates so we can do some comparison
+        my $pub_date_tp = $session->call( [ "hefce_oa", "handle_possibly_incomplete_date" ], $pub_date );
+        my $pub_online_date_tp = $session->call( [ "hefce_oa", "handle_possibly_incomplete_date" ], $pub_online_date );
+        my $REF_START = Time::Piece->strptime( "2014-01-01", "%Y-%m-%d" );
+
+        # now compare...
+        if( $pub_online_date_tp < $pub_date_tp )
+        {
+            if( $pub_online_date_tp < $REF_START )
+            {
+                return $pub_date if $pub_date_tp >= $REF_START; # pub_online was too early, return pub if valid
+            }
+            else
+            {
+                return $pub_online_date; # pub online date is good
+            }
+        }
+        elsif( $pub_date_tp < $pub_online_date_tp )
+        {
+            if( $pub_date_tp < $REF_START )
+            {
+                return $pub_online_date if $pub_online_date_tp >= $REF_START; # pub was too early, return pub_online if valid
+            }
+            else
+            {
+                return $pub_online_date; # pub online date is early and good
+            }
+        }
+        else
+        {
+            # they're equal so just return one (if it's after 2013 of course)
+            return $pub_date if $pub_date_tp > $REF_START;
+        }
+    }   
+    elsif( !defined $pub_online_date && defined $pub_date ) # only pub date is provided
+    {
+        return $pub_date if (substr $pub_date, 0, 4) > 2013;
+    }
+    elsif( !defined $pub_date && defined $pub_online_date ) # only pub_online_date is provided
+    {
+        return $pub_online_date if (substr $pub_online_date, 0, 4) > 2013;
+    }
+
+    # nothing left
+    return undef;
+};
+
+sub ref2021_year
+{
+    my( $plugin, $objects ) = @_;
+
+    my $session = $plugin->{session};
+    my $eprint = $objects->{eprint};
+    my $selection = $objects->{ref_support_selection};
+
+    my $date = $session->call( [ "ref_support", "get_pub_date" ], $session, $eprint, $selection );
+
+    return substr( $date, 0, 4 ) if defined $date;
+
+    return undef;
+}
+
+
 sub ref2021_month
 {
     my( $plugin, $objects ) = @_;
 
+    my $session = $plugin->{session};
     my $eprint = $objects->{eprint};
+    my $selection = $objects->{ref_support_selection};
 
-    return undef if !$eprint->is_set( "date" );
+    my $date = $session->call( [ "ref_support", "get_pub_date" ], $session, $eprint, $selection );
 
-    my( $year, $month, $day ) = split(/-/, $eprint->value( "date" ) );
-    return $month if defined $month;
-
+    if( defined $date )
+    {
+        my( $year, $month, $day ) = split(/-/, $date );
+        return $month if defined $month;
+    }
     return undef;
 }
 
