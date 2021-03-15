@@ -778,7 +778,7 @@ $c->{ref_support}->{get_pub_date} = sub{
     my( $session, $eprint, $selection ) = @_;
     
     # get preferred date (borrowed from REF CC!)
-    my( $pub_date, $pub_online_date );
+    my( $pub_date, $pub_online_date, $backup_date );
 
     if( $eprint->is_set( 'date' ) && $eprint->is_set( 'date_type' ) )
     {
@@ -789,6 +789,10 @@ $c->{ref_support}->{get_pub_date} = sub{
         elsif( $eprint->value( 'date_type' ) eq 'published_online' )
         {
             $pub_online_date = $eprint->value( 'date' );
+        }
+        else
+        {
+            $backup_date = $eprint->value( 'date' ); # if we don't have a published or published online date, we'll take a back up date just in case "Completed" is useful for example
         }
     }
 
@@ -857,6 +861,11 @@ $c->{ref_support}->{get_pub_date} = sub{
     elsif( !defined $pub_date && defined $pub_online_date ) # only pub_online_date is provided
     {
         return $pub_online_date if (substr $pub_online_date, 0, 4) > 2013;
+    }
+
+    if( defined $backup_date )
+    {
+        return $backup_date;
     }
 
     # nothing left
