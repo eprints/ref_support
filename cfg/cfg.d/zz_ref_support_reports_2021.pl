@@ -1058,7 +1058,8 @@ $c->{plugins}->{"Screen::REF_Support::Report::Research_Outputs"}->{params}->{val
 	}
 
 	# year and month checks
-	my( $year, $month, $day ) = split(/-/, $eprint->value( "date" ) ) if $eprint->is_set( "date" );	
+    my $date = $session->call( [ "ref_support", "get_pub_date" ], $session, $eprint, $selection );
+	my( $year, $month, $day ) = split(/-/, $date ) if defined $date;	
 	
 	# check we have a valid year
 	if( EPrints::Utils::is_set( $year ) && ( $year < 2014 || $year > 2020 ) )

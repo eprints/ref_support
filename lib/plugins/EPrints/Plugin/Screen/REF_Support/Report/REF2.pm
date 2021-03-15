@@ -151,10 +151,13 @@ sub render_user
 			
 		if( defined $eprint )
 		{
+            my $date = $eprint->render_value( "date" );
+
 			$chunk->appendChild( $selection->render_citation( "report",
 					user => $user,
 					eprint => $eprint,
-					n => [$select_n, 'INTEGER' ]
+					n => [$select_n, 'INTEGER' ],
+					date => [$date, 'DATE' ],
 				) );
 		}
 		else

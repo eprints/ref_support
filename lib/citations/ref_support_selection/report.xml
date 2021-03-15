@@ -5,7 +5,7 @@
 <div class="ep_ref_report_eprint" id="ep_ref_eprint_{$user{userid}}_{$eprint{eprintid}}">
 	<div class="ep_ref_report_eprint_column">
 		<epc:print expr="$n"/>.
-		<a href="{$eprint.url()}"><epc:print expr="$eprint{title}"/></a> (<epc:print expr="$eprint{date}"/>)
+		<a href="{$eprint.url()}"><epc:print expr="$eprint{title}"/></a> (<epc:print expr="$date"/>)
 		<epc:if test="is_set(self_rating)"><epc:print expr="self_rating" /></epc:if>
 	</div>
 </div>

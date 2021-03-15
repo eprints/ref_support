@@ -201,10 +201,14 @@ sub render_user
 			
 		if( defined $eprint )
 		{
+
+            my $date = EPrints::Time::render_date( $session, $session->call(  [ "ref_support", "get_pub_date" ], $session, $eprint, $selection ) );
+
 			$chunk->appendChild( $selection->render_citation( "report",
 					user => $user,
 					eprint => $eprint,
-					n => [$select_n, 'INTEGER' ]
+					n => [$select_n, 'INTEGER' ],
+                    date => [$date, 'DATE' ],
 				) );
 		}
 		else

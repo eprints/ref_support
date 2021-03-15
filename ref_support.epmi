@@ -129,9 +129,9 @@
           <datasetid>document</datasetid>
           <filename>citations/ref_support_selection/report.xml</filename>
           <mime_type>application/xml</mime_type>
-          <hash>6bfc85e500c8713aafbaaafccb91526d</hash>
+          <hash>0921ed34280fa7dbbcdb47fec19984f8</hash>
           <hash_type>MD5</hash_type>
-          <filesize>540</filesize>
+          <filesize>532</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
@@ -241,9 +241,9 @@
           <datasetid>document</datasetid>
           <filename>epm/ref_support/cfg/cfg.d/zz_ref_support_reports_2021.pl</filename>
           <mime_type>text/plain</mime_type>
-          <hash>d48a0aec2a666ff1d8773f2dcd735d8b</hash>
+          <hash>909f730e75830e3aded7652a3b205253</hash>
           <hash_type>MD5</hash_type>
-          <filesize>43304</filesize>
+          <filesize>43372</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
@@ -561,9 +561,9 @@
           <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Screen/REF_Support/Report/REF2.pm</filename>
           <mime_type>text/plain</mime_type>
-          <hash>b8923354ab98d0f69b32c4b072b2f16c</hash>
+          <hash>995077c31f40d7e11ec76086152aea2c</hash>
           <hash_type>MD5</hash_type>
-          <filesize>7397</filesize>
+          <filesize>7486</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
@@ -585,9 +585,9 @@
           <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Screen/REF_Support/Report/Research_Outputs.pm</filename>
           <mime_type>text/plain</mime_type>
-          <hash>e0ece7a98d14f093249dc50998ffe092</hash>
+          <hash>460431f16ca39b7295c51fa4c562f995</hash>
           <hash_type>MD5</hash_type>
-          <filesize>9079</filesize>
+          <filesize>9276</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
