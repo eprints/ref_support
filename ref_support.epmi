@@ -561,9 +561,9 @@
           <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Screen/REF_Support/Report/REF2.pm</filename>
           <mime_type>text/plain</mime_type>
-          <hash>995077c31f40d7e11ec76086152aea2c</hash>
+          <hash>1393921858add24065bd22f5ed9e296d</hash>
           <hash_type>MD5</hash_type>
-          <filesize>7486</filesize>
+          <filesize>7487</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
@@ -585,9 +585,9 @@
           <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Screen/REF_Support/Report/Research_Outputs.pm</filename>
           <mime_type>text/plain</mime_type>
-          <hash>460431f16ca39b7295c51fa4c562f995</hash>
+          <hash>93d6eb8bef78532cbc9a90a6eb6916ed</hash>
           <hash_type>MD5</hash_type>
-          <filesize>9276</filesize>
+          <filesize>9277</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>

@@ -208,7 +208,7 @@ sub render_user
 					user => $user,
 					eprint => $eprint,
 					n => [$select_n, 'INTEGER' ],
-                    date => [$date, 'DATE' ],
+                    date => [$date, 'XHTML' ],
 				) );
 		}
 		else
