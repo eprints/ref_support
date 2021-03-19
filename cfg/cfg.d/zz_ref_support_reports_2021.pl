@@ -561,8 +561,8 @@ $c->{'ref'}->{'ref2_research_outputs'}->{'mappings'} = {
 	"volumeTitle" => \&ref2_support_volumeTitle,
 	"volume" => \&ref2021_volume,
 	"issue" => \&ref2021_issue,
-	"firstPage" => \&ref2_support_firstPage,
-	"articleNumber" => \&ref2_support_article_number,
+	"firstPage" => \&ref2021_firstPage,
+	"articleNumber" => \&ref2021_article_number,
 	"isbn" => \&ref2021_isbn,
 	"issn" => \&ref2021_issn,
 	"doi" => \&ref2021_doi,
@@ -703,6 +703,50 @@ sub ref2021_issue
     }
     return undef;
 }
+
+sub ref2021_firstPage
+{
+    my( $plugin, $objects ) = @_;
+
+    return undef unless( $objects->{eprint}->is_set( 'pagerange' ) );
+
+    my $selection = $objects->{ref_support_selection};
+  
+    my $relevant_types = [ qw( D E ) ];
+
+    if( $selection->is_set( "type" ) && grep { $selection->value( "type" ) eq $_ } @{$relevant_types} )
+    {
+        my $pagerange = $objects->{eprint}->value( 'pagerange' );
+
+        $pagerange =~ s/\-(.*)$//g;
+
+        return $pagerange;
+    }
+    return undef;
+}
+
+sub ref2021_article_number
+{
+    my( $plugin, $objects ) = @_;
+
+    my $eprint = $objects->{eprint};
+
+    my $selection = $objects->{ref_support_selection};
+  
+    if( $selection->is_set( "type" ) && $selection->value( "type" ) eq "D" )
+    {        
+        # not a default EPrints field but some institutions may have added it
+        if( defined $eprint && $eprint->exists_and_set( 'article_number' ) )
+        {
+            return $eprint->value( 'article_number' );
+        }
+
+        # added in v1.2.3
+        return $objects->{ref_support_selection}->value( 'article_id' );
+    }
+    return undef;
+}
+
 
 sub ref2021_isbn
 {
