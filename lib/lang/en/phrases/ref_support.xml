@@ -481,7 +481,7 @@ Please choose one of the following options:<br/>
 </epp:phrase>
 
 <!-- REF::Overview screen -->
-<epp:phrase id="Plugin/Screen/REF_Support/Overview:title">REF Support <a class="ref_support_help" href="/ref_support/"><img src="/style/images/help.gif" alt="REF Support Help Page"/></a></epp:phrase>
+<epp:phrase id="Plugin/Screen/REF_Support/Overview:title">REF Support <a class="ref_support_help" href="/ref_support/"><img src="/style/images/help.gif" alt="REF support, help page link icon"/></a></epp:phrase>
 
 <epp:phrase id="Plugin/Screen/REF_Support/Overview:user_actions">
 <div style="margin:10px auto"><epc:pin name="actions"/></div>
@@ -837,10 +837,10 @@ No users found in your UoA.</epp:phrase>
 
  <epp:phrase id="Plugin/Screen/REF_Support/REF4/Edit:title">Edit</epp:phrase>
 
- <epp:phrase id="compliant_icon"><img title="Compliant" class="compliance-icon" src="{$config{rel_path}}/images/compliant.png"/></epp:phrase>
- <epp:phrase id="not_compliant_icon"><img title="Not Compliant" class="compliance-icon" src="{$config{rel_path}}/images/not-compliant.png"/></epp:phrase>
- <epp:phrase id="future_compliance_icon"><img title="Compliant pending open access" class="compliance-icon" src="{$config{rel_path}}/images/future.png"/></epp:phrase>
- <epp:phrase id="pre_compliance_icon"><img title="Out of scope" class="compliance-icon" src="{$config{rel_path}}/images/pre-compliance.png"/></epp:phrase>
+ <epp:phrase id="compliant_icon"><img alt="green circular icon indicating complience" title="Compliant" class="compliance-icon" src="{$config{rel_path}}/images/compliant.png"/></epp:phrase>
+ <epp:phrase id="not_compliant_icon"><img alt="red circular icon indicating non-complience" title="Not Compliant" class="compliance-icon" src="{$config{rel_path}}/images/not-compliant.png"/></epp:phrase>
+ <epp:phrase id="future_compliance_icon"><img alt="amber circular icon indicating pending complience" title="Compliant pending open access" class="compliance-icon" src="{$config{rel_path}}/images/future.png"/></epp:phrase>
+ <epp:phrase id="pre_compliance_icon"><img alt="blue circular icon indicating out of scope" title="Out of scope" class="compliance-icon" src="{$config{rel_path}}/images/pre-compliance.png"/></epp:phrase>
 
  <epp:phrase id="Plugin/Screen/REF_Support/Overview:no_benchmark">No benchmark defined. Before you can use the REF Support plugin, you must first create a benchmark.</epp:phrase> 
  <epp:phrase id="Plugin/Screen/REF_Support/Overview:no_uoa">No valid Units of Assessment.</epp:phrase>
