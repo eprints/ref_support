@@ -82,7 +82,7 @@ table.roles, table.roles th, table.roles td{
 <p>To create a benchmark, click the '<epc:phrase ref="Plugin/Screen/DataSets:title"/> link in the main menu, then select '<epc:phrase ref="datasetname_ref_support_benchmark"/>'.</p>
 
 <h3>User Guide</h3>
-<p>Please see <a href="http://www.eprints.org/uk/wp-content/uploads/EPrints-Services-REF-Support-User-Guide.pdf">here</a> for the REF Support User Guide.</p>
+<p>Please see <a href="http://www.eprints.org/uk/wp-content/uploads/EPrints-Services-REF-Support-User-Guide.pdf">the REF Support User Guide PDF file.</a></p>
 
 </xpage:body>
 </xpage:page>
